@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="10dip" >
+
+   <LinearLayout 
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       android:gravity="center_horizontal"
+       android:padding="5dip">
+       
+       <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="请输入地区中文名称"
+           android:textColor="@color/textcolor_content"
+           android:textSize="22sp"/>
+       
+       <EditText 
+           android:id="@+id/et_place"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:hint="格式:xx市"/>
+       
+   </LinearLayout>
+
+    
+    <include layout="@layout/view_divideline" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <CheckBox
+            android:id="@+id/cb_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="拦截短信"
+            android:textColor="@color/textcolor_content" />
+
+        <CheckBox
+            android:id="@+id/cb_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dip"
+            android:text="拦截电话"
+            android:textColor="@color/textcolor_content" />
+    </LinearLayout>
+
+    <include layout="@layout/view_oncancel" />
+
+</LinearLayout>

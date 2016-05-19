@@ -1,0 +1,58 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    tools:context="edu.ncu.safe.ui.MainActivity" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="60dip" >
+
+        <ImageView
+            android:id="@+id/user"
+            android:layout_width="30dip"
+            android:layout_height="30dip"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dip"
+            android:scaleType="fitXY"
+            android:src="@drawable/user" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="护机宝"
+            android:textSize="25sp" />
+
+        <ImageView
+            android:id="@+id/set"
+            android:layout_width="30dip"
+            android:layout_height="30dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dip"
+            android:scaleType="fitXY"
+            android:src="@drawable/set" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="#b8caee" >
+    </LinearLayout>
+
+    <!-- 去掉 GridView自带的点击后的阴影  或者在代码上调用setOverScrollMode(OVER_SCROLL_NEVER) -->
+
+    <GridView
+        android:id="@+id/main_gv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="2"
+        android:overScrollMode="never" >
+    </GridView>
+
+</LinearLayout>

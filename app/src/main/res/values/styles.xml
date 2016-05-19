@@ -1,0 +1,75 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <style name="guid_rb">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawableTop">@drawable/guide_rb_selector</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="mian_imgbtn">
+        <item name="android:layout_width">50dip</item>
+        <item name="android:layout_height">50dip</item>
+        <item name="android:padding">5dip</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:background">@drawable/imagebuttonselector</item>
+    </style>
+
+    <style name="MyDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/mainscreen_up_background</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="item">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">70dip</item>
+        <item name="android:background">#ccffffff</item>
+    </style>
+
+    <style name="divideline_horizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.1dip</item>
+        <item name="android:background">#111111</item>
+    </style>
+
+    <style name="wellcomtext">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:padding">5sp</item>
+        <item name="android:textColor">#222222</item>
+    </style>
+
+    <style name="popupanimation">
+        <item name="android:windowEnterAnimation">@anim/popup_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_out</item>
+    </style>
+    
+    <style name="buttonstype">
+        <item name="android:layout_width">70dip</item>
+        <item name="android:layout_height">30dip</item>
+        <item name="android:background">@drawable/button_click_selector</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginLeft">5dip</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+    
+</resources>

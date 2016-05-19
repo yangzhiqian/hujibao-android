@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="50dip"
+    android:background="#ffffff"
+    android:gravity="center_vertical">
+    
+	<TextView 
+	    android:id="@+id/tv_date"
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentLeft="true"
+	    android:layout_marginLeft="40dip"
+	    android:text="时间"
+	    android:textSize="23dp"
+	    android:textColor="#111111"/>
+	
+	<TextView 
+	    android:id="@+id/tv_flows"
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentRight="true"
+	    android:layout_marginRight="40dip"
+	    android:text="流量"
+	    android:textSize="23dp"
+	    android:textColor="#dd3333"/>
+</RelativeLayout>

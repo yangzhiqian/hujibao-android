@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="60dip"
+        android:padding="10dip" >
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="40dip"
+            android:layout_height="50dip"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:paddingBottom="10dip"
+            android:paddingRight="30dip"
+            android:paddingTop="10dip"
+            android:scaleType="fitXY"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="流量校准"
+            android:textSize="25sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.91"
+        android:background="#ddffffff"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dip"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:paddingTop="5dip"
+            android:text="您可以使用个短信校准向运营商发送免费查询短信，查询本月剩余流量"
+            android:textColor="#111111"
+            android:textSize="18sp" />
+
+        <View style="@style/divideline_horizontal" />
+
+        <LinearLayout
+            android:id="@+id/ll_messagecelibration"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:background="@drawable/ll_pressandrelease_selector"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="短信校准"
+                android:textColor="#00EE00"
+                android:textSize="22sp" />
+        </LinearLayout>
+
+        <View style="@style/divideline_horizontal" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dip"
+            android:paddingBottom="5dip"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:paddingTop="5dip"
+            android:text="在这里输入充运营商查询到的结果"
+            android:textColor="#111111"
+            android:textSize="18sp" />
+
+        <View style="@style/divideline_horizontal" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:background="#ffffff"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dip" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="本月剩余流量"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/et_flowsremain"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:freezesText="true"
+                android:gravity="right"
+                android:paddingRight="5dip"
+                android:singleLine="true"
+                android:editable="false"
+                android:text="0"
+                android:textColor="#00ff00" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MB"
+                android:textColor="#00ff00"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <View style="@style/divideline_horizontal" />
+
+        <LinearLayout
+            android:id="@+id/ll_flowsremain"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:background="#ffffff"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dip" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="套餐总流量"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/et_flowstotal"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:freezesText="true"
+                android:gravity="right"
+                android:paddingRight="5dip"
+                android:singleLine="true"
+                android:editable="false"
+                android:text="0"
+                android:textColor="#00ff00" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MB"
+                android:textColor="#00ff00"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <View style="@style/divideline_horizontal" />
+    </LinearLayout>
+
+</LinearLayout>

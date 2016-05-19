@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eeeeee"
+    android:orientation="vertical" >
+    
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:gravity="center_vertical">
+        
+        <TextView 
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="黑名单数量:"
+            android:textColor="#000000"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"/>
+        
+        <TextView 
+            android:id="@+id/tv_msg_numbers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="#6cbd45"
+            android:layout_toRightOf="@id/tv_title"
+            android:layout_centerVertical="true"
+            android:textSize="25sp"/>
+        	
+        	<LinearLayout 
+        	    android:id="@+id/ll_add"
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="wrap_content"
+        	    android:padding="5dip"
+        	    android:orientation="horizontal"
+        	    android:background="@drawable/button_click_selector"
+        	    android:layout_marginRight="5dip"
+        	    android:layout_alignParentRight="true"
+        	    android:layout_centerVertical="true"
+        	    android:gravity="center">
+        	    <ImageView 
+        	        android:layout_width="20dip"
+        	        android:layout_height="20dip"
+        	        android:src="@drawable/add"/>
+        	    <TextView 
+        	        android:layout_width="wrap_content"
+        	        android:layout_height="wrap_content"
+        	        android:layout_marginLeft="3dip"
+        	        android:textColor="#EEEEEE"
+        	        android:text="添加黑名单"/>
+        	</LinearLayout>
+    </RelativeLayout>
+    
+    <ScrollView 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/ll_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
+            android:orientation="vertical"></LinearLayout>
+    </ScrollView>
+</LinearLayout>

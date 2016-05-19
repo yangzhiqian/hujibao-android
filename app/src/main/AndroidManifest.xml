@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="edu.ncu.safe">
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.WRITE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <uses-permission android:name="android.permission.LOCATION_HARDWARE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/appicon"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        <uses-library android:name="android.test.runner" />
+
+        <activity
+            android:name=".ui.WelcomeActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.ProtocolActivity"></activity>
+        <activity android:name=".ui.GuideActivity"></activity>
+        <activity
+            android:name=".ui.MainActivity"
+            android:launchMode="singleTask"></activity>
+        <activity android:name=".ui.PhoneLostProtectActivity"></activity>
+        <activity android:name=".ui.FlowsProtectorActivity"></activity>
+        <activity android:name=".ui.FlowsCalibration"></activity>
+        <activity android:name=".ui.FlowsStatisticsActivity"></activity>
+        <activity android:name=".ui.CommunicationProtectorActivity"></activity>
+        <activity android:name=".ui.CommunicationWhiteBlackSetActivity"></activity>
+        <activity android:name=".ui.CommunicationNumberQuery"></activity>
+        <activity android:name=".ui.CommunicationInterceptionSet"></activity>
+
+        <service
+            android:name=".service.FlowsRecordService"
+            android:enabled="true"
+            android:process="system">
+            <intent-filter>
+                <action android:name="edu.ncu.myservice.flowsrecorder" />
+                <action android:name="edu.ncu.myservice.flowsupdate" />
+                <action android:name="edu.ncu.myservice.checkisworking" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".service.FLoatDesktopWindow"
+            android:enabled="true"
+            android:process="system">
+            <intent-filter android:priority="1000">
+                <action android:name="edu.ncu.safe.service.showFloatWindod" />
+                <action android:name="edu.ncu.safe.service.stopFloatWindod" />
+                <action android:name="edu.ncu.safe.service.updateFloatWindod" />
+                <action android:name="edu.ncu.safe.service.checkisworking" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name=".receiver.RelefeReceiver">
+            <intent-filter>
+                <action android:name="edu.ncu.safe.reveiver.relefe" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".receiver.PhoneRestartReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receiver.SmsReceiver">
+            <intent-filter android:priority="1000">
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receiver.CallReceiver">
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.PHONE_STATE"></action>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".receiver.AdminReceiver"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin" />
+
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+    </application>
+
+</manifest>

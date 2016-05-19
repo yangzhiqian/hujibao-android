@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/background_theme"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="300dip"
+        android:layout_height="50dip"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="40dip"
+            android:layout_height="40dip"
+            android:scaleType="fitXY"
+            android:src="@drawable/appicon" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="护机宝提示"
+            android:textColor="@color/textcolor_theme"
+            android:textSize="22sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+       <ListView 
+           android:id="@+id/lv_more"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:divider="@drawable/divider"
+           android:dividerHeight="1dip"></ListView>
+    </LinearLayout>
+</LinearLayout>

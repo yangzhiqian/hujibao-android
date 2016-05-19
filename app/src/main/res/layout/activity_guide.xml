@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff" >
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/guide_vp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+    </android.support.v4.view.ViewPager>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true" >
+
+        <RadioGroup
+            android:id="@+id/guide_rg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="150dp"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/pg1"
+                style="@style/guid_rb"
+                android:checked="true" />
+
+            <RadioButton 
+                android:id="@+id/pg2"
+                style="@style/guid_rb" />
+
+            <RadioButton style="@style/guid_rb" 
+                android:id="@+id/pg3"/>
+
+            <RadioButton style="@style/guid_rb" 
+                android:id="@+id/pg4"/>
+        </RadioGroup>
+    </LinearLayout>
+"
+
+</RelativeLayout>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:paddingLeft="25dip"
+    android:paddingTop="10dip"
+    android:paddingBottom="10dip"
+    android:orientation="horizontal" >
+
+    <edu.ncu.safe.View.CircleIamgeView
+        android:id="@+id/main_menu_igm"
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:scaleType="fitXY"
+        android:background="@drawable/main_menu_imgshape"
+        android:padding="5dip"
+        android:src="@drawable/appicon"/>
+
+    <LinearLayout
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="10dip"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/main_menu_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="title"
+            android:textColor="@color/textcolor"
+            android:textSize="@dimen/whitetextsize" />
+
+        <TextView
+            android:id="@+id/main_menu_anotation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="anotation"
+            android:textColor="@color/graytextcolor"
+            android:textSize="@dimen/graytextsize" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/main_menu_direction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="15dip"
+        android:text=">"
+        android:textColor="@color/graytextcolor"
+        android:textSize="@dimen/graytextsize" />
+
+</LinearLayout>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="60dip"
+        android:padding="10dip" >
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="40dip"
+            android:layout_height="50dip"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:paddingBottom="10dip"
+            android:paddingRight="30dip"
+            android:paddingTop="10dip"
+            android:scaleType="fitXY"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="通讯卫士"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/tv_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="+"
+            android:textSize="35sp" />
+    </RelativeLayout>
+<LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="3"
+        android:background="#ffffff"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="30dip"
+            android:background="#EEEEEE"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:id="@+id/rl_msg"
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="#eeeeee" 
+                android:gravity="center">
+                <ImageView
+                    android:id="@+id/iv_msg"
+                    android:layout_width="30dip"
+                    android:layout_height="20dip"
+                    android:src="@drawable/message_comm"
+                    android:scaleType="fitXY"/>
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="短信拦截"
+                    android:layout_toRightOf="@id/iv_msg"
+                    android:textColor="#000000"/>
+                
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_phone"
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="#d2d2d2" 
+                android:gravity="center">
+                <ImageView
+                    android:id="@+id/iv_msg2"
+                    android:layout_width="25dip"
+                    android:layout_height="18dip"
+                    android:src="@drawable/phone"
+                    android:scaleType="fitXY"/>
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="电话拦截"
+                    android:layout_toRightOf="@id/iv_msg2"
+                    android:textColor="#000000"/>
+                
+            </RelativeLayout>
+        </LinearLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_protectrecorder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#eeeeee" >
+        </android.support.v4.view.ViewPager>
+    </LinearLayout>
+    
+    
+    
+   
+
+</LinearLayout>

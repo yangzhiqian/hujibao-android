@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:minHeight="50dip"
+    android:orientation="vertical" >
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <ImageView 
+            android:layout_width="25dip"
+            android:layout_height="15dip"
+            android:src="@drawable/message_comm"
+            android:layout_margin="5dip"
+            android:scaleType="fitXY"/>
+        
+        <TextView 
+            android:id="@+id/tv_address"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="address"
+            android:textColor="#111111"
+            android:textSize="16sp"
+            />
+        
+        <TextView 
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="time"
+            android:textColor="#77111111"
+            android:layout_marginRight="20dip"
+            android:textSize="15sp"
+            />
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dip"
+        android:orientation="horizontal">
+        
+        <TextView 
+            android:id="@+id/tv_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="note"
+            android:textColor="#77111111"
+             android:gravity="center_vertical"
+            android:layout_marginRight="20dip"
+            android:textSize="15sp"
+            />
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/ll_hideview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dip"
+        android:gravity="center_vertical"
+        android:visibility="gone"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal">
+        
+        <LinearLayout 
+			android:id="@+id/ll_delete"            
+            style="@style/buttonstype"
+            >
+            <ImageView 
+                android:layout_width="15dip"
+                android:layout_height="15dip"
+                android:src="@drawable/delete_white"
+                android:scaleType="fitXY"/>
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#EEEEEE"
+                android:textSize="16dip"
+                android:text="删除"/>
+        </LinearLayout>
+        
+        <LinearLayout 
+			android:id="@+id/ll_recovery"            
+            style="@style/buttonstype"
+            >
+            <ImageView 
+                android:layout_width="15dip"
+                android:layout_height="15dip"
+                android:src="@drawable/message_back"
+                android:scaleType="fitXY"/>
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#EEEEEE"
+                android:textSize="16dip"
+                android:text="恢复"/>
+        </LinearLayout>
+        
+        <LinearLayout 
+			android:id="@+id/ll_more"            
+            style="@style/buttonstype"
+            >
+            <ImageView 
+                android:layout_width="15dip"
+                android:layout_height="15dip"
+                android:src="@drawable/more"
+                android:scaleType="fitXY"/>
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#EEEEEE"
+                android:textSize="16dip"
+                android:text="更多"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

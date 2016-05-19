@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:minHeight="50dip"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dip" >
+
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="address"
+            android:textColor="#000000"
+            android:textSize="25sp" />
+
+        <ImageView
+            android:id="@+id/iv_message"
+            android:layout_width="25dip"
+            android:layout_height="25dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/iv_phone"
+            android:layout_width="25dip"
+            android:layout_height="25dip"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dip"
+            android:layout_toLeftOf="@id/iv_message"
+            android:src="@drawable/phonegintercepteray" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_hideview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="5dip"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:id="@+id/ll_delete"
+            style="@style/buttonstype" >
+
+            <ImageView
+                android:layout_width="15dip"
+                android:layout_height="15dip"
+                android:scaleType="fitXY"
+                android:src="@drawable/delete_white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="删除"
+                android:textColor="#EEEEEE"
+                android:textSize="16dip" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_edit"
+            style="@style/buttonstype" >
+
+            <ImageView
+                android:layout_width="15dip"
+                android:layout_height="15dip"
+                android:scaleType="fitXY"
+                android:src="@drawable/edit" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="编辑"
+                android:textColor="#EEEEEE"
+                android:textSize="16dip" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_more"
+            style="@style/buttonstype" >
+
+            <ImageView
+                android:layout_width="15dip"
+                android:layout_height="15dip"
+                android:scaleType="fitXY"
+                android:src="@drawable/more" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="更多"
+                android:textColor="#EEEEEE"
+                android:textSize="16dip" />
+        </LinearLayout>
+    </LinearLayout>
+
+	<include layout="@layout/view_divideline"/>
+
+</LinearLayout>

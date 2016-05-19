@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">护机宝</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="protocoltitle">软件许可使用协议</string>
+    <string name="activitymovetime">500</string>
+
+    <string-array name="company">
+        <item>中国移动</item>
+        <item>中国联通</item>
+        <item>中国电信</item>
+    </string-array>
+    <string name="baiduphonenumberownerplaceurl">http://apis.baidu.com/chazhao/mobilesearch/phonesearch</string>
+    <string name="baiduphonenumberownerplacekey">3d2e9cc7c8ed9cf0d2a9f18ae053cc2d</string>
+
+</resources>

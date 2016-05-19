@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background_theme">#6cbd45</color>
+    <color name="background_content">#FFFFFF</color>
+    <color name="textcolor_theme">#FFFFFF</color>
+    <color name="textcolor_content">#000000</color>
+    
+    
+    
+    <color name="textcolor">#fcfcfc</color>
+    <color name="graytextcolor">#979797</color>
+    <color name="main_menu_shapecolor">#4e505a</color>
+    <color name="linearlayout_pressed">#aaffffff</color>
+    <color name="linearlayout_released">#ffffffff</color>
+    
+    <color name="buutonnormal">#6cbd45</color>
+    <color name="buutonpressed">#499b21</color>
+</resources>

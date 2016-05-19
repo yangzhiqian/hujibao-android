@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:alpha="0.5"
+    android:gravity="center_vertical"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/iv_type"
+        android:layout_width="20dip"
+        android:layout_height="20dip"
+        android:scaleType="fitXY"
+        android:src="@drawable/wifi" />
+
+    <LinearLayout
+        android:layout_width="15dip"
+        android:layout_height="40dip"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:layout_width="10dip"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:paddingBottom="5dip"
+            android:paddingTop="5dip"
+            android:scaleType="fitXY"
+            android:src="@drawable/update" />
+
+        <ImageView
+            android:layout_width="10dip"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:paddingBottom="5dip"
+            android:paddingTop="5dip"
+            android:scaleType="fitXY"
+            android:src="@drawable/download" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="40dip"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tv_update"
+            android:layout_width="wrap_content"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:text="0KB/s"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_download"
+            android:layout_width="wrap_content"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:text="0KB/s"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="60dip"
+        android:padding="10dip" >
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="40dip"
+            android:layout_height="50dip"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:paddingBottom="10dip"
+            android:paddingRight="30dip"
+            android:paddingTop="10dip"
+            android:scaleType="fitXY"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="拦截设置"
+            android:textSize="25sp" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dip"
+        android:orientation="vertical"
+        android:background="@color/background_content">
+        <ListView
+            android:id="@+id/lv_interceptionmode"
+            android:layout_width="match_parent"
+            android:descendantFocusability="blocksDescendants"
+            android:layout_height="wrap_content"></ListView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip"
+            android:layout_marginBottom="5dip"
+            android:text="附加功能"
+            android:textSize="22sp"
+            android:textColor="#cccccc"/>
+        <LinearLayout
+            android:id="@+id/ll_nightmode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <LinearLayout
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="自动夜间免打扰模式"
+                    android:textSize="20sp"
+                    android:textColor="@color/textcolor_content"/>
+
+                <TextView
+                    android:id="@+id/tv_nightmode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="自动夜间免打扰模式note"
+                    android:singleLine="true"
+                    android:textSize="12sp"
+                    android:textColor="#cccccc"/>
+            </LinearLayout>
+            <CheckBox
+                android:id="@+id/cb_nightmode"
+                android:clickable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
