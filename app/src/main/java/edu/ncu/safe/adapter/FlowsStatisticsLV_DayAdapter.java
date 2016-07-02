@@ -10,10 +10,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import edu.ncu.safe.R;
-import edu.ncu.safe.domain.FlowsStatisticsAppItemInfo;
 import edu.ncu.safe.domain.FlowsStatisticsDayItemInfo;
 import edu.ncu.safe.util.FlowsFormartUtil;
-import edu.ncu.safe.util.FormatIntDate;
+import edu.ncu.safe.util.FormatDate;
 
 public class FlowsStatisticsLV_DayAdapter extends BaseAdapter {
 
@@ -57,8 +56,8 @@ public class FlowsStatisticsLV_DayAdapter extends BaseAdapter {
 			holder = (ViewHolder) view.getTag();
 		}
 		
-		int month = FormatIntDate.getMonthFromFormatIntDate(infos.get(position).getDate());
-		int day = FormatIntDate.getDayFromFormatIntDate(infos.get(position).getDate());
+		int month = FormatDate.getMonthFromFormatIntDate(infos.get(position).getDate());
+		int day = FormatDate.getDayFromFormatIntDate(infos.get(position).getDate());
 		holder.tv_date.setText(month+"月"+day+"日");
 		long update = infos.get(position).getUpdate();
 		long download = infos.get(position).getDownload();

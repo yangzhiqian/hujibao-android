@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:my="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="60dip"
+        android:padding="10dip">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="40dip"
+            android:layout_height="50dip"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:paddingBottom="10dip"
+            android:paddingRight="30dip"
+            android:paddingTop="10dip"
+            android:scaleType="fitXY"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="系统加速"
+            android:textSize="25sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <edu.ncu.safe.View.MyProgressBar
+                android:id="@+id/mpb_innermemory"
+                android:layout_width="200dip"
+                android:layout_height="match_parent"
+                my:hasTitle="true"
+                my:percentSize="40dip"
+                my:progressStyle="arc"
+                my:title="总内存:?G"
+                my:usedBeginColor="#00ff00"
+                my:usedEndColor="#ff0000" />
+
+
+            <edu.ncu.safe.View.MyProgressBar
+                android:id="@+id/mpb_outermemory"
+                android:layout_width="120dip"
+                android:layout_height="100dip"
+                android:layout_marginTop="50dip"
+                my:percentSize="25dip"
+                my:progressStyle="circular_vertical"
+                my:hasTitle="true"
+                my:title="内部存储:?G"
+                my:titleSize="14sp"
+                my:usedBeginColor="#00ff00"
+                my:usedEndColor="#ff0000" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dip"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="2"
+        android:background="#f5f5f5"
+        android:gravity="center"
+        android:padding="10dip">
+
+        <ExpandableListView
+            android:id="@+id/elv_sweepResult"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="#00000000"
+            android:dividerHeight="1dp"
+            android:childDivider="@drawable/divider"
+            android:groupIndicator="@null"
+            android:layout_centerInParent="true">
+        </ExpandableListView>
+        <LinearLayout
+            android:id="@+id/ll_emptyview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:gravity="center">
+            <edu.ncu.safe.View.MyProgressBar
+                android:id="@+id/mpb_sweep"
+                android:layout_width="match_parent"
+                android:layout_height="80dip"
+                my:arcWidth="8dip"
+                my:loopSpeed="500"
+                my:hasTitle="true"
+                my:titleSize="16dip"
+                my:titleColor="#00ff00"
+                my:title="正在扫描"
+                my:hasPercent="true"
+                my:percentSize="15dip"
+                my:percentColor="#444444"
+                my:progressStyle="loop"
+                my:usedBeginColor="#ff0000"
+                my:usedEndColor="#ffffff" />
+
+            <TextView
+                android:id="@+id/tv_sweepContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="扫描内容"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_clean"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:visibility="gone"
+            android:background="@drawable/cleanbutton_selector"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="5dip">
+
+            <ImageView
+                android:id="@+id/iv_clean"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/clean" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="一键清理垃圾"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,20 +1,19 @@
 package edu.ncu.safe.engine;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import android.content.Context;
+import android.util.Log;
+import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import edu.ncu.safe.R;
 import edu.ncu.safe.ui.ProtocolActivity;
-import android.content.Context;
-import android.util.Log;
-import android.util.Xml;
 
 public class LoadProtocol {
 	Context context;
@@ -31,7 +30,6 @@ public class LoadProtocol {
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setConnectTimeout(5000);
 			conn.setRequestMethod("GET");
-
 			InputStream is = conn.getInputStream();
 			
 

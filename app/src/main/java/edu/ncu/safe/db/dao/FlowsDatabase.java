@@ -11,7 +11,7 @@ import java.util.List;
 import edu.ncu.safe.db.FlowsRecordDatabaseHelper;
 import edu.ncu.safe.domain.FlowsStatisticsAppItemInfo;
 import edu.ncu.safe.domain.FlowsStatisticsDayItemInfo;
-import edu.ncu.safe.util.FormatIntDate;
+import edu.ncu.safe.util.FormatDate;
 
 public class FlowsDatabase {
 	private FlowsRecordDatabaseHelper database;
@@ -87,9 +87,9 @@ public class FlowsDatabase {
 	public void deleteFromAppFlowsDB(int uid) {
 		try {
 			SQLiteDatabase db = database.getWritableDatabase();
-			db.delete(FlowsRecordDatabaseHelper.APPFLOWSTABLENAME, 
-					FlowsRecordDatabaseHelper.APPFLOWSTABLECOLUMNS[0]+"=?",
-					new String[] { uid + "" });
+			db.delete(FlowsRecordDatabaseHelper.APPFLOWSTABLENAME,
+					FlowsRecordDatabaseHelper.APPFLOWSTABLECOLUMNS[0] + "=?",
+					new String[]{uid + ""});
 			db.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -104,7 +104,7 @@ public class FlowsDatabase {
 			SQLiteDatabase db = database.getWritableDatabase();
 			String sql = "insert into "+FlowsRecordDatabaseHelper.TOTALFLOWSTABLENAME
 					+ " values (?,?,?)";
-			db.execSQL(sql, new String[]{info.getDate()+"",info.getUpdate()+"",info.getDownload()+""});
+			db.execSQL(sql, new String[]{info.getDate() + "", info.getUpdate() + "", info.getDownload() + ""});
 			db.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -115,8 +115,8 @@ public class FlowsDatabase {
 			SQLiteDatabase db = database.getWritableDatabase();
 			
 			db.delete(FlowsRecordDatabaseHelper.TOTALFLOWSTABLENAME,
-					FlowsRecordDatabaseHelper.TOTALFLOWSTABLECOLUMNS[0]+"=?",
-					new String[]{date+""});
+					FlowsRecordDatabaseHelper.TOTALFLOWSTABLECOLUMNS[0] + "=?",
+					new String[]{date + ""});
 			db.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -132,8 +132,8 @@ public class FlowsDatabase {
 			values.put(FlowsRecordDatabaseHelper.TOTALFLOWSTABLECOLUMNS[2], info.getDownload());
 			db.update(FlowsRecordDatabaseHelper.TOTALFLOWSTABLENAME,
 					values,
-					FlowsRecordDatabaseHelper.TOTALFLOWSTABLECOLUMNS[0]+"=?",
-					new String[]{info.getDate()+""});
+					FlowsRecordDatabaseHelper.TOTALFLOWSTABLECOLUMNS[0] + "=?",
+					new String[]{info.getDate() + ""});
 			db.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -145,7 +145,7 @@ public class FlowsDatabase {
 	 * @return FlowsStatisticsDayItemInfo
 	 */
 	public FlowsStatisticsDayItemInfo queryCurrentDayFromTotalFlowsDB(){
-		int date = FormatIntDate.getCurrentFormatIntDate();
+		int date = FormatDate.getCurrentFormatIntDate();
 		return queryFromTotalFlowsDB(date);
 	}
 	
@@ -207,7 +207,7 @@ public class FlowsDatabase {
 	 */
 	public float[] queryCurrentMonthByDayFlows(){
 		float[] data = new float[31];
-		int date = FormatIntDate.getCurrentFormatIntDate();
+		int date = FormatDate.getCurrentFormatIntDate();
 		while(date%100 != 0){
 			FlowsStatisticsDayItemInfo info = queryFromTotalFlowsDB(date);
 			if(info == null){
@@ -227,7 +227,7 @@ public class FlowsDatabase {
 	 * @return 以byte为单位的流量数据
 	 */
 	public long queryCurrentMonthTotalFlows(){
-		int date = FormatIntDate.getCurrentFormatIntDate();
+		int date = FormatDate.getCurrentFormatIntDate();
 		long sumFlows = 0;
 		
 		while(date%100!=0){
@@ -242,12 +242,28 @@ public class FlowsDatabase {
 	}
 	
 	public long queryCurrentDayTotalFlows(){
-		int date = FormatIntDate.getCurrentFormatIntDate();
+		int date = FormatDate.getCurrentFormatIntDate();
 		FlowsStatisticsDayItemInfo info = queryFromTotalFlowsDB(date);
 		if(info!=null){
 			//date当天的数据有记录
 			return info.getUpdate() + info.getDownload(); 
 		}
 		return 0;
+	}
+
+	public long queryAllFlowsByAppUID(int uid){
+		long re = 0;
+		SQLiteDatabase db = database.getReadableDatabase();
+		Cursor cursor = db.query(FlowsRecordDatabaseHelper.APPFLOWSTABLENAME,
+				new String[]{FlowsRecordDatabaseHelper.APPFLOWSTABLECOLUMNS[2],FlowsRecordDatabaseHelper.APPFLOWSTABLECOLUMNS[3]},
+				FlowsRecordDatabaseHelper.APPFLOWSTABLECOLUMNS[0]+"=?",new String[]{uid+""},null,null,null);
+		if(cursor.moveToFirst()){
+			long up = cursor.getLong(0);
+			long down = cursor.getLong(1);
+			re = up+down;
+		}
+		cursor.close();
+		db.close();
+		return re;
 	}
 }

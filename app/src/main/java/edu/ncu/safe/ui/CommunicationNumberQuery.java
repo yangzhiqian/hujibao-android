@@ -2,6 +2,7 @@ package edu.ncu.safe.ui;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -75,13 +76,14 @@ public class CommunicationNumberQuery extends Activity implements OnOwnerPlaceOb
         //设置lv数据
         db = new CommunicationDatabase(this);
         infos = db.queryAllNumberPlaceInfosFromDB();
-        adapter = new CommunicationLVNumberPlaceAdapter(infos,this);
+        adapter = new CommunicationLVNumberPlaceAdapter(infos, this);
         //设置适配器
         lv_queryRecoder.setAdapter(adapter);
     }
 
     @Override
     public void OnOwnerPalceObtained(NumberPlaceInfo info) {
+        dialog.dismiss();
         Message message = new Message();
         if (info == null) {
             message.what = FAIL;
@@ -94,17 +96,22 @@ public class CommunicationNumberQuery extends Activity implements OnOwnerPlaceOb
         }
     }
 
+    private ProgressDialog dialog;
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back:
                 finish();
-                overridePendingTransition(R.anim.activit3dtoright_in,R.anim.activit3dtoright_out);
+                overridePendingTransition(R.anim.activit3dtoright_in, R.anim.activit3dtoright_out);
                 break;
             case R.id.ib_to:
-            place.setNumber(et_number.getText().toString().trim());
-            place.request();
-            break;
+                place.setNumber(et_number.getText().toString().trim());
+                place.request();
+                dialog = new ProgressDialog(this);
+                dialog.setCancelable(false);
+                dialog.show();
+                break;
         }
     }
 

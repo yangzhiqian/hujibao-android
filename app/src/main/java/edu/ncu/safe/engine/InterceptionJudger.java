@@ -16,13 +16,13 @@ public class InterceptionJudger {
 
     private Context context;
     private CommunicationDatabase db;
-    private LoadContacts contacts;
+    private ContactsService contacts;
     private InterceptionSetInfo setInfo;
 
     public InterceptionJudger(Context context) {
         this.context = context;
         db = new CommunicationDatabase(context);
-        contacts = new LoadContacts(context);
+        contacts = new ContactsService(context);
         setInfo = new InterceptionSetOperation(context).getInterceptionSetInfo();
     }
 

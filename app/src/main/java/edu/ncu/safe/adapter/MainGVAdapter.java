@@ -1,7 +1,6 @@
 package edu.ncu.safe.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,26 +8,28 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import edu.ncu.safe.R;
-import edu.ncu.safe.View.CircleIamgeView;
-import edu.ncu.safe.domain.MainGVInfo;
+import edu.ncu.safe.View.CircleImageView;
+import edu.ncu.safe.domain.MainGVItemInfo;
 
 public class MainGVAdapter extends BaseAdapter {
-
 	private static final String TAG = "MainGVAdapter";
-	MainGVInfo info;
-	LayoutInflater flater;
-
-	public void setInfo(MainGVInfo info) {
-		this.info = info;
+	private LayoutInflater flater;
+	private MainGVItemInfo[] infos;
+	public MainGVAdapter(Context context){
+		this(context,new MainGVItemInfo[0]);
 	}
-
-	public MainGVAdapter(Context context,MainGVInfo info){
-		this.info = info;
+	public MainGVAdapter(Context context,MainGVItemInfo[] infos){
+		this.infos = infos;
 		flater = LayoutInflater.from(context);
 	}
+
+	public void setInfos(MainGVItemInfo[] infos) {
+		this.infos = infos;
+	}
+
 	@Override
 	public int getCount() {
-		return info.getSize();
+		return infos.length;
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class MainGVAdapter extends BaseAdapter {
 			view = flater.inflate(R.layout.item_grideview_mainview, null);
 			
 			holder = new ViewHolder();
-			holder.img = (CircleIamgeView) view.findViewById(R.id.main_gv_item_img);
+			holder.img = (CircleImageView) view.findViewById(R.id.main_gv_item_img);
 			holder.title = (TextView) view.findViewById(R.id.main_gv_item_title);
 			holder.anotation = (TextView) view.findViewById(R.id.main_gv_item_anotation);
 			
@@ -57,20 +58,15 @@ public class MainGVAdapter extends BaseAdapter {
 		}else{
 			holder = (ViewHolder)view.getTag();
 		}
-		holder.img.setImageResource(info.getIcons().get(position));
-		holder.title.setText(info.getTitles().get(position));
-		int ano = info.getAnotations().get(position);
-		if(ano == 0){
-			holder.anotation.setTextColor(Color.RED);
-		}else{
-			holder.anotation.setTextColor(Color.GREEN);
-		}
-		holder.anotation.setText(MainGVInfo.ano[position][ano]);
+		holder.img.setImageResource(infos[position].getIconR());
+		holder.title.setText(infos[position].getTitle());
+		holder.anotation.setText(infos[position].getNote());
+		holder.anotation.setTextColor(infos[position].getColor());
 		return view;
 	}
 	
 	class ViewHolder{
-		public CircleIamgeView img;
+		public CircleImageView img;
 		public TextView title;
 		public TextView anotation;
 	}

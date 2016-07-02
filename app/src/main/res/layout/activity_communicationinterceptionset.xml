@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="60dip"
-        android:padding="10dip" >
+        android:padding="10dip">
 
         <ImageView
             android:id="@+id/back"
@@ -30,58 +30,66 @@
             android:text="拦截设置"
             android:textSize="25sp" />
     </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="5dip"
+        android:background="@color/background_content"
         android:orientation="vertical"
-        android:background="@color/background_content">
+        android:paddingRight="5dip"
+        android:paddingLeft="5dip">
+
         <ListView
             android:id="@+id/lv_interceptionmode"
             android:layout_width="match_parent"
-            android:descendantFocusability="blocksDescendants"
-            android:layout_height="wrap_content"></ListView>
+            android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants"></ListView>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dip"
             android:layout_marginBottom="5dip"
+            android:layout_marginTop="5dip"
             android:text="附加功能"
-            android:textSize="22sp"
-            android:textColor="#cccccc"/>
+            android:textColor="#cccccc"
+            android:textSize="22sp" />
+
         <LinearLayout
             android:id="@+id/ll_nightmode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
             <LinearLayout
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="自动夜间免打扰模式"
-                    android:textSize="20sp"
-                    android:textColor="@color/textcolor_content"/>
+                    android:textColor="@color/textcolor_content"
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/tv_nightmode"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="自动夜间免打扰模式note"
                     android:singleLine="true"
-                    android:textSize="12sp"
-                    android:textColor="#cccccc"/>
+                    android:text="自动夜间免打扰模式note"
+                    android:textColor="#cccccc"
+                    android:textSize="12sp" />
             </LinearLayout>
+
             <CheckBox
                 android:id="@+id/cb_nightmode"
-                android:clickable="false"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:clickable="false" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

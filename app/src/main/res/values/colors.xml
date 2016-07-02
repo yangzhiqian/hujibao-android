@@ -15,4 +15,8 @@
     
     <color name="buutonnormal">#6cbd45</color>
     <color name="buutonpressed">#499b21</color>
+
+    <color name="cleanbuttonpressed">#133E93</color>
+    <color name="cleanbuttonenabled">#c7dcee</color>
+    <color name="cleanbuttonnormal">#1545a4</color>
 </resources>

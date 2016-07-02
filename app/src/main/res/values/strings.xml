@@ -15,4 +15,26 @@
     <string name="baiduphonenumberownerplaceurl">http://apis.baidu.com/chazhao/mobilesearch/phonesearch</string>
     <string name="baiduphonenumberownerplacekey">3d2e9cc7c8ed9cf0d2a9f18ae053cc2d</string>
 
+    <item name="tag_group" type="id"></item>
+    <item name="tag_child" type="id"></item>
+
+    <item name="tag_position" type="id"></item>
+    <item name="tag_view" type="id"></item>
+    <string name="title_activity_login">登录</string>
+
+    <!-- Strings related to login -->
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">密码长度不少于6位</string>
+    <string name="error_invalid_password_different">两次密码不相同</string>
+    <string name="error_incorrect_password">用户名密码不正确</string>
+    <string name="error_field_required">此处不能为空</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+
+    <string name="login">http://123.206.202.242:8080/androidsafe/LoginServlet</string>
+    <string name="regist">http://123.206.202.242:8080/androidsafe/RegistServlet</string>
+    <string name="logout">http://123.206.202.242:8080/androidsafe/LogoutServlet</string>
+    <string name="loadicon">http://123.206.202.242:8080/androidsafe/DownloadIconServlet</string>
 </resources>

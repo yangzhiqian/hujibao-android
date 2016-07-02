@@ -26,7 +26,14 @@ public class FlowsFormartUtil {
 	
 	public static String toMBFormat(long data){
 		float flowsM = ((float) data)/(1024*1024);
-		return  String.format("%.2f", flowsM);
+		String re = String.format("%.2f", flowsM);
+		if(re.endsWith(".00")||re.length()>5){
+			return (int)flowsM +"";
+		}
+		if(re.endsWith("0")){
+			re=re.substring(0,re.length()-1);
+		}
+		return  re;
 	}
 	
 	public static String toFlowsSpeedFormart(long flowsByte){

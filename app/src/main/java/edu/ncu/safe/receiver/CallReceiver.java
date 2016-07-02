@@ -9,7 +9,7 @@ import android.widget.Toast;
 import edu.ncu.safe.db.dao.CommunicationDatabase;
 import edu.ncu.safe.domain.InterceptionInfo;
 import edu.ncu.safe.engine.InterceptionJudger;
-import edu.ncu.safe.engine.LoadContacts;
+import edu.ncu.safe.engine.ContactsService;
 
 /**
  * Created by Mr_Yang on 2016/5/18.
@@ -52,7 +52,7 @@ public class CallReceiver extends BroadcastReceiver {
         if (judger.isShouldPhoneIntercepte(number)) {
             //需要被拦截
             CommunicationDatabase db = new CommunicationDatabase(context);
-            LoadContacts contacts = new LoadContacts(context);
+            ContactsService contacts = new ContactsService(context);
 
             String name = contacts.getContactName(number);
             int type = db.queryNumberType(number);

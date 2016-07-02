@@ -2,7 +2,6 @@ package edu.ncu.safe.ui;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -71,17 +70,20 @@ public class CommunicationProtectorActivity extends FragmentActivity implements 
 			ll_backList.setOnClickListener(this);
 			ll_interceptonSetting.setOnClickListener(this);
 			ll_phoneNumberPlace.setOnClickListener(this);
-			
+			contentView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
 			popupWindow = new PopupWindow(contentView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			//popupWindow设置animation一定要在show之前
 			popupWindow.setAnimationStyle(R.style.popupanimation);
 			
 			popupWindow.setTouchable(true);  
 			popupWindow.setFocusable(true);  
-			popupWindow.setOutsideTouchable(true);  
+			popupWindow.setOutsideTouchable(true);
 			//一定要设置背景，否则无法自动消失
-			popupWindow.setBackgroundDrawable(new PaintDrawable());  
-			popupWindow.showAsDropDown(tv_more,tv_more.getWidth()-contentView.getWidth()-100,30);
+			Drawable background = getResources().getDrawable(
+					R.drawable.popupbgtop);
+			popupWindow.setBackgroundDrawable(background);
+			tv_more.measure(0,0);
+			popupWindow.showAsDropDown(tv_more, tv_more.getMeasuredWidth() - contentView.getMeasuredWidth()+10, 0);
 		
 			break;
 		case R.id.rl_msg:

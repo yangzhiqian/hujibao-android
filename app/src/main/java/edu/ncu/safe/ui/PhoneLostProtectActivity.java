@@ -34,7 +34,7 @@ import android.widget.Toast;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.adapter.ContactsDialogAdapter;
-import edu.ncu.safe.engine.LoadContacts;
+import edu.ncu.safe.engine.ContactsService;
 import edu.ncu.safe.receiver.AdminReceiver;
 
 public class PhoneLostProtectActivity extends Activity implements
@@ -179,7 +179,7 @@ public class PhoneLostProtectActivity extends Activity implements
 		String userNumber = sp.getString(USERPHONENUMBER, null);
 		final String phoneNumber = getPhoneNumber();
 		if (phoneNumber == null) {
-			Toast.makeText(this, "当前未插入SMS卡", 1).show();
+			Toast.makeText(this, "当前未插入SMS卡", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		if (userNumber == null || !userNumber.equals(phoneNumber)) {
@@ -395,7 +395,7 @@ public class PhoneLostProtectActivity extends Activity implements
 				String safeNumber = et_safeNumber.getText().toString().trim();
 
 				if ("".equals(userNumber) || "".equals(safeNumber)) {
-					Toast.makeText(PhoneLostProtectActivity.this, "号码不能为空", 1)
+					Toast.makeText(PhoneLostProtectActivity.this, "号码不能为空", Toast.LENGTH_SHORT)
 							.show();
 					return;
 				}
@@ -406,7 +406,7 @@ public class PhoneLostProtectActivity extends Activity implements
 				edi.apply();
 				dialog.dismiss();
 				Toast.makeText(getApplicationContext(), "修改成功",
-						3000).show();
+						Toast.LENGTH_SHORT).show();
 			}
 		});
 		btnNo.setOnClickListener(new OnClickListener() {
@@ -422,10 +422,10 @@ public class PhoneLostProtectActivity extends Activity implements
 						.inflate(R.layout.dialog_contacts, null);
 
 				ListView lv = (ListView) mView.findViewById(R.id.lv_contacts);
-				LoadContacts loadContacts = new LoadContacts(
+				ContactsService contactsService = new ContactsService(
 						PhoneLostProtectActivity.this);
 				final ContactsDialogAdapter adapter = new ContactsDialogAdapter(
-						loadContacts.getContactsInfos(),
+						contactsService.getContactsInfos(),
 						PhoneLostProtectActivity.this);
 				lv.setAdapter(adapter);
 				lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -466,10 +466,10 @@ public class PhoneLostProtectActivity extends Activity implements
 					editor.apply();
 					dialog.dismiss();
 					Toast.makeText(getApplicationContext(), "修改成功",
-							3000).show();
+							Toast.LENGTH_SHORT).show();
 				} else {
 					Toast.makeText(getApplicationContext(), "两次密码不相同，请重新输入",
-							3000).show();
+							Toast.LENGTH_SHORT).show();
 				}
 			}
 		});

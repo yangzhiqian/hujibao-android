@@ -18,14 +18,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="mode"
-            android:textSize="25sp"
+            android:textSize="22sp"
             android:textColor="@color/textcolor_content"/>
         <TextView
             android:id="@+id/tv_note"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="note"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textColor="#333333"/>
     </LinearLayout>
     <CheckBox

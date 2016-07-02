@@ -6,15 +6,13 @@
     android:paddingLeft="25dip"
     android:paddingTop="10dip"
     android:paddingBottom="10dip"
+
     android:orientation="horizontal" >
 
-    <edu.ncu.safe.View.CircleIamgeView
+    <edu.ncu.safe.View.CircleImageView
         android:id="@+id/main_menu_igm"
         android:layout_width="50dip"
         android:layout_height="50dip"
-        android:scaleType="fitXY"
-        android:background="@drawable/main_menu_imgshape"
-        android:padding="5dip"
         android:src="@drawable/appicon"/>
 
     <LinearLayout

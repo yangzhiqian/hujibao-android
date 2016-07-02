@@ -1,11 +1,5 @@
 package edu.ncu.safe.ui.fragment;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -14,6 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import edu.ncu.safe.R;
 import edu.ncu.safe.adapter.FlowsStatisticsLV_AppAdapter;
 import edu.ncu.safe.db.dao.FlowsDatabase;
@@ -26,6 +27,7 @@ public class FlowsAppLVFragment extends Fragment {
 	private FlowsStatisticsLV_AppAdapter adapter;
 	private List<FlowsStatisticsAppItemInfo> dbInfos;
 	private List<FlowsStatisticsAppItemInfo> preTrafficInfos;
+
 	private LoadFlowsDataFromTrafficStats trafficStats;
 	private FlowsDatabase database;
 	private Timer timer;

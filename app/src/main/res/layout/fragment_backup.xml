@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+    <ListView
+        android:id="@+id/lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@drawable/divider"
+        android:dividerHeight="0.1dp"
+        android:background="#ffffff"></ListView>
+    <edu.ncu.safe.View.MyProgressBar
+        android:id="@+id/mpb_load"
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        app:progressStyle="loop"
+        app:hasTitle="false"
+        app:hasPercent="false"
+        app:arcWidth="10dp"
+        app:usedBeginColor="#ff0000"
+        app:usedEndColor="#ffffff"
+        android:visibility="gone"
+        app:loopSpeed="600"
+        android:layout_gravity="center"/>
+    <LinearLayout
+        android:id="@+id/ll_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="没有数据加载到！"/>
+    </LinearLayout>
+</FrameLayout>

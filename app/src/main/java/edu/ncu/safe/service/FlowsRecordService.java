@@ -12,7 +12,7 @@ import edu.ncu.safe.db.dao.FlowsDatabase;
 import edu.ncu.safe.domain.FlowsStatisticsAppItemInfo;
 import edu.ncu.safe.domain.FlowsStatisticsDayItemInfo;
 import edu.ncu.safe.engine.LoadFlowsDataFromTrafficStats;
-import edu.ncu.safe.util.FormatIntDate;
+import edu.ncu.safe.util.FormatDate;
 
 public class FlowsRecordService extends Service {
 	private static final String TAG = "FlowsRecordService";
@@ -134,7 +134,7 @@ public class FlowsRecordService extends Service {
 		if (dbInfo == null) {
 			// 数据库中没有当天的数据流量信息,添加一条数据为0的条目
 			dbInfo = new FlowsStatisticsDayItemInfo(
-					FormatIntDate.getCurrentFormatIntDate(), 0, 0);
+					FormatDate.getCurrentFormatIntDate(), 0, 0);
 			database.addIntoTotalFlowsDB(dbInfo);
 		}
 		if (trafficDayClock0FlowsInfo == null) {

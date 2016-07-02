@@ -5,12 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
 import edu.ncu.safe.R;
+import edu.ncu.safe.View.CircleImageView;
 import edu.ncu.safe.domain.MainMenuInfo;
 
 public class MainMenuAdapter extends BaseAdapter {
@@ -26,16 +26,15 @@ public class MainMenuAdapter extends BaseAdapter {
 
 	public void setList(List<MainMenuInfo> list) {
 		this.list = list;
+		notifyDataSetChanged();
 	}
 
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return list.size();
 	}
 	@Override
 	public Object getItem(int arg0) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
@@ -51,7 +50,7 @@ public class MainMenuAdapter extends BaseAdapter {
 			view = inflater.inflate(R.layout.item_listview_menu, null);
 			
 			hodler = new ViewHodler();
-			hodler.img = (ImageView) view.findViewById(R.id.main_menu_igm);
+			hodler.img = (CircleImageView) view.findViewById(R.id.main_menu_igm);
 			hodler.title = (TextView) view.findViewById(R.id.main_menu_title);
 			hodler.anotation = (TextView) view.findViewById(R.id.main_menu_anotation);
 			hodler.direction = (TextView) view.findViewById(R.id.main_menu_direction);
@@ -80,7 +79,7 @@ public class MainMenuAdapter extends BaseAdapter {
 	}
 	
 	class ViewHodler{
-		public ImageView img;
+		public CircleImageView img;
 		public TextView title;
 		public TextView anotation;
 		public TextView direction;

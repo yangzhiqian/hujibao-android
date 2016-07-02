@@ -44,7 +44,7 @@ public class CommunicationPhoneFragment extends Fragment implements
 	@Override
 	public void onStart() {
 		super.onStart();
-		tv_numbers.setText(database.queryInterceptionMSGCount() + "");//改变拦截的数量
+		tv_numbers.setText(database.queryInterceptionPhoneCount() + "");//改变拦截的数量
 		adapter.setInfos(database.queryInterceptionPhoneInfos(30, 0));
 		adapter.notifyDataSetChanged();
 	}

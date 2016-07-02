@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+        buildToolsVersion "23.0.1"
 
-    defaultConfig {
-        applicationId "safe.yang.ncu.edu.androidsafe"
-        minSdkVersion 15
-        targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        defaultConfig {
+            applicationId "safe.yang.ncu.edu.androidsafe"
+            minSdkVersion 16
+            targetSdkVersion 23
+            versionCode 1
+            versionName "1.0"
     }
     buildTypes {
         release {
@@ -27,4 +27,8 @@ dependencies {
     compile files('libs/hellocharts-library-1.5.8.jar')
     compile files('libs/slidingmenu.jar')
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+    compile files('libs/gson-2.2.4.jar')
+    compile files('libs/gson-2.2.4-javadoc.jar')
+    compile files('libs/gson-2.2.4-sources.jar')
+    compile files('libs/volley.jar')
 }

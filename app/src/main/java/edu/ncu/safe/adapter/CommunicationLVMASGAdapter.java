@@ -15,7 +15,7 @@ import java.util.List;
 import edu.ncu.safe.R;
 import edu.ncu.safe.db.CommunicationDatabaseHelper;
 import edu.ncu.safe.domain.InterceptionInfo;
-import edu.ncu.safe.engine.LoadRecoverSms;
+import edu.ncu.safe.engine.SmsService;
 import edu.ncu.safe.myadapter.MyLIstViewBaseAdapter;
 import edu.ncu.safe.util.ContactUtil;
 
@@ -187,7 +187,7 @@ public class CommunicationLVMASGAdapter extends MyLIstViewBaseAdapter implements
     @Override
     protected void doWhileButton2OKClicked(int position) {
         // 恢复短信
-        LoadRecoverSms sms = new LoadRecoverSms(context);
+        SmsService sms = new SmsService(context);
         if(sms.recoveryOneSms(infos.get(position).toSmsInfo())){
             // 删除此条记录
             deleteItem(position);

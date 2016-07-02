@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="60dip"
+        android:padding="10dip" >
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="40dip"
+            android:layout_height="50dip"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:paddingBottom="10dip"
+            android:paddingRight="30dip"
+            android:paddingTop="10dip"
+            android:scaleType="fitXY"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="软件管理"
+            android:textSize="25sp" />
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_appmanager"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"></android.support.v4.view.ViewPager>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="#f9f9f9">
+        <LinearLayout
+            android:id="@+id/ll_appmanager"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="2dip"
+            android:background="#ffffff"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/iv_appmanager"
+                android:layout_width="30dip"
+                android:layout_height="30dip"
+                android:src="@drawable/appmanager"
+                android:scaleType="fitXY"/>
+            <TextView
+                android:id="@+id/tv_appmanager"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="软件管理"
+                android:textColor="#09bb07"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_netmanager"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="2dip"
+            android:background="#eeeeee"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/iv_netmanager"
+                android:layout_width="30dip"
+                android:layout_height="30dip"
+                android:src="@drawable/netmanagementgray"
+                android:scaleType="fitXY"/>
+            <TextView
+                android:id="@+id/tv_netmanager"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="网络管理"
+                android:textColor="#adadad"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

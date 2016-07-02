@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="usedBeginColor" format="color" />
+    <attr name="usedEndColor" format="color" />
+    <attr name="percentSize" format="dimension" />
+    <attr name="percentColor" format="color" />
+    <attr name="titleSize" format="dimension" />
+    <attr name="titleColor" format="color" />
+    <attr name="unusedColor" format="color" />
+    <attr name="hasTitle" format="boolean" />
+    <attr name="hasPercent" format="boolean" />
+    <attr name="title" format="string" />
+    <attr name="sweeping" format="boolean" />
+    <attr name="arcWidth" format="dimension" />
+    <attr name="loopSpeed" format="integer" />
+    <attr name="arcLength" format="float" />
+    <attr name="titleMarginTopToProcessBar" format="dimension" />
+    <attr name="progressStyle" format="enum">
+        <enum name="circular_vertical" value="0"/>
+        <enum name="arc" value="1"/>
+        <enum name="loop" value="2"/>
+        <enum name="rectangle_horizontal" value="3"/>
+        <enum name="rectangle_virticle" value="4"/>
+    </attr>
+
+    <declare-styleable name="MyProgressBar">
+        <attr name="usedBeginColor" />
+        <attr name="usedEndColor"  />
+        <attr name="percentSize"  />
+        <attr name="percentColor" />
+        <attr name="titleSize"  />
+        <attr name="titleColor"  />
+        <attr name="unusedColor"  />
+        <attr name="hasTitle"  />
+        <attr name="hasPercent"/>
+        <attr name="title" />
+        <attr name="sweeping" />
+        <attr name="progressStyle"/>
+        <attr name="arcWidth" />
+        <attr name="loopSpeed" />
+        <attr name="arcLength"/>
+        <attr name="titleMarginTopToProcessBar" />
+    </declare-styleable>
+
+
+
+
+
+
+
+    <declare-styleable name="CircleImageView">
+        <attr name="civ_border_width" format="dimension" />
+        <attr name="civ_border_color" format="color" />
+        <attr name="civ_border_overlay" format="boolean" />
+        <attr name="civ_fill_color" format="color" />
+    </declare-styleable>
+</resources>

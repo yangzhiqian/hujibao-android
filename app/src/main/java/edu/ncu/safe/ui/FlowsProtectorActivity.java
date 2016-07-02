@@ -14,9 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import edu.ncu.safe.R;
+import edu.ncu.safe.View.MyProgressBar;
 import edu.ncu.safe.db.dao.FlowsDatabase;
 import edu.ncu.safe.util.FlowsFormartUtil;
-import edu.ncu.safe.util.FormatIntDate;
+import edu.ncu.safe.util.FormatDate;
 
 public class FlowsProtectorActivity extends Activity implements OnClickListener {
 
@@ -27,14 +28,14 @@ public class FlowsProtectorActivity extends Activity implements OnClickListener 
     // 数据库记录的数（每个月月初对该值进行清零）
     public static final String DBFLOWSOFFSETUPDATETIME = "dbflowsoffsetupdatetime";// dbflowsoffset跟新的时间
 
+    private MyProgressBar myProgressBar;
+    private FlowsDatabase database;
     private TextView tv_month;
-    private TextView tv_day;
 
+    private TextView tv_day;
     private LinearLayout ll_calibration;
     private LinearLayout ll_flows;
     private ImageView iv_back;
-
-    private FlowsDatabase database;
     private SharedPreferences sp;
 
     @Override
@@ -47,6 +48,7 @@ public class FlowsProtectorActivity extends Activity implements OnClickListener 
         ll_flows = (LinearLayout) this.findViewById(R.id.flows);
         tv_month = (TextView) this.findViewById(R.id.tv_currentmonth);
         tv_day = (TextView) this.findViewById(R.id.tv_currentday);
+        myProgressBar = (MyProgressBar) this.findViewById(R.id.mpb_flows);
 
         database = new FlowsDatabase(this);
         sp = this.getSharedPreferences(FLOWSSHAREDPREFERENCES,
@@ -65,7 +67,7 @@ public class FlowsProtectorActivity extends Activity implements OnClickListener 
     private void initViewData() {
         long dbFlowsOffset = sp.getLong(DBFLOWSOFFSET, 0);
         int offsetUpdateDate = sp.getInt(DBFLOWSOFFSETUPDATETIME, 0);
-        int currentDate = FormatIntDate.getCurrentFormatIntDate();
+        int currentDate = FormatDate.getCurrentFormatIntDate();
         if (currentDate / 100 != offsetUpdateDate / 100) {
             // offset时间和当月时间不同
             dbFlowsOffset = 0;
@@ -85,6 +87,10 @@ public class FlowsProtectorActivity extends Activity implements OnClickListener 
 
         tv_month.setText(FlowsFormartUtil.toMBFormat(monthFlows));
         tv_day.setText(FlowsFormartUtil.toMBFormat(dayFlows));
+        long total = sp.getLong(FLOWSTOTAL,0);
+        if(total>0) {
+            myProgressBar.setPercentSlow((int) (monthFlows * 100 / total));
+        }
     }
 
     @Override
@@ -95,7 +101,7 @@ public class FlowsProtectorActivity extends Activity implements OnClickListener 
                 overridePendingTransition(R.anim.activit3dtoright_in, R.anim.activit3dtoright_out);
                 break;
             case R.id.calibration:
-                toAntherAvitvity(FlowsCalibration.class);
+                toAntherAvitvity(FlowsCalibrationActicity.class);
                 break;
             case R.id.flows:
                 toAntherAvitvity(FlowsStatisticsActivity.class);

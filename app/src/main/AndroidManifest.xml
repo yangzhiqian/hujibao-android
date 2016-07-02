@@ -18,14 +18,20 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.GET_PACKAGE_SIZE" />
+    <uses-permission android:name="android.permission.CLEAR_APP_CACHE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/appicon"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        android:theme="@android:style/Theme.NoTitleBar">
         <uses-library android:name="android.test.runner" />
 
         <activity
@@ -38,20 +44,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.ProtocolActivity"></activity>
-        <activity android:name=".ui.GuideActivity"></activity>
+        <activity android:name=".ui.ProtocolActivity" />
+        <activity android:name=".ui.GuideActivity" />
         <activity
             android:name=".ui.MainActivity"
-            android:launchMode="singleTask"></activity>
-        <activity android:name=".ui.PhoneLostProtectActivity"></activity>
-        <activity android:name=".ui.FlowsProtectorActivity"></activity>
-        <activity android:name=".ui.FlowsCalibration"></activity>
-        <activity android:name=".ui.FlowsStatisticsActivity"></activity>
-        <activity android:name=".ui.CommunicationProtectorActivity"></activity>
-        <activity android:name=".ui.CommunicationWhiteBlackSetActivity"></activity>
-        <activity android:name=".ui.CommunicationNumberQuery"></activity>
-        <activity android:name=".ui.CommunicationInterceptionSet"></activity>
+            android:launchMode="singleTask" />
+        <activity android:name=".ui.PhoneLostProtectActivity" />
+        <activity android:name=".ui.FlowsProtectorActivity" />
+        <activity android:name=".ui.FlowsCalibrationActicity" />
+        <activity android:name=".ui.FlowsStatisticsActivity" />
+        <activity android:name=".ui.CommunicationProtectorActivity" />
+        <activity android:name=".ui.CommunicationWhiteBlackSetActivity" />
+        <activity android:name=".ui.CommunicationNumberQuery" />
+        <activity android:name=".ui.CommunicationInterceptionSet" />
+        <activity android:name=".ui.AppManagerAcitvity" />
+        <activity android:name=".ui.SystemQuickenActivity" />
+        <activity android:name=".ui.BackUpsActivity" />
+        <activity android:name=".ui.LoginActivity"/>
+        <activity android:name=".ui.RegistActivity"/>
 
+        <service
+            android:name=".service.UpdateAppService"
+            android:enabled="true"
+            android:process="system">
+            <intent-filter>
+                <action android:name="edu.ncu.myservice.update" />
+            </intent-filter>
+        </service>
         <service
             android:name=".service.FlowsRecordService"
             android:enabled="true"
@@ -73,16 +92,18 @@
                 <action android:name="edu.ncu.safe.service.checkisworking" />
             </intent-filter>
         </service>
+        <service android:name=".service.AppRubbishCleanService" />
+        <service android:name=".service.InnerMemoryCleanService" />
 
         <receiver android:name=".receiver.RelefeReceiver">
             <intent-filter>
                 <action android:name="edu.ncu.safe.reveiver.relefe" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".receiver.PhoneRestartReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
             <intent-filter>
@@ -100,7 +121,7 @@
         </receiver>
         <receiver android:name=".receiver.CallReceiver">
             <intent-filter android:priority="1000">
-                <action android:name="android.intent.action.PHONE_STATE"></action>
+                <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
         <receiver
@@ -114,12 +135,15 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
-        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <!--
+             ATTENTION: This was auto-generated to add Google Play services to your project for
+             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <activity android:name=".ui.TouchImageViewActivity" />
     </application>
 
 </manifest>

@@ -1,17 +1,16 @@
 package edu.ncu.safe.engine;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import android.content.Context;
 import android.net.TrafficStats;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.ncu.safe.domain.FlowsStatisticsAppItemInfo;
 import edu.ncu.safe.domain.FlowsStatisticsDayItemInfo;
 import edu.ncu.safe.domain.TotalFlowsData;
-import edu.ncu.safe.domain.UserAppInfo;
-import edu.ncu.safe.util.FormatIntDate;
+import edu.ncu.safe.domain.UserAppSimpleInfo;
+import edu.ncu.safe.util.FormatDate;
 import edu.ncu.safe.util.NetTypeUtil;
 
 public class LoadFlowsDataFromTrafficStats {
@@ -25,11 +24,11 @@ public class LoadFlowsDataFromTrafficStats {
 		List<FlowsStatisticsAppItemInfo> infos = new ArrayList<FlowsStatisticsAppItemInfo>();
 		TrafficStats traffic = new TrafficStats();
 		LoadAppInfos loadAppInfos = new LoadAppInfos(context);
-		List<UserAppInfo> userAppInfos = loadAppInfos.getUserAppInfos();
-		for(UserAppInfo userAppInfo : userAppInfos){
-			long totalUpdate = traffic.getUidTxBytes(userAppInfo.getUid());
-			long totalDownload = traffic.getUidRxBytes(userAppInfo.getUid());
-			FlowsStatisticsAppItemInfo info = new FlowsStatisticsAppItemInfo(userAppInfo.getUid(),userAppInfo.getAppName(), totalUpdate, totalDownload);
+		List<UserAppSimpleInfo> userAppSimpleInfos = loadAppInfos.getUserAppSimpleInfos();
+		for(UserAppSimpleInfo userAppSimpleInfo : userAppSimpleInfos){
+			long totalUpdate = traffic.getUidTxBytes(userAppSimpleInfo.getUid());
+			long totalDownload = traffic.getUidRxBytes(userAppSimpleInfo.getUid());
+			FlowsStatisticsAppItemInfo info = new FlowsStatisticsAppItemInfo(userAppSimpleInfo.getUid(), userAppSimpleInfo.getAppName(), totalUpdate, totalDownload);
 			infos.add(info);
 		}
 		
@@ -58,7 +57,7 @@ public class LoadFlowsDataFromTrafficStats {
 	 */
 	public FlowsStatisticsDayItemInfo getMobileTotalFlowsData(){
 		
-		int date = FormatIntDate.getCurrentFormatIntDate();
+		int date = FormatDate.getCurrentFormatIntDate();
 		long download = TrafficStats.getMobileRxBytes();
 		long update = TrafficStats.getMobileTxBytes();
 		FlowsStatisticsDayItemInfo info = new FlowsStatisticsDayItemInfo(date, update, download);

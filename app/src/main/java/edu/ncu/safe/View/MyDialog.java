@@ -15,6 +15,7 @@ import edu.ncu.safe.R;
 public class MyDialog extends Dialog{
     private Context context;
     private TextView tv_title;
+    private TextView tv_message;
     private LinearLayout messageView;
     private View view_divider;
     private LinearLayout ll_YESNO;
@@ -34,6 +35,7 @@ public class MyDialog extends Dialog{
     private void init(){
         View view = View.inflate(context,R.layout.mydialog,null);
         tv_title = (TextView) view.findViewById(R.id.tv_title	);
+        tv_message = (TextView) view.findViewById(R.id.tv_message);
         messageView = (LinearLayout) view.findViewById(R.id.ll_contentview);
         view_divider = view.findViewById(R.id.view_divider);
         ll_YESNO = (LinearLayout) view.findViewById(R.id.ll_YESNO);
@@ -47,8 +49,9 @@ public class MyDialog extends Dialog{
             public void onClick(View v) {
                 if (positiveListener != null) {
                     positiveListener.onClick(ll_YES);
+                }else{
+                    dismiss();
                 }
-             //   dismiss();
             }
         });
 
@@ -57,8 +60,9 @@ public class MyDialog extends Dialog{
             public void onClick(View v) {
                 if(negativeListener!=null){
                     negativeListener.onClick(ll_NO);
+                }else {
+                    dismiss();
                 }
-                dismiss();
             }
         });
         setContentView(view);
@@ -81,7 +85,7 @@ public class MyDialog extends Dialog{
     }
 
     /**
-     * 设置主体内容
+     * 设置主体内容 替换掉原来的文本信息  如果要设置新信息的界面的最大高度，请在本方法之前调用setmaxlength
      * @param view
      */
     public void setMessageView(View view){
@@ -142,5 +146,8 @@ public class MyDialog extends Dialog{
     }
     public void setNOText(CharSequence text){
         tv_NO.setText(text);
+    }
+    public void setMessage(CharSequence message){
+        tv_message.setText(message);
     }
 }
