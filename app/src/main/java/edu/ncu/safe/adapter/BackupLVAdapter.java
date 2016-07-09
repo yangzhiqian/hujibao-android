@@ -10,43 +10,46 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.View.MyProgressBar;
-import edu.ncu.safe.domain.BackupInfo;
+import edu.ncu.safe.domain.User;
+import edu.ncu.safe.domainadapter.ITarget;
 import edu.ncu.safe.util.BitmapUtil;
-import edu.ncu.safe.util.FlowsFormartUtil;
 
 /**
  * Created by Mr_Yang on 2016/6/1.
  */
-public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnCheckedChangeListener, View.OnClickListener{
+public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
     private Context context;
-    private List<BackupInfo> infos;
+    private List<ITarget> infos;
+    private User user;
     private boolean isShowMultiChoice = false;
-    public BackupLVAdapter(Context context) {
-        this(new ArrayList<BackupInfo>(),context);
+
+    public BackupLVAdapter(Context context,User user) {
+        this(new ArrayList<ITarget>(), context,user);
     }
 
-    public BackupLVAdapter(List<BackupInfo> infos, Context context) {
+    public BackupLVAdapter(List<ITarget> infos, Context context,User user) {
         this.infos = infos;
         this.context = context;
+        this.user = user;
     }
-    public void setInfos(List<BackupInfo> infos) {
+
+    public void setInfos(List<ITarget> infos) {
         this.infos = infos;
     }
 
-    public List<BackupInfo> getInfos() {
+    public List<ITarget> getInfos() {
         return infos;
     }
 
     public boolean isShowMultiChoice() {
         return isShowMultiChoice;
     }
+
     public void setIsShowMultiChoice(boolean isShowMultiChoice) {
         this.isShowMultiChoice = isShowMultiChoice;
     }
@@ -55,6 +58,7 @@ public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnChe
     public int getCount() {
         return infos.size();
     }
+
     @Override
     public Object getItem(int position) {
         return infos.get(position);
@@ -67,9 +71,9 @@ public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnChe
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        ViewHolder holder ;
-        if(view == null){
-            view = View.inflate(context, R.layout.item_listview_backup,null);
+        ViewHolder holder;
+        if (view == null) {
+            view = View.inflate(context, R.layout.item_listview_backup, null);
             holder = new ViewHolder();
             holder.iv_icon = (ImageView) view.findViewById(R.id.iv_icon);
             holder.tv_title = (TextView) view.findViewById(R.id.tv_title);
@@ -81,52 +85,49 @@ public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnChe
             holder.mpb_downloadProgress = (MyProgressBar) view.findViewById(R.id.mpb_downloadprogress);
 
             view.setTag(holder);
-        }else{
+        } else {
             holder = (ViewHolder) view.getTag();
         }
 
-        if(infos.get(position).getType()==BackupInfo.PICTURE){
+        if (infos.get(position).getIconPath() != null) {
             holder.iv_icon.setVisibility(View.VISIBLE);
-            holder.tv_size.setVisibility(View.VISIBLE);
-            //holder.iv_icon.setImageDrawable(infos.get(position).getPic());
-            holder.iv_icon.setImageBitmap(BitmapUtil.getRequireBitmap(infos.get(position).getPic(),100,100));
-            holder.tv_size.setText(FlowsFormartUtil.toFlowsFormart(infos.get(position).getSize()));
-        }else{
+            holder.iv_icon.setImageResource(R.drawable.appicon);
+            BitmapUtil.loadImageToImageView(context,user.getToken(),infos.get(position).getIconPath(), 0, holder.iv_icon,null);
+        } else {
             holder.iv_icon.setVisibility(View.GONE);
-            if(infos.get(position).getType()==BackupInfo.MESSAGE){
-                holder.tv_size.setText(new SimpleDateFormat("yy/MM/dd HH:mm").format(new Date(infos.get(position).getSize())));
-            }else{
-                holder.tv_size.setVisibility(View.GONE);
-            }
         }
-
         holder.tv_title.setText(infos.get(position).getTitle());
         holder.tv_note.setText(infos.get(position).getNote());
-
+        if(infos.get(position).getDateOrSize()!=null){
+            holder.tv_size.setVisibility(View.VISIBLE);
+            holder.tv_size.setText(infos.get(position).getDateOrSize());
+        }else{
+            holder.tv_size.setVisibility(View.GONE);
+        }
         holder.iv_showPopup.setImageResource(R.drawable.close);
         holder.iv_showPopup.setTag(R.id.tag_position, position);
-        holder.iv_showPopup.setTag(R.id.tag_view,view);
+        holder.iv_showPopup.setTag(R.id.tag_view, view);
         holder.iv_showPopup.setOnClickListener(this);
 
-        if(isShowMultiChoice) {
+        if (isShowMultiChoice) {
             holder.iv_showPopup.setVisibility(View.GONE);
             holder.cb_check.setVisibility(View.VISIBLE);
             holder.cb_check.setOnCheckedChangeListener(null);
-            holder.cb_check.setChecked(infos.get(position).isChecked());
+            holder.cb_check.setChecked(infos.get(position).isSelected());
             holder.cb_check.setTag(R.id.tag_position, position);
-            holder.cb_check.setTag(R.id.tag_view,view);
+            holder.cb_check.setTag(R.id.tag_view, view);
             holder.cb_check.setOnCheckedChangeListener(this);
-        }else{
+        } else {
             holder.iv_showPopup.setVisibility(View.VISIBLE);
             holder.cb_check.setVisibility(View.GONE);
         }
 
-        if(infos.get(position).isInDownload()){
+        if (infos.get(position).isInDownload()) {
             holder.mpb_downloadProgress.setVisibility(View.VISIBLE);
             holder.mpb_downloadProgress.setTag(R.id.tag_position, position);
-            holder.mpb_downloadProgress.setTag(R.id.tag_view,view);
+            holder.mpb_downloadProgress.setTag(R.id.tag_view, view);
             holder.mpb_downloadProgress.setOnClickListener(this);
-        }else{
+        } else {
             holder.mpb_downloadProgress.setVisibility(View.GONE);
         }
         return view;
@@ -136,15 +137,15 @@ public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnChe
     public void onClick(View view) {
         int position = (int) view.getTag(R.id.tag_position);
         View parent = (View) view.getTag(R.id.tag_view);
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.iv_showpopup:
-                if(listener!=null){
-                    listener.onShowPopupClicked(parent,view,position,infos.get(position));
+                if (listener != null) {
+                    listener.onShowPopupClicked(parent, view, position, infos.get(position));
                 }
                 break;
             case R.id.mpb_downloadprogress:
-                if(listener!=null){
-                    listener.onDownloadProgressBarClicked(parent,position,infos.get(position));
+                if (listener != null) {
+                    listener.onDownloadProgressBarClicked(parent, position, infos.get(position));
                 }
                 break;
         }
@@ -197,16 +198,16 @@ public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnChe
 //    }
 
     public void setSelectedAll(boolean b) {
-        for(BackupInfo info:infos){
-            if(!info.isInDownload()) {
-                info.setIsChecked(b);
+        for (ITarget info : infos) {
+            if (!info.isInDownload()) {
+                info.setSelected(b);
             }
         }
         notifyDataSetChanged();
     }
 
 
-    public class ViewHolder{
+    public class ViewHolder {
         public ImageView iv_icon;
         public TextView tv_title;
         public TextView tv_note;
@@ -216,21 +217,26 @@ public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnChe
         public LinearLayout ll_content;
         public MyProgressBar mpb_downloadProgress;
     }
+
+    public void setItemInDownloading(View view,int position,boolean b){
+        infos.get(position).setIsInDownload(b);
+        ((ViewHolder)view.getTag()).mpb_downloadProgress.setVisibility(b?View.VISIBLE:View.GONE);
+    }
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         int position = (int) buttonView.getTag(R.id.tag_position);
-        infos.get(position).setIsChecked(isChecked);
-        if(listener!=null){
+        infos.get(position).setSelected(isChecked);
+        if (listener != null) {
             View view = (View) buttonView.getTag(R.id.tag_view);
-            listener.onCheckBoxCheckedChanged(view,position,infos.get(position),isChecked);
+            listener.onCheckBoxCheckedChanged(view, position, infos.get(position), isChecked);
         }
     }
 
 
-    public List<BackupInfo> getCheckInfo(){
-        List<BackupInfo> checkInfos = new ArrayList<BackupInfo>();
-        for(BackupInfo info:infos){
-            if(info.isChecked()){
+    public List<ITarget> getCheckInfo() {
+        List<ITarget> checkInfos = new ArrayList<ITarget>();
+        for (ITarget info : infos) {
+            if (info.isSelected()) {
                 checkInfos.add(info);
             }
         }
@@ -239,19 +245,23 @@ public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnChe
 
     //观察者模式
     private OnAdapterEventListener listener;
+
     public OnAdapterEventListener getOnAdapterEventListener() {
         return listener;
     }
+
     public void setOnAdapterEventListener(OnAdapterEventListener listener) {
         this.listener = listener;
     }
-    public interface OnAdapterEventListener{
+
+    public interface OnAdapterEventListener {
 //        public void onRecoveryClick(View parent,int position,BackupInfo info);
 //        public void onDeleteClick(View parent,int position,BackupInfo info);
 
-        public void onShowPopupClicked(View parent,View view,int position,BackupInfo info);
+        public void onShowPopupClicked(View parent, View view, int position, ITarget info);
 
-        public void onDownloadProgressBarClicked(View parent,int position,BackupInfo info);
-        public void onCheckBoxCheckedChanged(View parent,int position,BackupInfo data,boolean isChecked);
+        public void onDownloadProgressBarClicked(View parent, int position, ITarget info);
+
+        public void onCheckBoxCheckedChanged(View parent, int position, ITarget data, boolean isChecked);
     }
 }

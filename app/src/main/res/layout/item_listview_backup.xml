@@ -83,7 +83,6 @@
         android:visibility="gone"
         android:padding="5dip"
         my:hasPercent="true"
-        my:sweeping="true"
         my:hasTitle="false"
         my:percentSize="20sp"
         my:progressStyle="rectangle_horizontal" />

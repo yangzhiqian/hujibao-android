@@ -5,63 +5,110 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONException;
 
 import java.util.List;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.View.MyProgressBar;
 import edu.ncu.safe.adapter.BackupLVAdapter;
-import edu.ncu.safe.domain.BackupInfo;
+import edu.ncu.safe.domain.User;
+import edu.ncu.safe.domainadapter.ContactsAdapter;
+import edu.ncu.safe.domainadapter.ITarget;
+import edu.ncu.safe.domainadapter.MessageAdapter;
+import edu.ncu.safe.engine.DataLoader;
+import edu.ncu.safe.engine.DataStorer;
+import edu.ncu.safe.util.ContactUtil;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
 
 /**
  * Created by Mr_Yang on 2016/6/1.
  */
-public abstract class BackupBaseFragment extends Fragment implements AdapterView.OnItemClickListener, BackupLVAdapter.OnAdapterEventListener {
+public abstract class BackupBaseFragment extends Fragment implements AdapterView.OnItemClickListener, BackupLVAdapter.OnAdapterEventListener, AbsListView.OnScrollListener {
+    public static final int TYPE_IMG = 0;
+    public static final int TYPE_MESSAGE = 1;
+    public static final int TYPE_CONTACT = 2;
     public static final int SHOWTYPE_LOCAL = 0;
     public static final int SHOWTYPE_CLOUD = 1;
     public static final int SHOWTYPE_BACKUP = 2;
     public static final int SHOWTYPE_RECOVERY = 3;
+    public static final int SHOW_NUMBERS = 15;
 
+    protected User user;
+
+    protected PtrFrameLayout ptr;
     protected ListView lv;
     protected MyProgressBar mpb_load;
     protected LinearLayout ll_empty;
     protected BackupLVAdapter adapter;
 
-    protected List<BackupInfo> cloudInfos = null;
-    protected List<BackupInfo> localInfos = null;
+    protected List<ITarget> cloudInfos = null;
+    protected List<ITarget> localInfos = null;
 
     protected PopupWindow popupWindow;
-    protected int currentType = SHOWTYPE_LOCAL;
+    protected int currentShowType = SHOWTYPE_LOCAL;
+    protected int currentDataType ;
+
+    public BackupBaseFragment(User user,int type) {
+        this.user = user;
+        this.currentDataType = type;
+    }
 
     @Nullable
     @Override
     public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_backup, null);
+        ptr = (PtrFrameLayout) view.findViewById(R.id.ptr);
         lv = (ListView) view.findViewById(R.id.lv);
         mpb_load = (MyProgressBar) view.findViewById(R.id.mpb_load);
         ll_empty = (LinearLayout) view.findViewById(R.id.ll_empty);
 
-        adapter = new BackupLVAdapter(getContext());
+        ptr.setPtrHandler(new PtrDefaultHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                switch (getCurrentShowType()){
+                    case SHOWTYPE_LOCAL:
+                        localInfos = null;
+                        loadLocalInfos();
+                        break;
+                    case SHOWTYPE_CLOUD:
+                        cloudInfos=null;
+                        loadCloudInfos(0,SHOW_NUMBERS);
+                        break;
+                }
+            }
+        });
+
+        adapter = new BackupLVAdapter(getContext(),user);
         lv.setAdapter(adapter);
 
         adapter.setOnAdapterEventListener(this);
         lv.setOnItemClickListener(this);
+        lv.setOnScrollListener(this);
         init();
         return view;
     }
 
+    /**
+     * 当用户点击了本地调用显示本地内容
+     */
     public void showLocal() {
-        currentType = SHOWTYPE_LOCAL;
+        currentShowType = SHOWTYPE_LOCAL;
         if (localInfos != null) {
             adapter.setInfos(localInfos);
             adapter.notifyDataSetChanged();
@@ -70,16 +117,18 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
         showLoader(true);
         loadLocalInfos();
     }
-
+    /**
+     * 当用户点击了网络调用显示网络内容
+     */
     public void showCloud() {
-        currentType = SHOWTYPE_CLOUD;
+        currentShowType = SHOWTYPE_CLOUD;
         if (cloudInfos != null) {
             adapter.setInfos(cloudInfos);
             adapter.notifyDataSetChanged();
             return;
         }
         showLoader(true);
-        loadCloudInfos(0, 30);
+        loadCloudInfos(0, SHOW_NUMBERS);
     }
 
     public void showBackup() {
@@ -88,8 +137,62 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
     public void showRecovery() {
     }
 
+    /**
+     * 从网络上加载内容，正确返回的是json格式的内容
+     * @param beginIndex    偏移量
+     * @param size            请求的数量
+     * @return              永远返回null,暂无用处
+     */
+    public List<ITarget> loadCloudInfos(int beginIndex, int size) {
+        DataLoader loader = new DataLoader(getContext());
+        loader.setOnDataObtainListener(new DataLoader.OnDataObtainedListener() {
+            @Override
+            public void onFailure(String error) {
+                Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+                if (ptr.isRefreshing()) {
+                    ptr.refreshComplete();
+                }
+            }
+
+            @Override
+            public void onResponse(String response) {
+                try {
+                    List<ITarget> iTargets = parseToInfos(response);
+                    if (cloudInfos == null) {
+                        cloudInfos = iTargets;
+                    } else {
+                        if (iTargets.size() > 0) {
+                            cloudInfos.addAll(iTargets);
+                            Toast.makeText(getContext(), "加载了" + iTargets.size() + "条数据", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "已经木有数据了", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    adapter.setInfos(cloudInfos);
+                    adapter.notifyDataSetChanged();
+                    if (ptr.isRefreshing()) {
+                        ptr.refreshComplete();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (RuntimeException e) {
+                }
+            }
+        });
+        String url = getContext().getResources().getString(R.string.loadbackup);
+        String[] valuesNames = {"token", "type", "offset", "number"};
+        String[] values = {user.getToken(), currentDataType + "", beginIndex + "", size + ""};
+        loader.loadServerJson(url, valuesNames, values);
+        return null;
+    }
+
     ;
 
+    /**
+     * 显示popupwindow
+     * @param view      父控件view,也就是listview的子条目
+     * @param contentView   要显示的内容view
+     */
     protected void showPopup(final View view, View contentView) {
         ((ImageView) view).setImageResource(R.drawable.expand);
         contentView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
@@ -114,6 +217,108 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
         });
     }
 
+
+    @Override
+    public void onShowPopupClicked(View parent, View view, final int position, ITarget info) {
+        switch (getCurrentShowType()) {
+            case SHOWTYPE_LOCAL:
+            case SHOWTYPE_BACKUP:
+                showPopup(view, getBackupView(parent, position, info));
+                break;
+            case SHOWTYPE_CLOUD:
+            case SHOWTYPE_RECOVERY:
+                showPopup(view, getRecorveryView(parent, position, info));
+                break;
+        }
+    }
+
+
+    /**
+     * 设置短信和联系人的popupwindow的内容主体
+     * 在设置的同时设置了点击监听事件
+     * @param parent
+     * @param position   listview的itemposition
+     * @param info      item携带的数据
+     * @return             返回构造好的contentview
+     */
+    protected View getBackupView(View parent, final int position, final ITarget info) {
+        //构建所有控件的容器
+        LinearLayout layout = getLayout();
+        //构建控件
+        TextView tv_bk = getTextView("备份");
+        View divider1 = getDivider();
+        TextView tv_msgback = getTextView("回短信");
+        View divider2 = getDivider();
+        TextView tv_callback = getTextView("回电话");
+        //装入控件
+        layout.addView(tv_bk);
+        layout.addView(divider1);
+        layout.addView(tv_msgback);
+        layout.addView(divider2);
+        layout.addView(tv_callback);
+
+        //设置点击事件
+        tv_bk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DataStorer storer = new DataStorer(getContext());
+                storer.setOnDataUploadedListener(new DataStorer.OnDataUploadedListener() {
+                    @Override
+                    public void onFailure(String error) {
+                        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                storer.storeData(user.getToken(), info);
+                popupWindow.dismiss();
+            }
+        });
+        tv_msgback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (info instanceof MessageAdapter) {
+                    ContactUtil.sendMessageTo(getContext(), ((MessageAdapter) info).getAddress());
+                } else {
+                    if (info instanceof ContactsAdapter) {
+                        ContactUtil.sendMessageTo(getContext(), ((ContactsAdapter) info).getPhoneNumber());
+                    }
+                }
+                popupWindow.dismiss();
+            }
+        });
+        tv_callback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (info instanceof MessageAdapter) {
+                    ContactUtil.callTo(getContext(), ((MessageAdapter) info).getAddress());
+                } else {
+                    if (info instanceof ContactsAdapter) {
+                        ContactUtil.callTo(getContext(), ((ContactsAdapter) info).getPhoneNumber());
+                    }
+                }
+                popupWindow.dismiss();
+            }
+        });
+        return layout;
+    }
+
+    protected   View getRecorveryView(View parent, int position, final ITarget info){
+        //构建所有控件的容器
+        LinearLayout layout = getLayout();
+        //构建控件
+        TextView tv_bk = getTextView("恢复到本机");
+        View divider = getDivider();
+        TextView tv_del = getTextView("删除");
+        //装入控件
+        layout.addView(tv_bk);
+        layout.addView(divider);
+        layout.addView(tv_del);
+        return layout;
+    }
 
     protected LinearLayout getLayout() {
         LinearLayout layout = new LinearLayout(getContext());
@@ -152,7 +357,13 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
     }
 
     protected void showLoader(boolean b) {
-        lv.setEmptyView(b ? mpb_load : ll_empty);
+        if(b){
+            lv.setEmptyView(mpb_load);
+            ll_empty.setVisibility(View.GONE);
+        }else{
+            lv.setEmptyView(ll_empty);
+            mpb_load.setVisibility(View.GONE);
+        }
     }
 
     public boolean isShowMultiChoice() {
@@ -167,14 +378,27 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
         adapter.setSelectedAll(false);
     }
 
-    public int getCurrentType() {
-        return currentType;
+    public int getCurrentShowType() {
+        return currentShowType;
     }
 
-
+    public User getUser() {
+        return user;
+    }
     public abstract void init();
+    public abstract List<ITarget> loadLocalInfos();
+    public abstract List<ITarget> parseToInfos(String json) throws JSONException;
 
-    public abstract List<BackupInfo> loadCloudInfos(int beginIndex, int size);
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        Log.i("TAG","scrollState:"+scrollState);
 
-    public abstract List<BackupInfo> loadLocalInfos();
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        Log.i("TAG","firstVisibleItem:"+firstVisibleItem);
+        Log.i("TAG","visibleItemCount:"+visibleItemCount);
+        Log.i("TAG","totalItemCount:"+totalItemCount);
+    }
 }

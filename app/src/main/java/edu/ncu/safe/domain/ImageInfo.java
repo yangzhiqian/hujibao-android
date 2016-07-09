@@ -1,9 +1,11 @@
 package edu.ncu.safe.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by Mr_Yang on 2016/7/1.
  */
-public class ImageInfo {
+public class ImageInfo implements Serializable{
     private String path;
     private String name;
     private long lastModified;

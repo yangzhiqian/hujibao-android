@@ -37,4 +37,8 @@
     <string name="regist">http://123.206.202.242:8080/androidsafe/RegistServlet</string>
     <string name="logout">http://123.206.202.242:8080/androidsafe/LogoutServlet</string>
     <string name="loadicon">http://123.206.202.242:8080/androidsafe/DownloadIconServlet</string>
+    <string name="loadbackup">http://123.206.202.242:8080/androidsafe/LoadBackupServlet</string>
+    <string name="loadimg">http://123.206.202.242:8080/androidsafe/DownloadImageServlet</string>
+    <string name="storeimg">http://123.206.202.242:8080/androidsafe/StoreImgServlet</string>
+    <string name="storebackup">http://123.206.202.242:8080/androidsafe/UploadBackupServlet</string>
 </resources>

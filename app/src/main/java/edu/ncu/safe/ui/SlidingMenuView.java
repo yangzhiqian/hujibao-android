@@ -225,6 +225,10 @@ public class SlidingMenuView extends SlidingMenu implements AdapterView.OnItemCl
         }
     }
 
+    public User getUser(){
+        return user;
+    }
+
     @Override
     public void onOpened() {
     }

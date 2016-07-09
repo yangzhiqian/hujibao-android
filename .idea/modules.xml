@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AndroidSafe.iml" filepath="$PROJECT_DIR$/AndroidSafe.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/okLinLibrary/okLinLibrary.iml" filepath="$PROJECT_DIR$/okLinLibrary/okLinLibrary.iml" />
     </modules>
   </component>
 </project>

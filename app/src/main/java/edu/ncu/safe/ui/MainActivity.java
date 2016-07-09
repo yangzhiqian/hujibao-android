@@ -24,6 +24,7 @@ import android.widget.Toast;
 import edu.ncu.safe.R;
 import edu.ncu.safe.adapter.MainGVAdapter;
 import edu.ncu.safe.domain.MainGVItemInfo;
+import edu.ncu.safe.domain.User;
 
 public class MainActivity extends Activity implements
         View.OnClickListener {
@@ -31,10 +32,10 @@ public class MainActivity extends Activity implements
     private static final MainGVItemInfo[] infos = {
             new MainGVItemInfo(R.drawable.phoneprotector, "手机防盗", "防盗未开启", Color.parseColor("#ff0000"), "toPhoneProtector", PhoneLostProtectActivity.class),
             new MainGVItemInfo(R.drawable.gprsflows, "流量监控", "监控未开启", Color.parseColor("#ff0000"), null, FlowsProtectorActivity.class),
-            new MainGVItemInfo(R.drawable.databackup, "数据备份", "", Color.parseColor("#ff0000"), null, BackUpsActivity.class),
+            new MainGVItemInfo(R.drawable.databackup, "数据备份", "", Color.parseColor("#ff0000"), "toBackup", BackUpsActivity.class),
             new MainGVItemInfo(R.drawable.communication, "通讯卫士", "", Color.parseColor("#ff0000"), null, CommunicationProtectorActivity.class),
             new MainGVItemInfo(R.drawable.softwaremanager, "软件管理", "", Color.parseColor("#ff0000"), null, AppManagerAcitvity.class),
-            new MainGVItemInfo(R.drawable.systemfaster, "手机防盗", "", Color.parseColor("#ff0000"), null, SystemQuickenActivity.class)
+            new MainGVItemInfo(R.drawable.systemfaster, "手机加速", "", Color.parseColor("#ff0000"), null, SystemQuickenActivity.class)
     };
     // 主界面控件
     private ImageView user;// 开启侧滑菜单
@@ -120,6 +121,23 @@ public class MainActivity extends Activity implements
             showInputPWDDialog();
         } else {// 还未设置密码
             showSetPWDDialog();
+        }
+    }
+
+    public void toBackup(){
+        User u = menu.getUser();
+        if(u==null){
+            //没有登录
+        }else{
+            Intent intent = new Intent();
+            intent.setClass(this, BackUpsActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("user",u);
+            intent.putExtras(bundle);
+            startActivity(intent);
+            //切换动画
+            overridePendingTransition(R.anim.activit3dtoleft_in,
+                    R.anim.activit3dtoleft_out);
         }
     }
 
@@ -219,11 +237,7 @@ public class MainActivity extends Activity implements
             //登录
             menu.onActivityResult(requestCode, resultCode, data);
         }
-
-
-
-
-        super.onActivityResult(requestCode, resultCode, data);
+         super.onActivityResult(requestCode, resultCode, data);
     }
 
     //实现跳转

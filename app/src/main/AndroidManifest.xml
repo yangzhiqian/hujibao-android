@@ -31,7 +31,8 @@
         android:icon="@drawable/appicon"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:theme="@android:style/Theme.NoTitleBar">
+        android:theme="@android:style/Theme.NoTitleBar"
+       >
         <uses-library android:name="android.test.runner" />
 
         <activity
@@ -40,7 +41,6 @@
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -48,6 +48,7 @@
         <activity android:name=".ui.GuideActivity" />
         <activity
             android:name=".ui.MainActivity"
+
             android:launchMode="singleTask" />
         <activity android:name=".ui.PhoneLostProtectActivity" />
         <activity android:name=".ui.FlowsProtectorActivity" />

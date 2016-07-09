@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AutoCompleteTextView;
@@ -179,6 +180,7 @@ public class LoginActivity extends Activity {
                 }
                 JSONObject jsonuUser = object.getJSONObject("user");
                 User user = User.toUser(jsonuUser.toString());
+                Log.i("TAG",user.getToken());
                 return user;
             } catch (JSONException e) {
                 e.printStackTrace();

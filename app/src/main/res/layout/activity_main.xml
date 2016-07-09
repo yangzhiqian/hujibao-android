@@ -52,7 +52,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:numColumns="2"
-        android:overScrollMode="never" >
+        android:overScrollMode="never"
+        >
     </GridView>
 
 </LinearLayout>

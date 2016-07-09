@@ -24,6 +24,9 @@
         my:usedBeginColor="#ff0000"
         my:usedEndColor="#ffffff"
         my:hasTitle="false"
+        my:loopSpeed="500"
+        my:percentSize="10sp"
+        my:arcWidth="5dp"
         android:layout_centerInParent="true"
         ></edu.ncu.safe.View.MyProgressBar>
     <TextView

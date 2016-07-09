@@ -17,6 +17,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import edu.ncu.safe.R;
+import edu.ncu.safe.domain.User;
 import edu.ncu.safe.myadapter.BackupBaseFragment;
 import edu.ncu.safe.ui.fragment.ContactsBackupFragment;
 import edu.ncu.safe.ui.fragment.MessageBackupFragment;
@@ -33,6 +34,7 @@ public class BackUpsActivity  extends FragmentActivity implements View.OnClickLi
     private static final String[] TITLE = {"短信","照片","联系人"};
     private static final String[] TYPENAME = {"-本地","-网络","-未备份","-未还原"};
 
+    private User user;
 
     private ImageView iv_back;
     private TextView tv_selectAll;
@@ -68,6 +70,7 @@ public class BackUpsActivity  extends FragmentActivity implements View.OnClickLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        user = (User) getIntent().getExtras().getSerializable("user");
         setContentView(R.layout.activity_backups);
         iv_back = (ImageView) this.findViewById(R.id.back);
         tv_selectAll = (TextView) findViewById(R.id.tv_selectall);
@@ -159,7 +162,6 @@ public class BackUpsActivity  extends FragmentActivity implements View.OnClickLi
             case R.id.ib_more:
                 if(isShowed){
                     al_content.startAnimation(disappear);
-                    System.out.println(al_content.requestFocus());
                 }else{
                     al_content.startAnimation(appear);
                 }
@@ -180,18 +182,22 @@ public class BackUpsActivity  extends FragmentActivity implements View.OnClickLi
             case R.id.ll_local:
                 currentFragment.showLocal();
                 popupWindow.dismiss();
+                tv_title.setText(TITLE[currentFragmentType] + TYPENAME[currentFragment.getCurrentShowType()]);
                 break;
             case R.id.ll_cloud:
                 currentFragment.showCloud();
                 popupWindow.dismiss();
+                tv_title.setText(TITLE[currentFragmentType] + TYPENAME[currentFragment.getCurrentShowType()]);
                 break;
             case R.id.ll_backup:
                 currentFragment.showBackup();
                 popupWindow.dismiss();
+                tv_title.setText(TITLE[currentFragmentType] + TYPENAME[currentFragment.getCurrentShowType()]);
                 break;
             case R.id.ll_recovery:
                 currentFragment.showRecovery();
                 popupWindow.dismiss();
+                tv_title.setText(TITLE[currentFragmentType]+TYPENAME[currentFragment.getCurrentShowType()]);
                 break;
         }
     }
@@ -204,7 +210,7 @@ public class BackUpsActivity  extends FragmentActivity implements View.OnClickLi
         switch (position) {
             case MESSAGEFRAGMENT:
                 if (messageBackupFragment == null) {
-                    messageBackupFragment = new MessageBackupFragment();
+                    messageBackupFragment = new MessageBackupFragment(user, BackupBaseFragment.TYPE_MESSAGE);
                     transaction.add(R.id.fl_container, messageBackupFragment);
                 } else {
                     transaction.show(messageBackupFragment);
@@ -215,7 +221,7 @@ public class BackUpsActivity  extends FragmentActivity implements View.OnClickLi
                 break;
             case PICTUREFRAGMENT:
                 if (pictureBackupFragment == null) {
-                    pictureBackupFragment = new PictureBackupFragment();
+                    pictureBackupFragment = new PictureBackupFragment(user,BackupBaseFragment.TYPE_IMG);
                     transaction.add(R.id.fl_container, pictureBackupFragment);
                 } else {
                     transaction.show(pictureBackupFragment);
@@ -226,7 +232,7 @@ public class BackUpsActivity  extends FragmentActivity implements View.OnClickLi
                 break;
             case CONTACTSFRAGMENT:
                 if (contactsBackupFragment == null) {
-                    contactsBackupFragment = new ContactsBackupFragment();
+                    contactsBackupFragment = new ContactsBackupFragment(user,BackupBaseFragment.TYPE_CONTACT);
                     transaction.add(R.id.fl_container, contactsBackupFragment);
                 } else {
                     transaction.show(contactsBackupFragment);
@@ -236,7 +242,7 @@ public class BackUpsActivity  extends FragmentActivity implements View.OnClickLi
                 currentFragmentType = CONTACTSFRAGMENT;
                 break;
         }
-        tv_title.setText(TITLE[currentFragmentType]+TYPENAME[currentFragment.getCurrentType()]);
+        tv_title.setText(TITLE[currentFragmentType]+TYPENAME[currentFragment.getCurrentShowType()]);
     }
     private void hideFragments( FragmentTransaction transaction){
         if(messageBackupFragment!=null){

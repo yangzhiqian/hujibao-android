@@ -3,7 +3,7 @@ package edu.ncu.safe.domain;
 public class ContactsInfo {
 	private String name;
 	private String phoneNumber;
-	
+	public ContactsInfo(){}
 	public ContactsInfo(String name, String phoneNumber) {
 		this.name = name;
 		this.phoneNumber = phoneNumber;

@@ -14,9 +14,9 @@ import edu.ncu.safe.domain.ImageInfo;
 /**
  * Created by Mr_Yang on 2016/7/1.
  */
-public class LoadLocalImage {
+public class LoadLocalImageInfo {
     private Context context;
-    public LoadLocalImage(Context context){
+    public LoadLocalImageInfo(Context context){
         this.context= context;
     }
     public List<ImageInfo> getLocalImageInfos(){
