@@ -2,6 +2,7 @@ package edu.ncu.safe.ui.fragment;
 
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,16 +61,59 @@ public class MessageBackupFragment extends BackupBaseFragment {
             SmsInfo smsInfo ;
             for(int i =0 ;i<jsonArray.length();i++){
                 item = jsonArray.getJSONObject(i);
+                int id = item.getInt("mid");
                 long date = item.getLong("date");
                 String address = item.getString("address");
                 String body = item.getString("body");
                 int type = item.getInt("type");
                 smsInfo = new SmsInfo(address,date,type,body);
                 info = new MessageAdapter(smsInfo);
+                info.setID(id);
                 infos.add(info);
             }
         } else {
             throw new RuntimeException(code+"");
+        }
+        return infos;
+    }
+
+    @Override
+    public void backToPhone(View parent, int position, ITarget info) {
+        SmsService sms = new SmsService(getContext());
+        if(sms.recoveryOneSms((MessageAdapter) info)){
+            Toast.makeText(getContext(), "短信已经恢复到短信列表", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getContext(), "恢复失败，可能信息已经存在！", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public List<ITarget> getBackupInfos() {
+        return new ArrayList<ITarget>();
+    }
+
+    @Override
+    public List<ITarget> getRecoveryInfos() {
+        if(cloudInfos==null){
+            return null;
+        }
+        List<ITarget> infos  = new ArrayList<ITarget>();
+        for(ITarget cloudInfo:cloudInfos){
+            SmsInfo smsInfo = (SmsInfo) cloudInfo;
+            boolean b = true;
+            for(ITarget localInfo:localInfos){
+                SmsInfo temp = (SmsInfo) localInfo;
+                if( smsInfo.getAddress().equals(temp.getAddress())&&
+                        smsInfo.getBody().equals(temp.getBody())&&
+                        smsInfo.getDate() == temp.getDate()){
+                    //存在
+                    b = false;
+                    break;
+                }
+            }
+            if(b){
+                infos.add(cloudInfo);
+            }
         }
         return infos;
     }

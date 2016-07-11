@@ -8,9 +8,19 @@ import edu.ncu.safe.domain.ContactsInfo;
 public class ContactsAdapter extends ContactsInfo implements ITarget{
     private boolean isSelected = false;
     private boolean isInDownload = false;
+    private int id;
     private int percent = 0;
     public ContactsAdapter(ContactsInfo info){
         super(info.getName(),info.getPhoneNumber());
+    }
+    @Override
+    public void setID(int id) {
+        this.id=id;
+    }
+
+    @Override
+    public int getID() {
+        return this.id;
     }
 
     @Override

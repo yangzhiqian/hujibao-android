@@ -10,6 +10,7 @@ import android.os.Message;
 import java.io.File;
 import java.io.IOException;
 
+import edu.ncu.safe.R;
 import edu.ncu.safe.View.MyProgressBar;
 import edu.ncu.safe.external.ACache;
 import edu.ncu.safe.external.okhttpprogress.ProgressResponseBody;
@@ -107,6 +108,20 @@ public class DataLoader {
         });
     }
 
+    /**
+     * 加载（内存缓存->文件缓存->网络）图片
+     * @param token       用户网络下载时的用户标示
+     * @param fileName      文件名或文件路径，如果下载的图片来自本地，则表示文件全路径，如果文件来自网络，则表示文件名
+     * @param type          图片类型   0代表小图标，1代表预览图片（400x600,由服务器决定,2代表原图）
+     * @param mpb           加载进度
+     */
+    public  void loadImage(String token,final String fileName,final int type ,final MyProgressBar mpb,OnImageObtainedListener listener){
+        //实例化监听器，监听器运行的线程为主线程
+        setOnImageObtainedListener(listener);
+        String url = context.getResources().getString(R.string.loadimg);
+        loadImg(url, token, fileName, type, mpb);
+    }
+
     public void loadImg(String url, String token, String filename, int type, final MyProgressBar mpb) {
         //本地缓存中获取
         Bitmap bitmap = ACache.get(context).getAsBitmap(filename + "-" + type);
@@ -118,7 +133,13 @@ public class DataLoader {
             return;
         }
         //本地获取
-        bitmap = loadLoaclImage(filename, type == 0 ? 100 : -1, type == 0 ? 100 : -1);
+        int width = 100;
+        int height = 100;
+        if(type==TYPE_MIDDLE){
+            width = 400;
+            height=600;
+        }
+        bitmap = loadLoaclImage(filename, width,height);
         if (bitmap != null) {
             Message msg = Message.obtain();
             msg.what = TYPE_IMG_SUCCEED;
@@ -144,7 +165,7 @@ public class DataLoader {
                 .add("filename", filename)
                 .add("type", type + "")
                 .build();
-        final Request request1 = new Request.Builder()
+        final Request request = new Request.Builder()
                 .url(url)
                 .post(requestBodyPost)
                 .build();
@@ -161,27 +182,25 @@ public class DataLoader {
                                 .build();
                     }
                 }).build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Message msg = Message.obtain();
+                msg.what = TYPE_IMG_ERROR;
+                msg.obj = e.getMessage();
+                myHandler.sendMessage(msg);
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
+                Message msg = Message.obtain();
+                msg.what = TYPE_IMG_SUCCEED;
+                msg.obj = bmp;
+                myHandler.sendMessage(msg);
+            }
+        });
 
-        client.newCall(request1).enqueue(new Callback() {
-                                             @Override
-                                             public void onFailure(Call call, IOException e) {
-                                                 Message msg = Message.obtain();
-                                                 msg.what = TYPE_IMG_ERROR;
-                                                 msg.obj = e.getMessage();
-                                                 myHandler.sendMessage(msg);
-                                             }
 
-                                             @Override
-                                             public void onResponse(Call call, Response response) throws IOException {
-                                                 Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
-                                                 Message msg = Message.obtain();
-                                                 msg.what = TYPE_IMG_SUCCEED;
-                                                 msg.obj = bmp;
-                                                 myHandler.sendMessage(msg);
-                                             }
-                                         }
-
-        );
     }
 
     private Bitmap loadLoaclImage(String path, int maxWidth, int maxHeight) {
@@ -193,18 +212,32 @@ public class DataLoader {
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(path, options);
         // Calculate inSampleSize
-        int width = options.outWidth;
-        int height = options.outHeight;
-        if (maxWidth < width && maxWidth > 0) {
-            width = maxWidth;
-        }
-        if (height > maxHeight && maxHeight > 0) {
-            height = maxHeight;
-        }
-        options.inSampleSize = calculateInSampleSize(options, width, height);
+        options.inSampleSize = calculateInSampleSize(options, maxWidth, maxHeight);
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFile(path, options);
+    }
+
+    public void deleteBackup(String token,int type,int id){
+        FormBody body = new FormBody.Builder().add("token", token).add("type", type + "").add("id", id + "").build();
+        String url = context.getResources().getString(R.string.deletebackup);
+        Request request = new Request.Builder().url(url).post(body).build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Message msg = Message.obtain();
+                msg.what = TYPE_DATA_ERROR;
+                msg.obj = e.getMessage();
+                myHandler.sendMessage(msg);
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Message msg = Message.obtain();
+                msg.what = TYPE_DATA_SUCCEED;
+                msg.obj = response.body().string();
+                myHandler.sendMessage(msg);
+            }
+        });
     }
 
     private int calculateInSampleSize(

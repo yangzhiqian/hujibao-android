@@ -10,7 +10,7 @@ import edu.ncu.safe.View.MyTouchImageView;
 import edu.ncu.safe.engine.DataLoader;
 import edu.ncu.safe.util.BitmapUtil;
 
-public class TouchImageViewActivity extends Activity{
+public class TouchImageViewActivity extends Activity {
     /**
      * Called when the activity is first created.
      */
@@ -30,6 +30,17 @@ public class TouchImageViewActivity extends Activity{
         mtiv_bmp = (MyTouchImageView) this.findViewById(R.id.mtiv);
         mpb_load = (MyProgressBar) this.findViewById(R.id.mpb_load);
         tv_empty = (TextView) this.findViewById(R.id.tv_empty);
-        BitmapUtil.loadImageToImageView(this,token, fileName,1,mtiv_bmp,mpb_load);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new Thread() {
+            @Override
+            public void run() {
+                BitmapUtil.loadImageToImageView(getApplicationContext(), token, fileName, DataLoader.TYPE_MIDDLE, mtiv_bmp, mpb_load);
+            }
+        }.start();
     }
 }

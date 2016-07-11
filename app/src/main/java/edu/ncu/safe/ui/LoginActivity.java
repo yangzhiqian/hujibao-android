@@ -172,6 +172,7 @@ public class LoginActivity extends Activity {
 
         private User parseToUser(String json) {
             try {
+                Log.i("TAG",json);
                 JSONObject object = new JSONObject(json);
                 boolean isSuccess = object.getBoolean("succeed");
                 message = object.getString("message");

@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -62,9 +63,11 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
 
     protected PopupWindow popupWindow;
     protected int currentShowType = SHOWTYPE_LOCAL;
-    protected int currentDataType ;
+    protected int currentDataType;
+    protected  boolean isLoading = false;
+    protected  boolean isOver = false;
 
-    public BackupBaseFragment(User user,int type) {
+    public BackupBaseFragment(User user, int type) {
         this.user = user;
         this.currentDataType = type;
     }
@@ -81,20 +84,21 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
         ptr.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                switch (getCurrentShowType()){
+                switch (getCurrentShowType()) {
                     case SHOWTYPE_LOCAL:
                         localInfos = null;
                         loadLocalInfos();
                         break;
-                    case SHOWTYPE_CLOUD:
-                        cloudInfos=null;
-                        loadCloudInfos(0,SHOW_NUMBERS);
+                    default:
+                        cloudInfos = null;
+                        isOver = false;
+                        loadCloudInfos(0, SHOW_NUMBERS);
                         break;
                 }
             }
         });
 
-        adapter = new BackupLVAdapter(getContext(),user);
+        adapter = new BackupLVAdapter(getContext(), user);
         lv.setAdapter(adapter);
 
         adapter.setOnAdapterEventListener(this);
@@ -109,74 +113,135 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
      */
     public void showLocal() {
         currentShowType = SHOWTYPE_LOCAL;
-        if (localInfos != null) {
-            adapter.setInfos(localInfos);
-            adapter.notifyDataSetChanged();
-            return;
+        adapter.setInfos(localInfos);
+        adapter.notifyDataSetChanged();
+        if(ptr.isRefreshing()){
+            ptr.refreshComplete();
         }
-        showLoader(true);
-        loadLocalInfos();
+        if (localInfos == null) {
+            showLoader(true);
+            loadLocalInfos();
+        }
     }
+
     /**
      * 当用户点击了网络调用显示网络内容
      */
     public void showCloud() {
         currentShowType = SHOWTYPE_CLOUD;
-        if (cloudInfos != null) {
-            adapter.setInfos(cloudInfos);
-            adapter.notifyDataSetChanged();
-            return;
+        adapter.setInfos(cloudInfos);
+        adapter.notifyDataSetChanged();
+        if(ptr.isRefreshing()){
+            ptr.refreshComplete();
         }
-        showLoader(true);
-        loadCloudInfos(0, SHOW_NUMBERS);
+        if (cloudInfos == null) {
+            showLoader(true);
+            loadCloudInfos(0, SHOW_NUMBERS);
+        }
     }
 
     public void showBackup() {
+       currentShowType = SHOWTYPE_BACKUP;
+        List<ITarget> infos = getBackupInfos();
+        adapter.setInfos(infos);
+        adapter.notifyDataSetChanged();
+        if(ptr.isRefreshing()){
+            ptr.refreshComplete();
+        }
+        if (infos == null) {
+            showLoader(true);
+            loadCloudInfos(0, SHOW_NUMBERS*2);
+        }
     }
 
     public void showRecovery() {
+        currentShowType = SHOWTYPE_RECOVERY;
+        List<ITarget> infos = getRecoveryInfos();
+        adapter.setInfos(infos);
+        adapter.notifyDataSetChanged();
+        if(ptr.isRefreshing()){
+            ptr.refreshComplete();
+        }
+        if (infos == null) {
+            showLoader(true);
+            loadCloudInfos(0, SHOW_NUMBERS*2);
+        }
     }
+
 
     /**
      * 从网络上加载内容，正确返回的是json格式的内容
-     * @param beginIndex    偏移量
-     * @param size            请求的数量
-     * @return              永远返回null,暂无用处
+     *
+     * @param beginIndex 偏移量
+     * @param size       请求的数量
+     * @return 永远返回null, 暂无用处
      */
-    public List<ITarget> loadCloudInfos(int beginIndex, int size) {
+    public List<ITarget> loadCloudInfos(final int beginIndex, final int size) {
+        if(isLoading){
+            if (ptr.isRefreshing()) {
+                ptr.refreshComplete();
+            }
+            return null;
+        }
+        if(isOver){
+            makeToast("已经木有数据了");
+            return null;
+        }
+        makeToast("正在加载中...");
+        isLoading=true;
+        if(adapter.getInfos().size()==0){
+            showLoader(true);
+        }
         DataLoader loader = new DataLoader(getContext());
         loader.setOnDataObtainListener(new DataLoader.OnDataObtainedListener() {
             @Override
             public void onFailure(String error) {
                 Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+                showLoader(false);
                 if (ptr.isRefreshing()) {
                     ptr.refreshComplete();
                 }
+                isLoading = false;
             }
 
             @Override
             public void onResponse(String response) {
                 try {
+                    showLoader(false);
                     List<ITarget> iTargets = parseToInfos(response);
+                    if(iTargets.size()<size){
+                        isOver = true;
+                    }
                     if (cloudInfos == null) {
                         cloudInfos = iTargets;
+                        makeToast("刷新到了" + iTargets.size() + "条数据");
                     } else {
                         if (iTargets.size() > 0) {
                             cloudInfos.addAll(iTargets);
-                            Toast.makeText(getContext(), "加载了" + iTargets.size() + "条数据", Toast.LENGTH_SHORT).show();
+                            makeToast("加载了" + iTargets.size() + "条数据");
                         } else {
-                            Toast.makeText(getContext(), "已经木有数据了", Toast.LENGTH_SHORT).show();
+                            makeToast("已经木有数据了");
+                            isOver = true;
+                            isLoading = false;
+                            return;
                         }
                     }
-                    adapter.setInfos(cloudInfos);
-                    adapter.notifyDataSetChanged();
-                    if (ptr.isRefreshing()) {
-                        ptr.refreshComplete();
+                    switch (getCurrentShowType()){
+                        case SHOWTYPE_CLOUD:
+                            showCloud();
+                            break;
+                        case SHOWTYPE_BACKUP:
+                            showBackup();
+                            break;
+                        case SHOWTYPE_RECOVERY:
+                            showRecovery();
+                            break;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (RuntimeException e) {
                 }
+                isLoading = false;
             }
         });
         String url = getContext().getResources().getString(R.string.loadbackup);
@@ -190,8 +255,9 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
 
     /**
      * 显示popupwindow
-     * @param view      父控件view,也就是listview的子条目
-     * @param contentView   要显示的内容view
+     *
+     * @param view        父控件view,也就是listview的子条目
+     * @param contentView 要显示的内容view
      */
     protected void showPopup(final View view, View contentView) {
         ((ImageView) view).setImageResource(R.drawable.expand);
@@ -236,10 +302,11 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
     /**
      * 设置短信和联系人的popupwindow的内容主体
      * 在设置的同时设置了点击监听事件
+     *
      * @param parent
-     * @param position   listview的itemposition
-     * @param info      item携带的数据
-     * @return             返回构造好的contentview
+     * @param position listview的itemposition
+     * @param info     item携带的数据
+     * @return 返回构造好的contentview
      */
     protected View getBackupView(View parent, final int position, final ITarget info) {
         //构建所有控件的容器
@@ -265,12 +332,18 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
                 storer.setOnDataUploadedListener(new DataStorer.OnDataUploadedListener() {
                     @Override
                     public void onFailure(String error) {
-                        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+                        makeToast(error);
                     }
 
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
+                        try {
+                            String message = (String) new JSONObject(response).getJSONObject("message").getJSONArray("msg").get(0);
+                            makeToast(message);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            makeToast("备份失败:位置错误！");
+                        }
                     }
                 });
                 storer.storeData(user.getToken(), info);
@@ -306,13 +379,54 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
         return layout;
     }
 
-    protected   View getRecorveryView(View parent, int position, final ITarget info){
+    protected View getRecorveryView(final View parent, final int position, final ITarget info) {
         //构建所有控件的容器
         LinearLayout layout = getLayout();
         //构建控件
         TextView tv_bk = getTextView("恢复到本机");
         View divider = getDivider();
         TextView tv_del = getTextView("删除");
+        //添加监听
+        tv_bk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backToPhone(parent, position, info);
+                popupWindow.dismiss();
+            }
+        });
+        tv_del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                DataLoader loader = new DataLoader(getContext());
+                loader.setOnDataObtainListener(new DataLoader.OnDataObtainedListener() {
+                    @Override
+                    public void onFailure(String error) {
+                        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            boolean succeed = object.getBoolean("succeed");
+                            String message = object.getString("message");
+                            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                            if (succeed) {
+                                List<ITarget> infos = adapter.getInfos();
+                                infos.remove(info);
+                                adapter.setInfos(infos);
+                                adapter.notifyDataSetChanged();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getContext(), "删除失败:未知错误", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                loader.deleteBackup(user.getToken(), currentDataType, info.getID());
+            }
+        });
         //装入控件
         layout.addView(tv_bk);
         layout.addView(divider);
@@ -357,10 +471,10 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
     }
 
     protected void showLoader(boolean b) {
-        if(b){
+        if (b) {
             lv.setEmptyView(mpb_load);
             ll_empty.setVisibility(View.GONE);
-        }else{
+        } else {
             lv.setEmptyView(ll_empty);
             mpb_load.setVisibility(View.GONE);
         }
@@ -385,20 +499,38 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
     public User getUser() {
         return user;
     }
+
     public abstract void init();
+
     public abstract List<ITarget> loadLocalInfos();
+
     public abstract List<ITarget> parseToInfos(String json) throws JSONException;
 
+    public abstract void backToPhone(View parent, int position, final ITarget info);
+
+    public abstract List<ITarget> getBackupInfos();
+    public abstract List<ITarget> getRecoveryInfos();
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-        Log.i("TAG","scrollState:"+scrollState);
+        Log.i("TAG", "scrollState:" + scrollState);
 
     }
 
+
+    long time = 0;
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        Log.i("TAG","firstVisibleItem:"+firstVisibleItem);
-        Log.i("TAG","visibleItemCount:"+visibleItemCount);
-        Log.i("TAG","totalItemCount:"+totalItemCount);
+        long now = System.currentTimeMillis();
+        if(now-time<3000){
+            return;
+        }
+        time = now;
+        if(getCurrentShowType()!=SHOWTYPE_LOCAL&&firstVisibleItem+visibleItemCount>=totalItemCount-1){
+            int offset = cloudInfos==null?0:cloudInfos.size();
+            loadCloudInfos(offset,offset+SHOW_NUMBERS);
+        }
+    }
+    protected void makeToast(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

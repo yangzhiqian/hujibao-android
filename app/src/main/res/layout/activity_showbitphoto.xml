@@ -15,6 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:src="@drawable/appicon"
         ></edu.ncu.safe.View.MyTouchImageView>
     <edu.ncu.safe.View.MyProgressBar
         android:id="@+id/mpb_load"
@@ -25,8 +26,8 @@
         my:usedEndColor="#ffffff"
         my:hasTitle="false"
         my:loopSpeed="500"
-        my:percentSize="10sp"
-        my:arcWidth="5dp"
+        my:percentSize="14sp"
+        my:arcWidth="8dp"
         android:layout_centerInParent="true"
         ></edu.ncu.safe.View.MyProgressBar>
     <TextView

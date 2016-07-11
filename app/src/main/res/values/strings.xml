@@ -41,4 +41,5 @@
     <string name="loadimg">http://123.206.202.242:8080/androidsafe/DownloadImageServlet</string>
     <string name="storeimg">http://123.206.202.242:8080/androidsafe/StoreImgServlet</string>
     <string name="storebackup">http://123.206.202.242:8080/androidsafe/UploadBackupServlet</string>
+    <string name="deletebackup">http://123.206.202.242:8080/androidsafe/DeleteBackupServlet</string>
 </resources>

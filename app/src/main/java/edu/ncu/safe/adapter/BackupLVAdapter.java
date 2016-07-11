@@ -17,6 +17,7 @@ import edu.ncu.safe.R;
 import edu.ncu.safe.View.MyProgressBar;
 import edu.ncu.safe.domain.User;
 import edu.ncu.safe.domainadapter.ITarget;
+import edu.ncu.safe.engine.DataLoader;
 import edu.ncu.safe.util.BitmapUtil;
 
 /**
@@ -39,6 +40,9 @@ public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnChe
     }
 
     public void setInfos(List<ITarget> infos) {
+        if(infos==null){
+            infos=new ArrayList<ITarget>();
+        }
         this.infos = infos;
     }
 
@@ -92,7 +96,7 @@ public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnChe
         if (infos.get(position).getIconPath() != null) {
             holder.iv_icon.setVisibility(View.VISIBLE);
             holder.iv_icon.setImageResource(R.drawable.appicon);
-            BitmapUtil.loadImageToImageView(context,user.getToken(),infos.get(position).getIconPath(), 0, holder.iv_icon,null);
+            BitmapUtil.loadImageToImageView(context,user.getToken(),infos.get(position).getIconPath(), DataLoader.TYPE_SMALL, holder.iv_icon,null);
         } else {
             holder.iv_icon.setVisibility(View.GONE);
         }

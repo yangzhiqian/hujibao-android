@@ -48,16 +48,6 @@ public class ContactsBackupFragment extends BackupBaseFragment {
     }
 
     @Override
-    public void onDownloadProgressBarClicked(View parent, int position, ITarget data) {
-
-    }
-
-    @Override
-    public void onCheckBoxCheckedChanged(View parent, int position, ITarget data, boolean isChecked) {
-
-    }
-
-    @Override
     public List<ITarget> parseToInfos(String json) throws JSONException {
         List<ITarget> infos = new ArrayList<ITarget>();
         JSONObject object = new JSONObject(json);
@@ -70,10 +60,12 @@ public class ContactsBackupFragment extends BackupBaseFragment {
             ContactsInfo contactsInfo ;
             for(int i =0 ;i<jsonArray.length();i++){
                 item = jsonArray.getJSONObject(i);
+                int id = item.getInt("cid");
                 String name = item.getString("name");
                 String phoneNumber = item.getString("phoneNumber");
                 contactsInfo = new ContactsInfo(name,phoneNumber);
                 info = new ContactsAdapter(contactsInfo);
+                info.setID(id);
                 infos.add(info);
             }
         } else {
@@ -83,7 +75,49 @@ public class ContactsBackupFragment extends BackupBaseFragment {
     }
 
     @Override
+    public void backToPhone(View parent, int position, ITarget info) {
+
+    }
+
+    @Override
+    public List<ITarget> getBackupInfos() {
+        return new ArrayList<ITarget>();
+    }
+
+    @Override
+    public List<ITarget> getRecoveryInfos() {
+        if(cloudInfos==null){
+            return null;
+        }
+        List<ITarget> infos  = new ArrayList<ITarget>();
+        for(ITarget cloudInfo:cloudInfos){
+            ContactsInfo contactsInfo = (ContactsInfo) cloudInfo;
+            boolean b = true;
+            for(ITarget localInfo:localInfos){
+                ContactsInfo temp = (ContactsInfo) localInfo;
+                if(temp.getName().equals(contactsInfo.getName())&&
+                        temp.getPhoneNumber().equals(contactsInfo.getPhoneNumber())){
+                    //存在
+                    b = false;
+                    break;
+                }
+            }
+            if(b){
+                infos.add(cloudInfo);
+            }
+        }
+        return infos;
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+    }
+
+    @Override
+    public void onDownloadProgressBarClicked(View parent, int position, ITarget data) {
+    }
+    @Override
+    public void onCheckBoxCheckedChanged(View parent, int position, ITarget data, boolean isChecked) {
     }
 }

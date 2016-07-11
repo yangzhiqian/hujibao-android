@@ -10,9 +10,19 @@ import edu.ncu.safe.util.FormatDate;
 public class ImageAdapter extends ImageInfo implements ITarget {
     private boolean isSucceed = false;
     private boolean isInDownload = false;
+    private int id;
     private int percent = 0;
     public ImageAdapter(ImageInfo info){
         super(info.getPath(),info.getName(),info.getLastModified(),info.getSize());
+    }
+    @Override
+    public void setID(int id) {
+        this.id=id;
+    }
+
+    @Override
+    public int getID() {
+        return this.id;
     }
 
     @Override

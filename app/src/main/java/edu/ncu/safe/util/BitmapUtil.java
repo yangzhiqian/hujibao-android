@@ -3,13 +3,21 @@ package edu.ncu.safe.util;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.View.MyProgressBar;
+import edu.ncu.safe.constant.Constant;
 import edu.ncu.safe.engine.DataLoader;
 import edu.ncu.safe.external.ACache;
 
@@ -111,11 +119,18 @@ public class BitmapUtil {
                 if(mpb!=null){
                     mpb.setVisibility(View.GONE);
                 }
+                Toast.makeText(context, "加载图片失败！", Toast.LENGTH_SHORT).show();
             }
             @Override
-            public void onResponse(Bitmap bmp) {
+            public void onResponse(final Bitmap bmp) {
                 //缓存
-                ACache.get(context).put(fileName+"-"+ type, bmp, ACache.TIME_DAY * 7);//缓存七天
+                new Thread(){
+                    @Override
+                    public void run() {
+                        //比较耗时，放到子线程完成
+                         ACache.get(context).put(Constant.getImageCacheFileName(fileName,type), bmp, Constant.ACACHE_LIFETIME);//缓存七天
+                    }
+                }.start();
                 if(view!=null) {
                     view.setImageBitmap(bmp);
                 }
@@ -139,5 +154,25 @@ public class BitmapUtil {
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFile(url,options);
+    }
+
+    /**
+     * 将bitmap对象保存在文件中
+     * @param path       文件保存的路径
+     * @param fileName    文件名
+     * @param bmp           要保存的bitmap 对象
+     * @return              ture表示保存成功
+     * @throws FileNotFoundException
+     */
+    public static boolean  saveBitmapToFile(String path,String fileName,Bitmap bmp) throws IOException {
+        File file = new File(path,fileName);
+        Log.i("TAG",path+"/"+fileName);
+        if(!file.exists()){
+            file.createNewFile();
+        }
+        Bitmap.CompressFormat format= Bitmap.CompressFormat.JPEG;
+        int quality = 100;
+        OutputStream stream = new FileOutputStream(file);
+        return bmp.compress(format,quality,stream);
     }
 }

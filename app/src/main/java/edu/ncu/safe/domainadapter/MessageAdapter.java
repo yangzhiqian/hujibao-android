@@ -9,10 +9,22 @@ import edu.ncu.safe.util.FormatDate;
 public class MessageAdapter extends SmsInfo implements ITarget {
     private boolean isSelected=false;
     private boolean isInDownload = false;
+    private int id;
     private int percent = 0;
     public MessageAdapter(SmsInfo info){
         super(info.getAddress(),info.getDate(),info.getType(),info.getBody());
     }
+
+    @Override
+    public void setID(int id) {
+        this.id=id;
+    }
+
+    @Override
+    public int getID() {
+        return this.id;
+    }
+
     @Override
     public String getIconPath() {
         return null;
