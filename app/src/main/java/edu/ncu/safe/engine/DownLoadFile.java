@@ -1,15 +1,14 @@
 package edu.ncu.safe.engine;
 
+import android.app.ProgressDialog;
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import android.app.ProgressDialog;
-import android.util.Log;
-import edu.ncu.safe.ui.MainActivity;
 
 @SuppressWarnings("unused")
 public class DownLoadFile {
@@ -23,7 +22,7 @@ public class DownLoadFile {
 		conn.setRequestMethod("GET");
 
 		if (conn.getResponseCode() == 200) {
-			Log.i(MainActivity.TAG, "下载新版本连接成功");
+			Log.i("tag", "下载新版本连接成功");
 			InputStream is = conn.getInputStream();
 
 			int totalLength = conn.getContentLength();

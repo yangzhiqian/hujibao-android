@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="theme">#886cbd45</color>
+    <color name="theme_text">#fcfcfc</color>
+
     <color name="background_theme">#6cbd45</color>
     <color name="background_content">#FFFFFF</color>
     <color name="textcolor_theme">#FFFFFF</color>
@@ -19,4 +22,9 @@
     <color name="cleanbuttonpressed">#133E93</color>
     <color name="cleanbuttonenabled">#c7dcee</color>
     <color name="cleanbuttonnormal">#1545a4</color>
+    <color name="phone_lost_protector_title_current_set">#ff2233cc</color>
+    <color name="phone_lost_protector_title_current_close">#ffff0000</color>
+    <color name="phone_lost_protector_title_current_open">#ff00ff00</color>
+    <color name="phone_lost_protector_title_item">#ff111111</color>
+    <color name="phone_lost_protector_note_item">#77111111</color>
 </resources>

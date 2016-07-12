@@ -13,4 +13,19 @@
     <dimen name="lv_data_fontsize">20sp</dimen>
 
 
+    <dimen name="text_size_xxxbig">40sp</dimen>
+    <dimen name="text_size_xxbig">35sp</dimen>
+    <dimen name="text_size_xbig">30sp</dimen>
+    <dimen name="text_size_big">25sp</dimen>
+    <dimen name="text_size_middle">22sp</dimen>
+    <dimen name="text_size_normal">20sp</dimen>
+    <dimen name="text_size_short">18sp</dimen>
+    <dimen name="text_size_small">16sp</dimen>
+    <dimen name="text_size_minimum">14sp</dimen>
+    <dimen name="text_size_smallest">12sp</dimen>
+    <dimen name="phone_lost_protector_title_item">13sp</dimen>
+    <dimen name="phone_lost_protector_note_item">10sp</dimen>
+    <dimen name="title">25sp</dimen>
+
+
 </resources>

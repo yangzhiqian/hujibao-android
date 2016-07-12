@@ -7,10 +7,11 @@
     android:gravity="center_horizontal">
 
     <LinearLayout
-        android:layout_width="300dip"
-        android:layout_height="50dip"
-        android:background="#6cbd45"
+        android:layout_width="250dip"
+        android:layout_height="wrap_content"
+        android:background="@color/theme"
         android:gravity="center"
+        android:padding="5dp"
         android:orientation="horizontal" >
 
         <ImageView
@@ -25,7 +26,7 @@
             android:layout_height="wrap_content"
             android:text="护机宝提示"
             android:textColor="#FFFFFF"
-            android:textSize="22sp" />
+            android:textSize="@dimen/text_size_big" />
     </LinearLayout>
 
     <LinearLayout
@@ -34,14 +35,15 @@
         android:layout_height="wrap_content"
         android:background="#ffffff"
         android:gravity="center"
+        android:padding="5dp"
         android:orientation="vertical" >
         <TextView
             android:id="@+id/tv_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Developed By Mr Yang!"
-            android:textSize="25sp"
+            android:text="@string/dialg_default_message"
+            android:textSize="@dimen/text_size_middle"
             android:textColor="#000000"/>
     </LinearLayout>
 
@@ -71,9 +73,9 @@
                 android:id="@+id/tv_YES"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="确定"
-                android:textColor="@color/textcolor_theme"
-                android:textSize="18dip" />
+                android:text="@string/ok"
+                android:textColor="@color/theme_text"
+                android:textSize="@dimen/text_size_short" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/ll_NO"
@@ -87,9 +89,9 @@
                 android:id="@+id/tv_NO"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="取消"
-                android:textColor="@color/textcolor_theme"
-                android:textSize="18dip" />
+                android:text="@string/cancle"
+                android:textColor="@color/theme_text"
+                android:textSize="@dimen/text_size_short" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

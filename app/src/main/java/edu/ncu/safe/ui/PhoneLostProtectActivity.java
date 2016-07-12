@@ -1,8 +1,6 @@
 package edu.ncu.safe.ui;
 
-import android.app.Activity;
 import android.app.AlertDialog.Builder;
-import android.app.Dialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -12,16 +10,17 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -33,11 +32,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import edu.ncu.safe.R;
+import edu.ncu.safe.View.MyDialog;
 import edu.ncu.safe.adapter.ContactsDialogAdapter;
 import edu.ncu.safe.engine.ContactsService;
 import edu.ncu.safe.receiver.AdminReceiver;
 
-public class PhoneLostProtectActivity extends Activity implements
+public class PhoneLostProtectActivity extends AppCompatActivity implements
 		OnClickListener, OnCheckedChangeListener {
 	public static final String[] ORDERS = {"#*delete*#","#*lock*#","#*ring*#","#*pwd*#","#*location*#"};
 	public static final String DEFAULT_PWD = "123456";
@@ -58,7 +58,6 @@ public class PhoneLostProtectActivity extends Activity implements
 	public static final String ENTERPWD = "ENTERPWD";
 	public static final String HASSETPWD = "HASSETPWD";
 
-	private ImageView iv_back;
 	private View swapLine;
 	private RotateAnimation swapLineAnimation;
 	private ImageView iv_protect;
@@ -80,13 +79,13 @@ public class PhoneLostProtectActivity extends Activity implements
 	private LinearLayout ll_introduction;
 	private RotateAnimation clockwiseRotate;
 	private RotateAnimation contraRotate;
+	private Toolbar toolbar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_phonelostprotector);
-
-		iv_back = (ImageView) this.findViewById(R.id.back);
+		initToolBar();
 		swapLine = this.findViewById(R.id.swapline);
 		iv_protect = (ImageView) this.findViewById(R.id.iv_protect);
 		cb_message = (CheckBox) this.findViewById(R.id.cb_message);
@@ -113,7 +112,6 @@ public class PhoneLostProtectActivity extends Activity implements
 		sp = this.getSharedPreferences(SHAREPERFERENCESNAME,
 				Context.MODE_MULTI_PROCESS);
 
-		iv_back.setOnClickListener(this);
 		iv_protect.setOnClickListener(this);
 		cb_message.setOnCheckedChangeListener(this);
 		cb_delete.setOnCheckedChangeListener(this);
@@ -127,6 +125,22 @@ public class PhoneLostProtectActivity extends Activity implements
 		ll_device.setOnClickListener(this);
 		ll_introduction.setOnClickListener(this);
 		init();
+	}
+
+	private void initToolBar() {
+		toolbar = (Toolbar) findViewById(R.id.id_toolbar);
+		setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);// 隐藏标题
+//        getSupportActionBar().setIcon(R.drawable.user);//设置图标
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);// 是否显示返回按钮
+		toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				finish();
+				overridePendingTransition(R.anim.activit3dtoright_in,
+						R.anim.activit3dtoright_out);
+			}
+		});
 	}
 
 	private void init() {
@@ -179,24 +193,24 @@ public class PhoneLostProtectActivity extends Activity implements
 		String userNumber = sp.getString(USERPHONENUMBER, null);
 		final String phoneNumber = getPhoneNumber();
 		if (phoneNumber == null) {
-			Toast.makeText(this, "当前未插入SMS卡", Toast.LENGTH_SHORT).show();
+			makeToast(getResources().getString(R.string.toast_no_sim));
 			return;
 		}
 		if (userNumber == null || !userNumber.equals(phoneNumber)) {
-			Builder builder = new Builder(this);
-			builder.setTitle("保护号码设置");
-			builder.setMessage("是否设置号码" + phoneNumber + "为保护号码？");
-			builder.setPositiveButton("设置该号码",
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							Editor editor = sp.edit();
-							editor.putString(USERPHONENUMBER, phoneNumber);
-							editor.apply();
-						}
-					});
-			builder.setNegativeButton("不设置", null);
-			builder.create().show();
+			MyDialog myDialog = new MyDialog(this);
+			myDialog.setTitle(getResources().getString(R.string.dialog_title_set_protect_number));
+			myDialog.setMessage(String.format(getResources().getString(R.string.dialog_message_toprotector), phoneNumber));
+			myDialog.setYESText(getResources().getString(R.string.dialog_button_ok_set_number));
+			myDialog.setNOText(getResources().getString(R.string.dialog_button_cancle_setpout));
+			myDialog.setNegativeListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Editor editor = sp.edit();
+					editor.putString(USERPHONENUMBER, phoneNumber);
+					editor.apply();
+				}
+			});
+			myDialog.show();
 		}
 	}
 
@@ -213,34 +227,8 @@ public class PhoneLostProtectActivity extends Activity implements
 	@Override
 	public void onClick(View view) {
 		switch (view.getId()) {
-		case R.id.back:// 点击返回图片
-			finish();
-			overridePendingTransition(R.anim.activit3dtoright_in,
-					R.anim.activit3dtoright_out);
-			break;
 		case R.id.iv_protect:
-			boolean isInProtecting = sp.getBoolean(ISINPROTECTING, false);
-			Editor editor = sp.edit();
-			if (isInProtecting) {
-				editor.putBoolean(ISINPROTECTING, false);
-				editor.apply();
-				swapLine.clearAnimation();
-				tv_protectState.setTextColor(Color.RED);
-				tv_protectState.setText("关闭(点击轮盘关闭)");
-
-			} else {
-				// 开启保护是要对保护号码和安全号码进行设置
-				if (!isNumbersOK()) {// 还有未完成的设置
-					toSetNumbers();
-					return;
-				}
-				// 已经完成设置，可以开启
-				editor.putBoolean(ISINPROTECTING, true);
-				editor.apply();
-				swapLine.startAnimation(swapLineAnimation);
-				tv_protectState.setTextColor(Color.GREEN);
-				tv_protectState.setText("开启(点击轮盘关闭)");
-			}
+			changProtectingState();
 			break;
 		case R.id.ll_pdmodify:
 			showSetPWDDialog();
@@ -258,6 +246,31 @@ public class PhoneLostProtectActivity extends Activity implements
 		case R.id.ll_introduction:
 			break;
 		}
+	}
+
+	private void changProtectingState() {
+		boolean isInProtecting = sp.getBoolean(ISINPROTECTING, false);
+		Editor editor = sp.edit();
+		if (isInProtecting) {
+            editor.putBoolean(ISINPROTECTING, false);
+            editor.apply();
+            swapLine.clearAnimation();
+            tv_protectState.setTextColor(getResources().getColor(R.color.phone_lost_protector_title_current_close));
+            tv_protectState.setText(getResources().getString(R.string.phone_lost_protector_title_current_state_close));
+
+        } else {
+            // 开启保护是要对保护号码和安全号码进行设置
+            if (!isNumbersOK()) {// 还有未完成的设置
+                toSetNumbers();
+                return;
+            }
+            // 已经完成设置，可以开启
+            editor.putBoolean(ISINPROTECTING, true);
+            editor.apply();
+            swapLine.startAnimation(swapLineAnimation);
+			tv_protectState.setTextColor(getResources().getColor(R.color.phone_lost_protector_title_current_open));
+			tv_protectState.setText(getResources().getString(R.string.phone_lost_protector_title_current_state_open));
+        }
 	}
 
 	@Override
@@ -361,128 +374,112 @@ public class PhoneLostProtectActivity extends Activity implements
 		String userNumber = sp.getString(USERPHONENUMBER, null);
 		String safeNumber = sp.getString(SAFEPHONENUMBER, null);
 
-		final Dialog dialog = new Dialog(this, R.style.MyDialog);
+		final MyDialog myDialog = new MyDialog(this);
+		myDialog.setTitle(getResources().getString(R.string.dialog_title_set_numbers));
 		View view = LayoutInflater.from(this).inflate(
 				R.layout.dialog_phonenumber, null);
+		myDialog.setMessageView(view);
 		final EditText et_userNumber = (EditText) view
 				.findViewById(R.id.usernumber);
 		final EditText et_safeNumber = (EditText) view
 				.findViewById(R.id.safenumber);
-		Button btnYes = (Button) view.findViewById(R.id.yes);
-		Button btnNo = (Button) view.findViewById(R.id.no);
 		ImageView contacts = (ImageView) view.findViewById(R.id.contects);
 
 		if (userNumber != null) {
 			et_userNumber.setText(userNumber);
-			et_userNumber.setEnabled(false);
 		} else if (phoneNumber != null) {
 			et_userNumber.setText(phoneNumber);
-			et_userNumber.setEnabled(false);
 		} else {
-			et_userNumber.setHint("请输入要监测的号码");
-			et_userNumber.setEnabled(true);
+			et_userNumber.setHint(getResources().getString(R.string.dialog_edittext_hine_user_number));
 		}
 
 		if (safeNumber != null) {
 			et_safeNumber.setText(safeNumber);
 		} else {
-			et_safeNumber.setHint("请输入安全号码");
+			et_safeNumber.setHint(getResources().getString(R.string.dialog_edittext_hine_safe_number));
 		}
 
-		btnYes.setOnClickListener(new OnClickListener() {
+		myDialog.setPositiveListener(new OnClickListener() {
 			public void onClick(View v) {
 				String userNumber = et_userNumber.getText().toString().trim();
 				String safeNumber = et_safeNumber.getText().toString().trim();
 
-				if ("".equals(userNumber) || "".equals(safeNumber)) {
-					Toast.makeText(PhoneLostProtectActivity.this, "号码不能为空", Toast.LENGTH_SHORT)
-							.show();
+				if("".equals(userNumber)){
+					et_userNumber.setError(getResources().getString(R.string.error_number_can_not_null));
 					return;
 				}
-
+				if("".equals(safeNumber)){
+					et_safeNumber.setError(getResources().getString(R.string.error_number_can_not_null));
+					return;
+				}
 				Editor edi = sp.edit();
 				edi.putString(USERPHONENUMBER, userNumber);
 				edi.putString(SAFEPHONENUMBER, safeNumber);
 				edi.apply();
-				dialog.dismiss();
-				Toast.makeText(getApplicationContext(), "修改成功",
-						Toast.LENGTH_SHORT).show();
-			}
-		});
-		btnNo.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				dialog.dismiss();
+				myDialog.dismiss();
+				makeToast(getResources().getString(R.string.number_modify_succeed));
 			}
 		});
 		contacts.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				final Dialog mDialog = new Dialog(
-						PhoneLostProtectActivity.this, R.style.MyDialog);
-				View mView = LayoutInflater.from(PhoneLostProtectActivity.this)
-						.inflate(R.layout.dialog_contacts, null);
-
-				ListView lv = (ListView) mView.findViewById(R.id.lv_contacts);
-				ContactsService contactsService = new ContactsService(
-						PhoneLostProtectActivity.this);
-				final ContactsDialogAdapter adapter = new ContactsDialogAdapter(
-						contactsService.getContactsInfos(),
-						PhoneLostProtectActivity.this);
-				lv.setAdapter(adapter);
-				lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view,
-							int position, long id) {
-						String number = adapter.getNumber(position);
-						et_safeNumber.setText(number);
-						mDialog.dismiss();
-					}
-				});
-				mDialog.setContentView(mView, new LayoutParams(
-						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-				mDialog.show();
+				showContactsDialog(et_safeNumber);
 			}
 		});
+		myDialog.show();
+	}
 
-		dialog.setContentView(view, new LayoutParams(LayoutParams.WRAP_CONTENT,
-				LayoutParams.WRAP_CONTENT));
-		dialog.show();
+	private void showContactsDialog(final EditText et_safeNumber) {
+		final MyDialog myDialog = new MyDialog(this);
+		View view = LayoutInflater.from(PhoneLostProtectActivity.this)
+                .inflate(R.layout.dialog_contacts, null);
+		myDialog.setMessageView(view);
+		ListView lv = (ListView) view.findViewById(R.id.lv_contacts);
+		final ContactsDialogAdapter adapter = new ContactsDialogAdapter(
+				new ContactsService(this).getContactsInfos(),
+                PhoneLostProtectActivity.this);
+		lv.setAdapter(adapter);
+		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+                String number = adapter.getNumber(position);
+                et_safeNumber.setText(number);
+                myDialog.dismiss();
+            }
+        });
+		myDialog.ShowYESNO(false);
+		myDialog.show();
 	}
 
 	private void showSetPWDDialog() {
-		final Dialog dialog = new Dialog(this, R.style.MyDialog);
-		LayoutInflater inflater = LayoutInflater.from(this);
-		View v = inflater.inflate(R.layout.dialog_passwordregister, null);
-		final EditText pwd = (EditText) v.findViewById(R.id.pwd);
-		final EditText pwdAgain = (EditText) v.findViewById(R.id.pwdagain);
-		Button btnOK = (Button) v.findViewById(R.id.yes);
-		Button btnCancle = (Button) v.findViewById(R.id.no);
-		btnOK.setOnClickListener(new OnClickListener() {
+		final MyDialog myDialog = new MyDialog(this);
+		myDialog.setTitle(getResources().getString(R.string.dialog_enter_pwd));
+		final View view = LayoutInflater.from(this).inflate(R.layout.dialog_passwordregister, null);
+		final AutoCompleteTextView pwd_one = (AutoCompleteTextView) view.findViewById(R.id.actv_pwd_one);
+		final  AutoCompleteTextView pwd_two = (AutoCompleteTextView) view.findViewById(R.id.actv_pwd_two);
+		myDialog.setMessageView(view);
+		myDialog.setPositiveListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
-				String pd = pwd.getText().toString().trim();
-				String pdAgain = pwdAgain.getText().toString().trim();
+				String pd = pwd_one.getText().toString().trim();
+				String pdAgain = pwd_two.getText().toString().trim();
 				if (pd.equals(pdAgain)) {
+					SharedPreferences sp = getSharedPreferences(
+									PhoneLostProtectActivity.SHAREPERFERENCESNAME,
+									Context.MODE_MULTI_PROCESS);
 					Editor editor = sp.edit();
-					editor.putString(ENTERPWD, pd);
+					editor.putString(PhoneLostProtectActivity.ENTERPWD, pd);
+					editor.putBoolean(PhoneLostProtectActivity.HASSETPWD, true);
 					editor.apply();
-					dialog.dismiss();
-					Toast.makeText(getApplicationContext(), "修改成功",
-							Toast.LENGTH_SHORT).show();
+					myDialog.dismiss();
+					makeToast(getResources().getString(R.string.pwd_modify_succeed));
+					return;
 				} else {
-					Toast.makeText(getApplicationContext(), "两次密码不相同，请重新输入",
-							Toast.LENGTH_SHORT).show();
+					pwd_two.setError(getResources().getString(R.string.error_pwd_different));
 				}
 			}
 		});
-		btnCancle.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				dialog.dismiss();
-			}
-		});
-
-		dialog.setCancelable(false);
-		dialog.setContentView(v, new LayoutParams(LayoutParams.WRAP_CONTENT,
-				LayoutParams.WRAP_CONTENT));
-		dialog.show();
+		myDialog.show();
 	}
 
 	@Override
@@ -492,5 +489,9 @@ public class PhoneLostProtectActivity extends Activity implements
 			overridePendingTransition(R.anim.activit3dtoright_in, R.anim.activit3dtoright_out);
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+
+	private void makeToast(String message){
+		Toast.makeText(PhoneLostProtectActivity.this, message, Toast.LENGTH_SHORT).show();
 	}
 }

@@ -44,7 +44,7 @@ public class MyDialog extends Dialog{
         tv_YES = (TextView) view.findViewById(R.id.tv_YES);
         tv_YES = (TextView) view.findViewById(R.id.tv_NO);
 
-        ll_YESNO.setOnClickListener(new View.OnClickListener() {
+        ll_YES.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (positiveListener != null) {
@@ -93,7 +93,7 @@ public class MyDialog extends Dialog{
         messageView.addView(view);
         messageView.measure(0,0);
         int height  = messageView.getMeasuredHeight();
-        if(height>maxHeight){
+        if(height>maxHeight||height<=0){
            ViewGroup.LayoutParams params =  messageView.getLayoutParams();
             params.height = maxHeight;
 

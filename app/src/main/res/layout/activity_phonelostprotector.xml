@@ -5,31 +5,22 @@
     android:background="@drawable/background"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="60dip"
-        android:padding="10dip" >
-
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="40dip"
-            android:layout_height="50dip"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:paddingBottom="10dip"
-            android:paddingRight="30dip"
-            android:paddingTop="10dip"
-            android:scaleType="fitXY"
-            android:src="@drawable/back" />
-
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/id_toolbar"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:background="@color/theme" >
         <TextView
-            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="手机防盗"
-            android:textSize="25sp" />
-    </RelativeLayout>
+            android:text="@string/title_phone_lost_protector"
+            android:layout_gravity="center"
+            android:layout_margin="3dp"
+            android:textSize="@dimen/title"/>
+    </android.support.v7.widget.Toolbar>
+
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -40,7 +31,7 @@
         <ImageView
             android:id="@+id/iv_protect"
             android:layout_width="200dip"
-            android:layout_height="200dip"
+            android:layout_height="match_parent"
             android:src="@drawable/protect" />
 
         <View
@@ -54,7 +45,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dip"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
         android:background="#eeeeeeee"
         android:gravity="center"
         android:scrollbars="vertical" >
@@ -67,37 +59,29 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="当前状态" />
+                android:textSize="@dimen/text_size_small"
+                android:text="@string/phone_lost_protector_title_current_state"/>
 
             <TextView
                 android:id="@+id/tv_protectstate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="关闭(点击轮盘开启)"
-                android:textColor="#ffff0000" />
+                android:textSize="@dimen/text_size_small"
+                android:text="@string/phone_lost_protector_title_current_state_close"
+                android:textColor="@color/phone_lost_protector_title_current_close" />
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dip"
-        android:layout_marginLeft="5dip"
-        android:layout_marginTop="10dip"
-        android:text="当前设置"
-        android:textColor="#ff2233cc"
-        android:textSize="18sp" />
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#eeeeeeee" >
-
         <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="match_parent" 
             android:background="#eeeeeeee">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -105,20 +89,28 @@
                 android:orientation="vertical"
                 android:padding="5dip"
                 android:scrollbars="vertical" >
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dip"
+                    android:layout_marginLeft="5dip"
+                    android:layout_marginTop="10dip"
+                    android:text="@string/phone_lost_protector_title_current_set"
+                    android:textColor="@color/phone_lost_protector_title_current_set"
+                    android:textSize="@dimen/text_size_normal" />
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" >
-
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dip"
+                        android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:orientation="horizontal" >
-
                         <ImageView
                             android:layout_width="40dip"
                             android:layout_height="40dip"
+                            android:padding="5dp"
+                            android:scaleType="fitXY"
                             android:src="@drawable/message" />
 
                         <View
@@ -133,20 +125,19 @@
                             android:gravity="center_vertical"
                             android:orientation="vertical"
                             android:paddingLeft="10dip" >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/phone_lost_protector_title_SIM_changed"
+                                android:textColor="@color/phone_lost_protector_title_item"
+                                android:textSize="@dimen/phone_lost_protector_title_item" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="换卡短信通知"
-                                android:textColor="#ff111111"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="当手机更换手机sim卡后，会发送一条短信到安全号码"
-                                android:textColor="#77111111"
-                                android:textSize="10sp" />
+                                android:text="@string/phone_lost_protector_title_SIM_changed_note"
+                                android:textColor="@color/phone_lost_protector_note_item"
+                                android:textSize="@dimen/phone_lost_protector_note_item" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -172,6 +163,8 @@
                         <ImageView
                             android:layout_width="40dip"
                             android:layout_height="40dip"
+                            android:padding="5dp"
+                            android:scaleType="fitXY"
                             android:src="@drawable/delete" />
 
                         <View
@@ -190,16 +183,16 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="远程删除手机数据（需要开启设备管理者）"
-                                android:textColor="#ff111111"
-                                android:textSize="15sp" />
+                                android:text="@string/phone_lost_protector_title_item_delete"
+                                android:textColor="@color/phone_lost_protector_title_item"
+                                android:textSize="@dimen/phone_lost_protector_title_item" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="当手机丢失后可用安全号码发送指令重置手机"
-                                android:textColor="#77111111"
-                                android:textSize="10sp" />
+                                android:text="@string/phone_lost_protector_note_item_delete"
+                                android:textColor="@color/phone_lost_protector_note_item"
+                                android:textSize="@dimen/phone_lost_protector_note_item" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -225,6 +218,8 @@
                         <ImageView
                             android:layout_width="40dip"
                             android:layout_height="40dip"
+                            android:padding="5dp"
+                            android:scaleType="fitXY"
                             android:src="@drawable/lock" />
 
                         <View
@@ -239,20 +234,19 @@
                             android:gravity="center_vertical"
                             android:orientation="vertical"
                             android:paddingLeft="10dip" >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/phone_lost_protector_title_lock"
+                                android:textColor="@color/phone_lost_protector_title_item"
+                                android:textSize="@dimen/phone_lost_protector_title_item" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="远程锁定手机（需要开启设备管理者）"
-                                android:textColor="#ff111111"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="用安全号码发送特定指令锁定手机"
-                                android:textColor="#77111111"
-                                android:textSize="10sp" />
+                                android:text="@string/phone_lost_protector_note_lock"
+                                android:textColor="@color/phone_lost_protector_note_item"
+                                android:textSize="@dimen/phone_lost_protector_note_item" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -278,6 +272,8 @@
                         <ImageView
                             android:layout_width="40dip"
                             android:layout_height="40dip"
+                            android:padding="5dp"
+                            android:scaleType="fitXY"
                             android:src="@drawable/ring" />
 
                         <View
@@ -296,16 +292,16 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="响铃报警"
-                                android:textColor="#ff111111"
-                                android:textSize="15sp" />
+                                android:text="@string/phone_lost_protector_title_ring"
+                                android:textColor="@color/phone_lost_protector_title_item"
+                                android:textSize="@dimen/phone_lost_protector_title_item" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="用安全号码发送指定指令让手机响铃"
-                                android:textColor="#77111111"
-                                android:textSize="10sp" />
+                                android:text="@string/phone_lost_protector_note_ring"
+                                android:textColor="@color/phone_lost_protector_note_item"
+                                android:textSize="@dimen/phone_lost_protector_note_item" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -331,6 +327,8 @@
                         <ImageView
                             android:layout_width="40dip"
                             android:layout_height="40dip"
+                            android:padding="5dp"
+                            android:scaleType="fitXY"
                             android:src="@drawable/pwd" />
 
                         <View
@@ -349,16 +347,16 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="远程改密（需要开启设备管理者）"
-                                android:textColor="#ff111111"
-                                android:textSize="15sp" />
+                                android:text="@string/phone_lost_protector_title_lock_pwd"
+                                android:textColor="@color/phone_lost_protector_title_item"
+                                android:textSize="@dimen/phone_lost_protector_title_item" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="用手机号码发送指定指令修改手机锁密码"
-                                android:textColor="#77111111"
-                                android:textSize="10sp" />
+                                android:text="@string/phone_lost_protector_note_lock_pwd"
+                                android:textColor="@color/phone_lost_protector_note_item"
+                                android:textSize="@dimen/phone_lost_protector_note_item" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -384,6 +382,8 @@
                         <ImageView
                             android:layout_width="40dip"
                             android:layout_height="40dip"
+                            android:padding="5dp"
+                            android:scaleType="fitXY"
                             android:src="@drawable/location" />
 
                         <View
@@ -398,20 +398,19 @@
                             android:gravity="center_vertical"
                             android:orientation="vertical"
                             android:paddingLeft="10dip" >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/phone_lost_protector_title_location"
+                                android:textColor="@color/phone_lost_protector_title_item"
+                                android:textSize="@dimen/phone_lost_protector_title_item" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="位置追踪"
-                                android:textColor="#ff111111"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="用安全号码发送指定指令获取手机位置"
-                                android:textColor="#77111111"
-                                android:textSize="10sp" />
+                                android:text="@string/phone_lost_protector_note_location"
+                                android:textColor="@color/phone_lost_protector_note_item"
+                                android:textSize="@dimen/phone_lost_protector_note_item" />
                         </LinearLayout>
                     </LinearLayout>
 
