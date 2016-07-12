@@ -77,5 +77,20 @@
     <string name="dialog_edittext_hine_safe_number">请输入安全号码</string>
     <string name="error_number_can_not_null">号码不能为空</string>
     <string name="number_modify_succeed">修改成功</string>
+    <string name="title_communication_protector">通讯卫士</string>
+    <string name="title_communication_protector_set">拦截设置</string>
+    <string name="toast_closed_night_mode">已关闭夜间免打扰模式!</string>
+    <string name="dialog_title_night_mode">夜间模式</string>
+    <string name="toast_error_time_format_error">时间格式不对</string>
+    <string name="toast_opened_night_mode">已开启夜间免打扰模式！</string>
+    <string name="title_communication_protector_set_additionnal_function">附加功能</string>
+    <string name="title_communication_protector_white_black_number_set">黑白名单设置</string>
+    <string name="title_communication_protector_number_query">号码归属地查询</string>
+    <string name="toast_error_can_not_find_number_place">抱歉，无法查询到该号码信息</string>
+    <string name="title_flows_calibration">流量校准</string>
+    <string name="title_flows_protector">流量监控、</string>
+    <string name="title_flows_statistic">流量分析</string>
+    <string name="title_app_manager">软件管理</string>
+    <string name="title_system_quick">系统加速</string>
 
 </resources>

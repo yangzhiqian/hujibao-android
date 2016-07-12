@@ -4,7 +4,6 @@ import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
@@ -19,6 +18,7 @@ import java.util.List;
 import edu.ncu.safe.R;
 import edu.ncu.safe.adapter.AppManagerPVAdapter;
 import edu.ncu.safe.domain.UserAppBaseInfo;
+import edu.ncu.safe.myadapter.MyAppCompatActivity;
 import edu.ncu.safe.ui.fragment.AppManagerFragment;
 import edu.ncu.safe.ui.fragment.NetManagerFragment;
 import edu.ncu.safe.util.BitmapUtil;
@@ -26,8 +26,7 @@ import edu.ncu.safe.util.BitmapUtil;
 /**
  * Created by Mr_Yang on 2016/5/19.
  */
-public class AppManagerAcitvity extends FragmentActivity implements View.OnClickListener, ViewPager.OnPageChangeListener,AppManagerFragment.OnDataChangeListener {
-    private ImageView iv_back;
+public class AppManagerAcitvity extends MyAppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener,AppManagerFragment.OnDataChangeListener {
     private ViewPager vp_appManager;
 
     private LinearLayout ll_appManager;
@@ -48,7 +47,7 @@ public class AppManagerAcitvity extends FragmentActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appmanager);
-        iv_back = (ImageView) this.findViewById(R.id.back);
+        initToolBar(getResources().getString(R.string.title_app_manager));
         vp_appManager = (ViewPager) this.findViewById(R.id.vp_appmanager);
         ll_appManager  = (LinearLayout) this.findViewById(R.id.ll_appmanager);
         ll_netManager = (LinearLayout) this.findViewById(R.id.ll_netmanager);
@@ -67,7 +66,6 @@ public class AppManagerAcitvity extends FragmentActivity implements View.OnClick
         fragments.add(new NetManagerFragment());
         vp_appManager.setAdapter(new AppManagerPVAdapter(getSupportFragmentManager(),fragments));
 
-        iv_back.setOnClickListener(this);
         ll_appManager.setOnClickListener(this);
         ll_netManager.setOnClickListener(this);
         vp_appManager.addOnPageChangeListener(this);
@@ -76,10 +74,7 @@ public class AppManagerAcitvity extends FragmentActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         switch(v.getId()){
-            case R.id.back:
-                this.finish();
-                overridePendingTransition(R.anim.activit3dtoright_in,R.anim.activit3dtoright_out);
-                break;
+
             case R.id.ll_appmanager:
                 vp_appManager.setCurrentItem(0);
                 break;

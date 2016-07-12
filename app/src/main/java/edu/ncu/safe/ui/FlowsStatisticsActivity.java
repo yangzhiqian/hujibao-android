@@ -3,14 +3,12 @@ package edu.ncu.safe.ui;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,6 +18,7 @@ import java.util.List;
 import edu.ncu.safe.R;
 import edu.ncu.safe.adapter.FlowsStatisticVPAdapter;
 import edu.ncu.safe.db.dao.FlowsDatabase;
+import edu.ncu.safe.myadapter.MyAppCompatActivity;
 import lecho.lib.hellocharts.gesture.ContainerScrollType;
 import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.model.Axis;
@@ -29,9 +28,8 @@ import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
 import lecho.lib.hellocharts.view.LineChartView;
 
-public class FlowsStatisticsActivity extends FragmentActivity implements
+public class FlowsStatisticsActivity extends MyAppCompatActivity implements
 		OnClickListener {
-	private ImageView iv_back;
 	private TextView tv_flowsDayStatistics;
 	private TextView tv_flowsAppStatistics;
 	private ViewPager vp_flowsStatistics;
@@ -44,8 +42,7 @@ public class FlowsStatisticsActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_flowsstatistics);
-
-		iv_back = (ImageView) this.findViewById(R.id.back);
+		initToolBar(getResources().getString(R.string.title_flows_statistic));
 		tv_flowsDayStatistics = (TextView) this
 				.findViewById(R.id.tv_dayflowsstatistics);
 		tv_flowsAppStatistics = (TextView) this
@@ -56,7 +53,6 @@ public class FlowsStatisticsActivity extends FragmentActivity implements
 		ll_leftTip = (LinearLayout) this.findViewById(R.id.ll_lefttip);
 		chartView = (LineChartView) this.findViewById(R.id.chart);
 
-		iv_back.setOnClickListener(this);
 		tv_flowsDayStatistics.setOnClickListener(this);
 		tv_flowsAppStatistics.setOnClickListener(this);
 
@@ -112,11 +108,7 @@ public class FlowsStatisticsActivity extends FragmentActivity implements
 	public void onClick(View v) {
 
 		switch (v.getId()) {
-		case R.id.back:
-			finish();
-			overridePendingTransition(R.anim.activit3dtoright_in,
-					R.anim.activit3dtoright_out);
-			break;
+
 		case R.id.tv_dayflowsstatistics:
 			vp_flowsStatistics.setCurrentItem(0);
 			break;

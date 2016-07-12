@@ -1,6 +1,5 @@
 package edu.ncu.safe.ui;
 
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -34,6 +33,7 @@ import edu.ncu.safe.adapter.SystemQuickenELVAdapter;
 import edu.ncu.safe.domain.CacheInfo;
 import edu.ncu.safe.domain.ELVParentItemInfo;
 import edu.ncu.safe.domain.RunningApplicationInfo;
+import edu.ncu.safe.myadapter.MyAppCompatActivity;
 import edu.ncu.safe.myinterface.ChildItemData;
 import edu.ncu.safe.service.AppRubbishCleanService;
 import edu.ncu.safe.service.InnerMemoryCleanService;
@@ -41,8 +41,7 @@ import edu.ncu.safe.service.InnerMemoryCleanService;
 /**
  * Created by Mr_Yang on 2016/5/26.
  */
-public class SystemQuickenActivity extends Activity implements View.OnClickListener, InnerMemoryCleanService.OnMemoryDataGetListener, AppRubbishCleanService.OnRubbishDataChangedListener, SystemQuickenELVAdapter.OnItemCheckedListener, AbsListView.OnScrollListener {
-    private ImageView iv_back;
+public class SystemQuickenActivity extends MyAppCompatActivity implements View.OnClickListener, InnerMemoryCleanService.OnMemoryDataGetListener, AppRubbishCleanService.OnRubbishDataChangedListener, SystemQuickenELVAdapter.OnItemCheckedListener, AbsListView.OnScrollListener {
     private MyProgressBar mpb_innerMemory;
     private MyProgressBar mpb_sweep;
     private MyProgressBar mpb_outerMemory;
@@ -94,7 +93,7 @@ public class SystemQuickenActivity extends Activity implements View.OnClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_systemquicken);
-        iv_back = (ImageView) this.findViewById(R.id.back);
+        initToolBar(getResources().getString(R.string.title_system_quick));
         mpb_innerMemory = (MyProgressBar) this.findViewById(R.id.mpb_innermemory);
         mpb_sweep = (MyProgressBar) this.findViewById(R.id.mpb_sweep);
         mpb_outerMemory = (MyProgressBar) this.findViewById(R.id.mpb_outermemory);
@@ -111,7 +110,6 @@ public class SystemQuickenActivity extends Activity implements View.OnClickListe
         elv_sweepResult.setAdapter(adapter);
         elv_sweepResult.setEmptyView(ll_emptyView);
 
-        iv_back.setOnClickListener(this);
         ll_clean.setOnClickListener(this);
         adapter.setOnItemCheckedListener(this);
 
@@ -161,10 +159,7 @@ public class SystemQuickenActivity extends Activity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.back:
-                finish();
-                overridePendingTransition(R.anim.activit3dtoright_in, R.anim.activit3dtoright_out);
-                break;
+
             case R.id.ll_clean:
                 innerMemoryCleanService.runClean(adapter.getCheckAppProcessNames());
                 ll_clean.startAnimation(animationDisappear);

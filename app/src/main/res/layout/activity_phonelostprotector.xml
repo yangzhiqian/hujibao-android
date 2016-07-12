@@ -3,30 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    android:orientation="vertical" >
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/id_toolbar"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:layout_width="match_parent"
-        android:background="@color/theme" >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title_phone_lost_protector"
-            android:layout_gravity="center"
-            android:layout_margin="3dp"
-            android:textSize="@dimen/title"/>
-    </android.support.v7.widget.Toolbar>
-
-
-
+    android:orientation="vertical">
+    <include layout="@layout/content_toolbar" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="200dip"
         android:background="#eeeeeeee"
-        android:gravity="center" >
+        android:gravity="center">
 
         <ImageView
             android:id="@+id/iv_protect"
@@ -46,49 +29,51 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
         android:background="#eeeeeeee"
         android:gravity="center"
-        android:scrollbars="vertical" >
+        android:padding="5dp"
+        android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_small"
-                android:text="@string/phone_lost_protector_title_current_state"/>
+                android:text="@string/phone_lost_protector_title_current_state"
+                android:textSize="@dimen/text_size_small" />
 
             <TextView
                 android:id="@+id/tv_protectstate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_small"
                 android:text="@string/phone_lost_protector_title_current_state_close"
-                android:textColor="@color/phone_lost_protector_title_current_close" />
+                android:textColor="@color/phone_lost_protector_title_current_close"
+                android:textSize="@dimen/text_size_small" />
         </LinearLayout>
     </LinearLayout>
-
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#eeeeeeee" >
+        android:background="#eeeeeeee">
+
         <ScrollView
             android:layout_width="fill_parent"
-            android:layout_height="match_parent" 
+            android:layout_height="match_parent"
             android:background="#eeeeeeee">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#eeeeeeee"
                 android:orientation="vertical"
                 android:padding="5dip"
-                android:scrollbars="vertical" >
+                android:scrollbars="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -98,14 +83,17 @@
                     android:text="@string/phone_lost_protector_title_current_set"
                     android:textColor="@color/phone_lost_protector_title_current_set"
                     android:textSize="@dimen/text_size_normal" />
+
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
+
                         <ImageView
                             android:layout_width="40dip"
                             android:layout_height="40dip"
@@ -124,7 +112,8 @@
                             android:layout_height="match_parent"
                             android:gravity="center_vertical"
                             android:orientation="vertical"
-                            android:paddingLeft="10dip" >
+                            android:paddingLeft="10dip">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -152,13 +141,13 @@
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dip"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="40dip"
@@ -178,7 +167,7 @@
                             android:layout_height="match_parent"
                             android:gravity="center_vertical"
                             android:orientation="vertical"
-                            android:paddingLeft="10dip" >
+                            android:paddingLeft="10dip">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -207,13 +196,13 @@
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dip"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="40dip"
@@ -233,7 +222,8 @@
                             android:layout_height="match_parent"
                             android:gravity="center_vertical"
                             android:orientation="vertical"
-                            android:paddingLeft="10dip" >
+                            android:paddingLeft="10dip">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -261,13 +251,13 @@
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dip"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="40dip"
@@ -287,7 +277,7 @@
                             android:layout_height="match_parent"
                             android:gravity="center_vertical"
                             android:orientation="vertical"
-                            android:paddingLeft="10dip" >
+                            android:paddingLeft="10dip">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -316,13 +306,13 @@
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dip"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="40dip"
@@ -342,7 +332,7 @@
                             android:layout_height="match_parent"
                             android:gravity="center_vertical"
                             android:orientation="vertical"
-                            android:paddingLeft="10dip" >
+                            android:paddingLeft="10dip">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -371,13 +361,13 @@
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dip"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="40dip"
@@ -397,7 +387,8 @@
                             android:layout_height="match_parent"
                             android:gravity="center_vertical"
                             android:orientation="vertical"
-                            android:paddingLeft="10dip" >
+                            android:paddingLeft="10dip">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -424,23 +415,24 @@
                 </RelativeLayout>
             </LinearLayout>
         </ScrollView>
-        
-        
+
+
         <SlidingDrawer
             android:id="@+id/slidingdrawer"
             android:layout_width="fill_parent"
             android:layout_height="300dip"
+            android:layout_alignParentBottom="true"
             android:content="@+id/content"
             android:handle="@+id/handle"
-            android:layout_alignParentBottom="true"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@id/handle"
                 android:layout_width="34dip"
                 android:layout_height="34dip"
                 android:src="@drawable/set" />
-            <include layout="@layout/besidelayout_phonelostset"/>
+
+            <include layout="@layout/besidelayout_phonelostset" />
         </SlidingDrawer>
     </RelativeLayout>
 

@@ -5,40 +5,29 @@
     android:background="@drawable/background"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="60dip"
-        android:padding="10dip" >
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/id_toolbar"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:background="@color/theme" >
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_communication_protector"
+            android:layout_gravity="center"
+            android:layout_margin="3dp"
+            android:textSize="@dimen/title"/>
 
         <ImageView
-            android:id="@+id/back"
-            android:layout_width="40dip"
-            android:layout_height="50dip"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:paddingBottom="10dip"
-            android:paddingRight="30dip"
-            android:paddingTop="10dip"
-            android:scaleType="fitXY"
-            android:src="@drawable/back" />
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="通讯卫士"
-            android:textSize="25sp" />
-
-        <TextView
-            android:id="@+id/tv_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="+"
-            android:textSize="35sp" />
-    </RelativeLayout>
+            android:id="@+id/iv_showpopup"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/show_popup"
+            android:layout_marginRight="15dp"
+            android:layout_gravity="right"/>
+    </android.support.v7.widget.Toolbar>
 <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0dip"

@@ -1,7 +1,6 @@
 package edu.ncu.safe.ui;
 
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,7 +8,6 @@ import android.os.Message;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,15 +19,15 @@ import edu.ncu.safe.db.dao.CommunicationDatabase;
 import edu.ncu.safe.engine.LoadPhoneNumberOwnerPalce;
 import edu.ncu.safe.engine.LoadPhoneNumberOwnerPalce.NumberPlaceInfo;
 import edu.ncu.safe.engine.LoadPhoneNumberOwnerPalce.OnOwnerPlaceObtainedListener;
+import edu.ncu.safe.myadapter.MyAppCompatActivity;
 
 /**
  * Created by Mr_Yang on 2016/5/16.
  */
-public class CommunicationNumberQuery extends Activity implements OnOwnerPlaceObtainedListener, View.OnClickListener {
+public class CommunicationNumberQuery extends MyAppCompatActivity implements OnOwnerPlaceObtainedListener, View.OnClickListener {
 
     private static final int FAIL = 1;
     private static final int SUCCESS = 2;
-    private ImageView iv_back;
     private EditText et_number;
     private ImageButton ib_to;
     private ListView lv_queryRecoder;
@@ -62,8 +60,8 @@ public class CommunicationNumberQuery extends Activity implements OnOwnerPlaceOb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phonenumberplace);
+        initToolBar(getResources().getString(R.string.title_communication_protector_number_query));
         //初始化控件
-        iv_back = (ImageView) this.findViewById(R.id.back);
         et_number = (EditText) findViewById(R.id.et_number);
         ib_to = (ImageButton) findViewById(R.id.ib_to);
         lv_queryRecoder = (ListView) findViewById(R.id.lv_queryrecoder);
@@ -71,7 +69,6 @@ public class CommunicationNumberQuery extends Activity implements OnOwnerPlaceOb
         place = new LoadPhoneNumberOwnerPalce(this);
         place.setOnOwnerPlaceObtainedListener(this);
         //设置点击事件
-        iv_back.setOnClickListener(this);
         ib_to.setOnClickListener(this);
         //设置lv数据
         db = new CommunicationDatabase(this);
@@ -80,14 +77,13 @@ public class CommunicationNumberQuery extends Activity implements OnOwnerPlaceOb
         //设置适配器
         lv_queryRecoder.setAdapter(adapter);
     }
-
     @Override
     public void OnOwnerPalceObtained(NumberPlaceInfo info) {
         dialog.dismiss();
         Message message = new Message();
         if (info == null) {
             message.what = FAIL;
-            message.obj = "抱歉，无法查询到该号码信息";
+            message.obj = getResources().getString(R.string.toast_error_can_not_find_number_place);
             handler.sendMessage(message);
         } else {
             message.what = SUCCESS;
@@ -101,10 +97,6 @@ public class CommunicationNumberQuery extends Activity implements OnOwnerPlaceOb
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.back:
-                finish();
-                overridePendingTransition(R.anim.activit3dtoright_in, R.anim.activit3dtoright_out);
-                break;
             case R.id.ib_to:
                 place.setNumber(et_number.getText().toString().trim());
                 place.request();

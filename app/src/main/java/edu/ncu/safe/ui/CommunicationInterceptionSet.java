@@ -1,13 +1,11 @@
 package edu.ncu.safe.ui;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -20,13 +18,13 @@ import edu.ncu.safe.View.MyDialog;
 import edu.ncu.safe.adapter.CommunicationLVInterceptionSetAdapter;
 import edu.ncu.safe.domain.InterceptionSetInfo;
 import edu.ncu.safe.engine.InterceptionSetOperation;
+import edu.ncu.safe.myadapter.MyAppCompatActivity;
 
 /**
  * Created by Mr_Yang on 2016/5/17.
  */
-public class CommunicationInterceptionSet extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class CommunicationInterceptionSet extends MyAppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
-    private ImageView iv_back;
     private ListView lv_interceptionMode;
     private LinearLayout ll_nightMode;
     private TextView tv_nightMode;
@@ -40,8 +38,8 @@ public class CommunicationInterceptionSet extends Activity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_communicationinterceptionset);
+        initToolBar(getResources().getString(R.string.title_communication_protector_set));
         //初始化
-        iv_back = (ImageView) this.findViewById(R.id.back);
         lv_interceptionMode = (ListView) this.findViewById(R.id.lv_interceptionmode);
         ll_nightMode = (LinearLayout) this.findViewById(R.id.ll_nightmode);
         tv_nightMode = (TextView) this.findViewById(R.id.tv_nightmode);
@@ -53,7 +51,6 @@ public class CommunicationInterceptionSet extends Activity implements View.OnCli
         lv_interceptionMode.setAdapter(adapter);
 
         //设置点击事件
-        iv_back.setOnClickListener(this);
         ll_nightMode.setOnClickListener(this);
         lv_interceptionMode.setOnItemClickListener(this);
     }
@@ -63,7 +60,6 @@ public class CommunicationInterceptionSet extends Activity implements View.OnCli
         super.onStart();
        init();
     }
-
     private void init(){
         tv_nightMode.setText(setInfo.getNote());
         cb_nightMode.setChecked(setInfo.isNightMode());
@@ -72,15 +68,11 @@ public class CommunicationInterceptionSet extends Activity implements View.OnCli
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.back:
-                this.finish();
-                overridePendingTransition(R.anim.activit3dtoright_in, R.anim.activit3dtoright_out);
-                break;
             case R.id.ll_nightmode:
                 if (setInfo.isNightMode()) {
                     setInfo.setIsNightMode(false);
                     operation.commitInterceptionSetInfo(setInfo);
-                    makeToast("已关闭夜间免打扰模式!");
+                    makeToast(getResources().getString(R.string.toast_closed_night_mode));
                     cb_nightMode.setChecked(false);
                     return;
                 }
@@ -114,7 +106,7 @@ public class CommunicationInterceptionSet extends Activity implements View.OnCli
         et_beginH.setText(setInfo.getBeginHour()+"");
         et_beginM.setText(setInfo.getBeginMinute()+"");
         et_endH.setText(setInfo.getEndHour()+"");
-        et_endM.setText(setInfo.getEndMinute()+"");
+        et_endM.setText(setInfo.getEndMinute() + "");
 
         cb_1.setChecked(setInfo.getWeekEnable()[1]);
         cb_2.setChecked(setInfo.getWeekEnable()[2]);
@@ -127,8 +119,9 @@ public class CommunicationInterceptionSet extends Activity implements View.OnCli
         rbs[setInfo.getNightMode()].setChecked(true);
 
         final MyDialog dialog = new MyDialog(this);
-        dialog.setTitle("夜间免打扰模式");
+        dialog.setTitle(getResources().getString(R.string.dialog_title_night_mode));
         dialog.setMessageView(contentView);
+        dialog.setCancelable(false);
 
         dialog.setPositiveListener(new View.OnClickListener() {
             @Override
@@ -140,14 +133,9 @@ public class CommunicationInterceptionSet extends Activity implements View.OnCli
                 eh = Integer.parseInt(et_endH.getText().toString().trim());
                 em = Integer.parseInt(et_endM.getText().toString().trim());
                 if (bh > 23 || eh > 23 || bm > 59 || em > 59) {
-                    makeToast("时间格式不对");
+                    makeToast(getResources().getString(R.string.toast_error_time_format_error));
                     return;
                 }
-//                } catch (NumberFormatException e) {
-//                    makeToast("时间格式不对");
-//                    e.printStackTrace();
-//                    return;
-//                }
                 boolean[] weekEnable = {cb_7.isChecked(),
                         cb_1.isChecked(),
                         cb_2.isChecked(),
@@ -164,7 +152,7 @@ public class CommunicationInterceptionSet extends Activity implements View.OnCli
                 InterceptionSetInfo info = new InterceptionSetInfo(setInfo.getMode(),true,bh,bm,eh,em,weekEnable,nightMode);
                 operation.commitInterceptionSetInfo(info);
                 setInfo = info;
-                makeToast("已开启夜间免打扰模式！");
+                makeToast(getResources().getString(R.string.toast_opened_night_mode));
                 init();
                 dialog.dismiss();
             }

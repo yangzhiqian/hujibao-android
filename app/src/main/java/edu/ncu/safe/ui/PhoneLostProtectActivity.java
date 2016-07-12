@@ -10,8 +10,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -35,9 +33,10 @@ import edu.ncu.safe.R;
 import edu.ncu.safe.View.MyDialog;
 import edu.ncu.safe.adapter.ContactsDialogAdapter;
 import edu.ncu.safe.engine.ContactsService;
+import edu.ncu.safe.myadapter.MyAppCompatActivity;
 import edu.ncu.safe.receiver.AdminReceiver;
 
-public class PhoneLostProtectActivity extends AppCompatActivity implements
+public class PhoneLostProtectActivity extends MyAppCompatActivity implements
 		OnClickListener, OnCheckedChangeListener {
 	public static final String[] ORDERS = {"#*delete*#","#*lock*#","#*ring*#","#*pwd*#","#*location*#"};
 	public static final String DEFAULT_PWD = "123456";
@@ -79,13 +78,12 @@ public class PhoneLostProtectActivity extends AppCompatActivity implements
 	private LinearLayout ll_introduction;
 	private RotateAnimation clockwiseRotate;
 	private RotateAnimation contraRotate;
-	private Toolbar toolbar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_phonelostprotector);
-		initToolBar();
+		initToolBar(getResources().getString(R.string.title_phone_lost_protector));
 		swapLine = this.findViewById(R.id.swapline);
 		iv_protect = (ImageView) this.findViewById(R.id.iv_protect);
 		cb_message = (CheckBox) this.findViewById(R.id.cb_message);
@@ -125,22 +123,6 @@ public class PhoneLostProtectActivity extends AppCompatActivity implements
 		ll_device.setOnClickListener(this);
 		ll_introduction.setOnClickListener(this);
 		init();
-	}
-
-	private void initToolBar() {
-		toolbar = (Toolbar) findViewById(R.id.id_toolbar);
-		setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);// 隐藏标题
-//        getSupportActionBar().setIcon(R.drawable.user);//设置图标
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);// 是否显示返回按钮
-		toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				finish();
-				overridePendingTransition(R.anim.activit3dtoright_in,
-						R.anim.activit3dtoright_out);
-			}
-		});
 	}
 
 	private void init() {

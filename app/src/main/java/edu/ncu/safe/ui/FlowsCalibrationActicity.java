@@ -1,6 +1,5 @@
 package edu.ncu.safe.ui;
 
-import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,20 +12,19 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.db.dao.FlowsDatabase;
+import edu.ncu.safe.myadapter.MyAppCompatActivity;
 import edu.ncu.safe.util.FlowsFormartUtil;
 import edu.ncu.safe.util.FormatDate;
 
-public class FlowsCalibrationActicity extends Activity implements OnClickListener {
+public class FlowsCalibrationActicity extends MyAppCompatActivity implements OnClickListener {
 	private static final String[] MESSAGES = { "cxll", "CXLL", "1081" };
 	private static final String[] NUMBERS = { "10086", "10010", "10001" };
 
-	private ImageView iv_back;
 	private LinearLayout ll_messageCelibration;
 	private EditText et_flowsRemian;
 	private EditText et_flowsTotal;
@@ -37,19 +35,17 @@ public class FlowsCalibrationActicity extends Activity implements OnClickListene
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_flowscalibration);
-
+		initToolBar(getResources().getString(R.string.title_flows_calibration));
 		database = new FlowsDatabase(this);
 		sp = getSharedPreferences(
 				FlowsProtectorActivity.FLOWSSHAREDPREFERENCES,
 				Context.MODE_MULTI_PROCESS);
 
-		iv_back = (ImageView) this.findViewById(R.id.back);
 		ll_messageCelibration = (LinearLayout) this
 				.findViewById(R.id.ll_messagecelibration);
 		et_flowsRemian = (EditText) this.findViewById(R.id.et_flowsremain);
 		et_flowsTotal = (EditText) this.findViewById(R.id.et_flowstotal);
 
-		iv_back.setOnClickListener(this);
 		ll_messageCelibration.setOnClickListener(this);
 		et_flowsRemian.setOnClickListener(this);
 		et_flowsTotal.setOnClickListener(this);
@@ -79,11 +75,6 @@ public class FlowsCalibrationActicity extends Activity implements OnClickListene
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.back:
-			finish();
-			overridePendingTransition(R.anim.activit3dtoright_in,
-					R.anim.activit3dtoright_out);
-			break;
 		case R.id.ll_messagecelibration:
 			Builder builder = new Builder(this);
 			builder.setTitle("选择运营商");

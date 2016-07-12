@@ -1,6 +1,5 @@
 package edu.ncu.safe.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,17 +8,17 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.View.MyProgressBar;
 import edu.ncu.safe.db.dao.FlowsDatabase;
+import edu.ncu.safe.myadapter.MyAppCompatActivity;
 import edu.ncu.safe.util.FlowsFormartUtil;
 import edu.ncu.safe.util.FormatDate;
 
-public class FlowsProtectorActivity extends Activity implements OnClickListener {
+public class FlowsProtectorActivity extends MyAppCompatActivity implements OnClickListener {
 
     public static final String FLOWSSHAREDPREFERENCES = "flowsconfig";// sharedpreferences名字
     public static final String FLOWSTOTAL = "flowstotal";// 用户输入的当月总流量
@@ -35,15 +34,13 @@ public class FlowsProtectorActivity extends Activity implements OnClickListener 
     private TextView tv_day;
     private LinearLayout ll_calibration;
     private LinearLayout ll_flows;
-    private ImageView iv_back;
     private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flowsmanager);
-
-        iv_back = (ImageView) this.findViewById(R.id.back);
+        initToolBar(getResources().getString(R.string.title_flows_protector));
         ll_calibration = (LinearLayout) this.findViewById(R.id.calibration);
         ll_flows = (LinearLayout) this.findViewById(R.id.flows);
         tv_month = (TextView) this.findViewById(R.id.tv_currentmonth);
@@ -54,7 +51,6 @@ public class FlowsProtectorActivity extends Activity implements OnClickListener 
         sp = this.getSharedPreferences(FLOWSSHAREDPREFERENCES,
                 Context.MODE_MULTI_PROCESS);
 
-        iv_back.setOnClickListener(this);
         ll_calibration.setOnClickListener(this);
         ll_flows.setOnClickListener(this);
     }
@@ -96,10 +92,6 @@ public class FlowsProtectorActivity extends Activity implements OnClickListener 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.back:
-                this.finish();
-                overridePendingTransition(R.anim.activit3dtoright_in, R.anim.activit3dtoright_out);
-                break;
             case R.id.calibration:
                 toAntherAvitvity(FlowsCalibrationActicity.class);
                 break;
