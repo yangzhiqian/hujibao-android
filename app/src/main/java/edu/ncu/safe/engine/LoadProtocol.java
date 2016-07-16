@@ -1,7 +1,6 @@
 package edu.ncu.safe.engine;
 
 import android.content.Context;
-import android.util.Log;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -13,8 +12,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import edu.ncu.safe.R;
-import edu.ncu.safe.ui.ProtocolActivity;
 
+/**
+ * 用户从服务器加载app说明
+ */
 public class LoadProtocol {
 	Context context;
 
@@ -25,14 +26,12 @@ public class LoadProtocol {
 	public String loadProtocol() throws IOException, XmlPullParserException {
 		try {
 			String path = context.getResources()
-					.getString(R.string.protocolurl);
+					.getString(R.string.protocol);
 			URL url = new URL(path);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setConnectTimeout(5000);
 			conn.setRequestMethod("GET");
 			InputStream is = conn.getInputStream();
-			
-
 			XmlPullParser parser = Xml.newPullParser();
 			parser.setInput(is, "utf-8");
 			int type = parser.getEventType();
@@ -47,7 +46,7 @@ public class LoadProtocol {
 				type = parser.next();
 			}
 		} catch (Exception e) {
-			Log.i(ProtocolActivity.TAG, e.getMessage());
+			e.printStackTrace();
 		}
 		return null;
 	}

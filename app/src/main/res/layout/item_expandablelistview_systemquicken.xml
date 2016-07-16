@@ -16,14 +16,14 @@
         android:text="title"
         android:layout_marginLeft="5dp"
         android:textColor="#000000"
-        android:textSize="18sp"/>
+        android:textSize="@dimen/text_size_short"/>
     <TextView
         android:id="@+id/tv_parentsize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0B"
         android:textColor="#55333333"
-        android:textSize="16sp"
+        android:textSize="@dimen/text_size_small"
         android:layout_marginRight="5dp"/>
     <CheckBox
         android:id="@+id/cb_parentcheck"

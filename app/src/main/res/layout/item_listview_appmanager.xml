@@ -27,7 +27,7 @@
             android:singleLine="true"
             android:text="application"
             android:textColor="#111111"
-            android:textSize="18sp" />
+            android:textSize="@dimen/text_size_short" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -37,17 +37,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="占用内存" />
+                android:textSize="@dimen/text_size_minimum"
+                android:text="@string/app_manager_memory_token" />
             <TextView
                 android:id="@+id/tv_memory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
+                android:textSize="@dimen/text_size_minimum"
                 android:textColor="#6cbd45"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="MB" />
+                android:text="MB"
+                android:textSize="@dimen/text_size_minimum"/>
         </LinearLayout>
     </LinearLayout>
     <ImageView

@@ -13,7 +13,6 @@ import java.util.List;
 
 import edu.ncu.safe.adapter.BackupLVAdapter;
 import edu.ncu.safe.domain.SmsInfo;
-import edu.ncu.safe.domain.User;
 import edu.ncu.safe.domainadapter.ITarget;
 import edu.ncu.safe.domainadapter.MessageAdapter;
 import edu.ncu.safe.engine.SmsService;
@@ -23,8 +22,8 @@ import edu.ncu.safe.myadapter.BackupBaseFragment;
  * Created by Mr_Yang on 2016/6/1.
  */
 public class MessageBackupFragment extends BackupBaseFragment {
-    public MessageBackupFragment(User user,int type){
-        super(user, type);
+    public MessageBackupFragment(int type){
+        super(type);
     }
     @Override
     public void init() {

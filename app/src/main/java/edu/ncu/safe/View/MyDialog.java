@@ -23,7 +23,7 @@ public class MyDialog extends Dialog{
     private LinearLayout ll_NO;
     private TextView tv_YES;
     private TextView tv_NO;
-    private int maxHeight = 300;
+    private int maxHeight = 600;
 
     private View.OnClickListener positiveListener;
     private View.OnClickListener negativeListener;
@@ -42,7 +42,7 @@ public class MyDialog extends Dialog{
         ll_YES = (LinearLayout) view.findViewById(R.id.ll_YES);
         ll_NO = (LinearLayout) view.findViewById(R.id.ll_NO);
         tv_YES = (TextView) view.findViewById(R.id.tv_YES);
-        tv_YES = (TextView) view.findViewById(R.id.tv_NO);
+        tv_NO = (TextView) view.findViewById(R.id.tv_NO);
 
         ll_YES.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,9 +123,9 @@ public class MyDialog extends Dialog{
      */
     public void ShowYESNO(boolean b){
         if(b){
-            ll_YESNO.setVisibility(View.GONE);
-        }else{
             ll_YESNO.setVisibility(View.VISIBLE);
+        }else{
+            ll_YESNO.setVisibility(View.GONE);
         }
     }
 

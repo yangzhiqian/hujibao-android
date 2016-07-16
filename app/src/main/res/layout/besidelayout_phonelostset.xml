@@ -31,9 +31,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dip"
-                android:text="防盗密码修改"
+                android:text="@string/phone_lost_protector_item_modify_pwd"
                 android:textColor="#111111"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_size_short" />
         </LinearLayout>
 
         <LinearLayout
@@ -56,9 +56,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dip"
-                android:text="号码设置"
+                android:text="@string/phone_lost_protector_item_number_set"
                 android:textColor="#111111"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_size_short" />
         </LinearLayout>
 
         <LinearLayout
@@ -81,9 +81,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dip"
-                android:text="设备管理者激活与反激活"
+                android:text="@string/phone_lost_protector_item_change_device_admin"
                 android:textColor="#111111"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_size_short" />
         </LinearLayout>
 
         <LinearLayout
@@ -106,9 +106,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dip"
-                android:text="模块功能介绍"
+                android:text="@string/phone_lost_protector_item_introduce"
                 android:textColor="#111111"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_size_short" />
         </LinearLayout>
     </LinearLayout>
 

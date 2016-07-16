@@ -1,6 +1,5 @@
 package edu.ncu.safe.myadapter;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ncu.safe.R;
+import edu.ncu.safe.View.MyDialog;
 import edu.ncu.safe.db.dao.CommunicationDatabase;
 import edu.ncu.safe.domain.WhiteBlackNumberInfo;
+import edu.ncu.safe.util.MyUtil;
 
 public abstract class MyLIstViewBaseAdapter extends BaseAdapter {
 	protected static final int TYPE_WHITE = 0;
@@ -70,15 +71,10 @@ public abstract class MyLIstViewBaseAdapter extends BaseAdapter {
 	 */
 	protected void showConfirmDialog(String title,String message, final int button,
 			final int position) {
-		final Dialog dialog = new Dialog(context, R.style.MyDialog);
-		View view = LayoutInflater.from(context).inflate(R.layout.dialog_confirm, null);
-		TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
-		tv_title.setText(title);
-		TextView tv_message = (TextView) view.findViewById(R.id.tv_message);
-		tv_message.setText(message);
-		LinearLayout ll_yes = (LinearLayout) view.findViewById(R.id.ll_YES);
-		LinearLayout ll_no = (LinearLayout) view.findViewById(R.id.ll_NO);
-		ll_yes.setOnClickListener(new OnClickListener() {
+		final MyDialog myDialog = new MyDialog(context);
+		myDialog.setTitle(title);
+		myDialog.setMessage(message);
+		myDialog.setPositiveListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if (button == BUTTON1) {
@@ -87,17 +83,10 @@ public abstract class MyLIstViewBaseAdapter extends BaseAdapter {
 				if (button == BUTTON2) {
 					doWhileButton2OKClicked(position);
 				}
-				dialog.dismiss();
+				myDialog.dismiss();
 			}
 		});
-		ll_no.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				dialog.dismiss();
-			}
-		});
-		dialog.setContentView(view);
-		dialog.show();
+		myDialog.show();
 	}
 
 
@@ -106,47 +95,46 @@ public abstract class MyLIstViewBaseAdapter extends BaseAdapter {
 	 * @param position   对话框对应的信息position
 	 */
 	protected void showMoreDialog(final int position) {
-		final Dialog dialog = new Dialog(context, R.style.MyDialog);
-		View view = LayoutInflater.from(context).inflate(R.layout.dialog_more,
-				null);
+		final MyDialog myDialog = new MyDialog(context);
+		myDialog.setTitle(context.getResources().getString(R.string.dialog_title_normal_tip));
+		View view = LayoutInflater.from(context).inflate(R.layout.dialog_more, null);
 		ListView lv_more = (ListView) view.findViewById(R.id.lv_more);
-
 		myDialogListViewAdapter = new MyDialogListViewAdapter();
 		lv_more.setAdapter(myDialogListViewAdapter);
 		lv_more.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> viewGroup, View view, int posit,
-					long id) {
-				doWhileButton3ItemClicked(position,posit);
-				dialog.dismiss();
+									long id) {
+				doWhileButton3ItemClicked(position, posit);
+				myDialog.dismiss();
 			}
 		});
-		dialog.setContentView(view);
-		dialog.show();
+		myDialog.setMessageView(view);
+		myDialog.show();
 	}
 	
 	protected void showEditList(String title, String number,final int type) {
-		final Dialog dialog = new Dialog(context, R.style.MyDialog);
+		final MyDialog myDialog = new MyDialog(context);
+		myDialog.setTitle(title);
 		View view = LayoutInflater.from(context).inflate(
 				R.layout.dialog_whiteblacklist_number, null);
-
-		TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
-		tv_title.setText(title);
 		final EditText et_number = (EditText) view.findViewById(R.id.et_number);
 		et_number.setText(number);
 		final EditText et_note = (EditText) view.findViewById(R.id.et_note);
 		final CheckBox cb_message = (CheckBox) view.findViewById(R.id.cb_msg);
 		final CheckBox cb_phone = (CheckBox) view.findViewById(R.id.cb_phone);
-		LinearLayout ll_yes = (LinearLayout) view.findViewById(R.id.ll_YES);
-		LinearLayout ll_no = (LinearLayout) view.findViewById(R.id.ll_NO);
-
-		ll_yes.setOnClickListener(new OnClickListener() {
+		myDialog.setMessageView(view);
+		myDialog.setPositiveListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// 添加
 				String number = et_number.getText().toString().trim();
 				if ("".equals(number)) {
-					Toast.makeText(context, "号码不能为空", 1);
+					et_number.setError(context.getResources().getString(R.string.error_number_can_not_empty));
+					return;
+				}
+				if (!MyUtil.isMobileNO(number)){
+					et_number.setError(context.getResources().getString(R.string.error_number_format));
 					return;
 				}
 				String note = et_note.getText().toString().trim();
@@ -154,33 +142,24 @@ public abstract class MyLIstViewBaseAdapter extends BaseAdapter {
 				boolean isSms = cb_message.isChecked();
 				WhiteBlackNumberInfo info = new WhiteBlackNumberInfo(number,
 						note, isSms, isPhoneCall);
-
-
-				if(type==TYPE_WHITE){
-					if(database.insertWhiteNumber(info)) {
-						Toast.makeText(context, "号码" + info.getNumber() + "已添加到白名单中", 1).show();
-					}else{
-						Toast.makeText(context, "添加失败，可能号码" + info.getNumber() + "已经在黑白白名单中", 1).show();
+				if (type == TYPE_WHITE) {
+					if (database.insertWhiteNumber(info)) {
+						makeToast(String.format(context.getResources().getString(R.string.toast_succeed_to_add_white_list),info.getNumber()));
+					} else {
+						makeToast(String.format(context.getResources().getString(R.string.toast_fail_to_add_white_list),info.getNumber()));
 					}
 				}
-				if(type==TYPE_BLACK){
-					if(database.insertBlackNumber(info)) {
-						Toast.makeText(context, "号码" + info.getNumber() + "已添加到黑名单中", 1).show();
-					} else{
-						Toast.makeText(context, "添加失败，可能号码" + info.getNumber() + "已经在黑白白名单中", 1).show();
+				if (type == TYPE_BLACK) {
+					if (database.insertBlackNumber(info)) {
+						makeToast(String.format(context.getResources().getString(R.string.toast_succeed_to_add_black_list),info.getNumber()));
+					} else {
+						makeToast(String.format(context.getResources().getString(R.string.toast_fail_to_add_black_list),info.getNumber()));
 					}
 				}
-				dialog.dismiss();
+				myDialog.dismiss();
 			}
 		});
-		ll_no.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				dialog.dismiss();
-			}
-		});
-		dialog.setContentView(view);
-		dialog.show();
+		myDialog.show();
 	}
 
 

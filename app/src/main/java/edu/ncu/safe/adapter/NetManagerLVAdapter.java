@@ -1,20 +1,17 @@
 package edu.ncu.safe.adapter;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.domain.UserAppNetInfo;
-import edu.ncu.safe.engine.IpTable;
 
 /**
  * Created by Mr_Yang on 2016/5/21.
@@ -22,16 +19,19 @@ import edu.ncu.safe.engine.IpTable;
 public class NetManagerLVAdapter extends BaseAdapter implements View.OnClickListener {
     private Context context;
     private List<UserAppNetInfo> infos;
-    private SharedPreferences sp;
+    private OnNetChangeClickedListener listener;
 
-    public NetManagerLVAdapter(Context context,SharedPreferences sp) {
-        this(context,sp,new ArrayList<UserAppNetInfo>());
+    public NetManagerLVAdapter(Context context) {
+        this(context,new ArrayList<UserAppNetInfo>());
     }
 
-    public NetManagerLVAdapter(Context context,SharedPreferences sp, List<UserAppNetInfo> infos) {
+    public NetManagerLVAdapter(Context context,List<UserAppNetInfo> infos) {
         this.context = context;
         this.infos = infos;
-        this.sp = sp;
+    }
+
+    public void setOnNetChangeClickedListener(OnNetChangeClickedListener listener){
+        this.listener = listener;
     }
 
     public List<UserAppNetInfo> getInfos() {
@@ -89,41 +89,13 @@ public class NetManagerLVAdapter extends BaseAdapter implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        if(!IpTable.hasRootAccess(context)){
-            Toast.makeText(context,"护机宝没有取得root权限，无法使用防火墙功能！",Toast.LENGTH_LONG).show();
-            return;
-        }
-        int position = (int) v.getTag();
-        switch (v.getId()){
-            case R.id.iv_GPRS:
-                String GPRSS = sp.getString(IpTable.PERFS_GPRS,"");
-                if(!infos.get(position).isGPRS()){
-                    GPRSS = GPRSS.replace(infos.get(position).getUid() + "", "");
-                    GPRSS = GPRSS.replace("||", "|");
-                }else{
-                    GPRSS=GPRSS+"|"+infos.get(position).getUid();
-                }
-                infos.get(position).setIsGPRS(!infos.get(position).isGPRS());
-                ((ImageView)v).setImageResource(infos.get(position).isGPRS() ? R.drawable.yes : R.drawable.no);
-                SharedPreferences.Editor edit = sp.edit();
-                edit.putString(IpTable.PERFS_GPRS,GPRSS);
-                edit.apply();
-                break;
-            case R.id.iv_WIFI:
-                String WIFIS = sp.getString(IpTable.PERFS_WIFI,"");
-                if(!infos.get(position).isWIFI()){
-                    WIFIS = WIFIS.replace(infos.get(position).getUid() + "","");
-                    WIFIS =WIFIS.replace("||","|");
-                }else{
-                    WIFIS=WIFIS+"|"+infos.get(position).getUid();
-                }
-                infos.get(position).setIsWIFI(!infos.get(position).isWIFI());
-                ((ImageView)v).setImageResource(infos.get(position).isWIFI() ? R.drawable.yes : R.drawable.no);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString(IpTable.PERFS_WIFI,WIFIS);
-                editor.apply();
-                break;
-        }
+       if(listener!=null){
+           listener.onNetChangedClicked(v);
+       }
+    }
+
+    public interface OnNetChangeClickedListener{
+        void onNetChangedClicked(View v);
     }
 
     class ViewHolder{

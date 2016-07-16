@@ -25,7 +25,7 @@
             android:layout_weight="1"
             android:text="address"
             android:textColor="#111111"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size_small"
             />
         
         <TextView 
@@ -35,7 +35,7 @@
             android:text="time"
             android:textColor="#77111111"
             android:layout_marginRight="20dip"
-            android:textSize="15sp"
+            android:textSize="@dimen/text_size_minimum"
             />
     </LinearLayout>
     
@@ -53,7 +53,7 @@
             android:textColor="#77111111"
              android:gravity="center_vertical"
             android:layout_marginRight="20dip"
-            android:textSize="15sp"
+            android:textSize="@dimen/text_size_minimum"
             />
     </LinearLayout>
     
@@ -81,8 +81,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#EEEEEE"
-                android:textSize="16dip"
-                android:text="删除"/>
+                android:textSize="@dimen/text_size_small"
+                android:text="@string/dialog_del"/>
         </LinearLayout>
         
         <LinearLayout 
@@ -98,8 +98,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#EEEEEE"
-                android:textSize="16dip"
-                android:text="恢复"/>
+                android:textSize="@dimen/text_size_small"
+                android:text="@string/dialog_recovery"/>
         </LinearLayout>
         
         <LinearLayout 
@@ -115,8 +115,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#EEEEEE"
-                android:textSize="16dip"
-                android:text="更多"/>
+                android:textSize="@dimen/text_size_small"
+                android:text="@string/dialog_title_more"/>
         </LinearLayout>
     </LinearLayout>
 

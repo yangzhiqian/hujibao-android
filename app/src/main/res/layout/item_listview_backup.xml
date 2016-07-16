@@ -48,19 +48,21 @@
                     android:singleLine="true"
                     android:text="application"
                     android:textColor="#111111"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/text_size_short" />
                 <TextView
                     android:id="@+id/tv_size"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0B" />
+                    android:text="0B"
+                    android:textSize="@dimen/text_size_minimum"/>
             </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_note"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="占用内存" />
+                android:text="note"
+                android:textSize="@dimen/text_size_minimum"/>
         </LinearLayout>
 
 

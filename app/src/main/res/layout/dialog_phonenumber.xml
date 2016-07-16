@@ -10,6 +10,7 @@
         android:id="@+id/usernumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="@string/dialog_edittext_hine_user_number"
         android:phoneNumber="true" />
 
     <LinearLayout
@@ -23,6 +24,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:hint="@string/dialog_edittext_hine_safe_number"
             android:phoneNumber="true" />
 
         <ImageView

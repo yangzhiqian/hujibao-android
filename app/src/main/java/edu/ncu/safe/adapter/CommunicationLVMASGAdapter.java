@@ -87,13 +87,13 @@ public class CommunicationLVMASGAdapter extends MyLIstViewBaseAdapter implements
         String note = infos.get(position).getName();
         switch (infos.get(position).getNumberType()) {
             case CommunicationDatabaseHelper.NUMBERTYPE_BLACK:
-                note += "(黑名单):";
+                note += context.getResources().getString(R.string.communication_interceptor_note_black_list);
                 break;
             case CommunicationDatabaseHelper.NUMBERTYPE_WHITE:
-                note += "(白名单):";
+                note += context.getResources().getString(R.string.communication_interceptor_note_white_list);
                 break;
             default:
-                note += "(普通):";
+                note += context.getResources().getString(R.string.communication_interceptor_note_normal_list);
                 break;
         }
         note += infos.get(position).getMessageBody();
@@ -124,10 +124,10 @@ public class CommunicationLVMASGAdapter extends MyLIstViewBaseAdapter implements
         int position = (Integer) v.getTag();
         switch (v.getId()) {
             case R.id.ll_delete:
-                showConfirmDialog("护机宝提示", "确定要删除该条信息吗？", BUTTON1, position);
+                showConfirmDialog(context.getResources().getString(R.string.dialog_title_normal_tip), context.getResources().getString(R.string.dialog_message_sure_to_del_msg), BUTTON1, position);
                 break;
             case R.id.ll_recovery:
-                showConfirmDialog("护机宝提示", "确定要恢复该条数据到信息里吗？", BUTTON2, position);
+                showConfirmDialog(context.getResources().getString(R.string.dialog_title_normal_tip), context.getResources().getString(R.string.dialog_message_sure_to_recovery_msg), BUTTON2, position);
                 break;
             case R.id.ll_more:
                 setDialogInfos(position);
@@ -138,17 +138,13 @@ public class CommunicationLVMASGAdapter extends MyLIstViewBaseAdapter implements
 
     private void setDialogInfos(int position) {
         dialogInfos.clear();
-        ItemInfo info1 = new ItemInfo(R.drawable.delete, "删除");
-        ItemInfo info2 = new ItemInfo(R.drawable.message_back, "恢复");
-        ItemInfo info3 = new ItemInfo(R.drawable.message, "给"
-                + infos.get(position).getNumber() + "回复短信");
-        ItemInfo info4 = new ItemInfo(R.drawable.phone, "给"
-                + infos.get(position).getNumber() + "回拨电话");
-        ItemInfo info5 = new ItemInfo(R.drawable.whitelist, "添加"
-                + infos.get(position).getNumber() + "为白名单");
-        ItemInfo info6 = new ItemInfo(R.drawable.blacklist, "添加"
-                + infos.get(position).getNumber() + "为黑名单");
-        ItemInfo info7 = new ItemInfo(R.drawable.cancel, "取消");
+        ItemInfo info1 = new ItemInfo(R.drawable.delete, context.getResources().getString(R.string.dialog_del));
+        ItemInfo info2 = new ItemInfo(R.drawable.message_back, context.getResources().getString(R.string.dialog_recovery));
+        ItemInfo info3 = new ItemInfo(R.drawable.message, String.format(context.getResources().getString(R.string.dialog_back_message_to),infos.get(position).getNumber()));
+        ItemInfo info4 = new ItemInfo(R.drawable.phone,  String.format(context.getResources().getString(R.string.dialog_back_call_to),infos.get(position).getNumber()));
+        ItemInfo info5 = new ItemInfo(R.drawable.whitelist, String.format(context.getResources().getString(R.string.dialog_set_to_white_list),infos.get(position).getNumber()));
+        ItemInfo info6 = new ItemInfo(R.drawable.blacklist,  String.format(context.getResources().getString(R.string.dialog_set_to_black_list),infos.get(position).getNumber()));
+        ItemInfo info7 = new ItemInfo(R.drawable.cancel, context.getResources().getString(R.string.dialog_cancle));
 
         dialogInfos.add(info1);
         dialogInfos.add(info2);
@@ -163,9 +159,9 @@ public class CommunicationLVMASGAdapter extends MyLIstViewBaseAdapter implements
     @Override
     protected void doWhileButton1OKClicked(int position) {
         if (deleteItem(position)) {
-            makeToast("删除完成");
+            makeToast(context.getResources().getString(R.string.toast_del_succeed));
         }else{
-            makeToast("删除失败，请重试！");
+            makeToast(context.getResources().getString(R.string.toast_del_fail));
         }
     }
 
@@ -191,9 +187,9 @@ public class CommunicationLVMASGAdapter extends MyLIstViewBaseAdapter implements
         if(sms.recoveryOneSms(infos.get(position).toSmsInfo())){
             // 删除此条记录
             deleteItem(position);
-            makeToast("短信已经恢复到短信列表");
+            makeToast(context.getResources().getString(R.string.toast_succeed_to_recovery_msg));
         }else{
-            makeToast("恢复失败，请重试！");
+            makeToast(context.getResources().getString(R.string.toast_fail_to_recovery_msg));
         }
     }
 
@@ -202,11 +198,13 @@ public class CommunicationLVMASGAdapter extends MyLIstViewBaseAdapter implements
         switch (innerPosition) {
             case 0:
                 // 删除
-                showConfirmDialog("护机宝提示", "确定要删除该条信息吗？", BUTTON1, position);
+                showConfirmDialog(context.getResources().getString(R.string.dialog_title_normal_tip),
+                        context.getResources().getString(R.string.dialog_message_sure_to_del_msg), BUTTON1, position);
                 break;
             case 1:
                 // 恢复
-                showConfirmDialog("护机宝提示", "确定要恢复该条数据到信息里吗？", BUTTON2, position);
+                showConfirmDialog(context.getResources().getString(R.string.dialog_title_normal_tip),
+                        context.getResources().getString(R.string.dialog_message_sure_to_recovery_msg), BUTTON2, position);
                 break;
             case 2:
                 // 回信
@@ -218,10 +216,10 @@ public class CommunicationLVMASGAdapter extends MyLIstViewBaseAdapter implements
                 break;
             case 4:
                 // 添加为白名单
-                showEditList("添加白名单", infos.get(position).getNumber(), TYPE_WHITE);
+                showEditList(context.getResources().getString(R.string.dialog_title_add_white_list), infos.get(position).getNumber(), TYPE_WHITE);
                 break;
             case 5:
-                showEditList("添加黑名单", infos.get(position).getNumber(), TYPE_BLACK);
+                showEditList(context.getResources().getString(R.string.dialog_title_add_black_list), infos.get(position).getNumber(), TYPE_BLACK);
                 // 添加为黑名单
                 break;
             case 6:

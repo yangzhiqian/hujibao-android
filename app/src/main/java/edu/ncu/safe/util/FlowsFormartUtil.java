@@ -4,23 +4,23 @@ public class FlowsFormartUtil {
 	public static String toFlowsFormart(long flowsByte){
 		float flowsK = ((float)flowsByte)/1024;
 		if(flowsK<=1){
-			return flowsByte+"Byte";
+			return flowsByte+"B";
 		}
 		float flowsM = flowsK/1024;
 		if(flowsM<=1){
-			return String.format("%.2fKB", flowsK);
+			return String.format("%.2fK", flowsK);
 		}
 		
 		float flowsG = flowsM/1024;
 		if(flowsG<=1){
-			return  String.format("%.2fMB", flowsM);
+			return  String.format("%.2fM", flowsM);
 		}
 		
 		float flowsT = flowsG/1024;
 		if(flowsT<=1){
-			return  String.format("%.2fGB", flowsG);
+			return  String.format("%.2fG", flowsG);
 		}else{
-			return  String.format("%.2fTB", flowsT);
+			return  String.format("%.2fT", flowsT);
 		}
 	}
 	

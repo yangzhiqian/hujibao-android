@@ -27,7 +27,7 @@
             android:singleLine="true"
             android:text="application"
             android:textColor="#111111"
-            android:textSize="18sp" />
+            android:textSize="@dimen/text_size_short" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -37,16 +37,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="已使用流量" />
+                android:textSize="@dimen/text_size_minimum"
+                android:text="@string/flows_used" />
             <TextView
                 android:id="@+id/tv_flows"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
+                android:textSize="@dimen/text_size_minimum"
                 android:textColor="#6cbd45"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_minimum"
                 android:text="MB" />
         </LinearLayout>
     </LinearLayout>

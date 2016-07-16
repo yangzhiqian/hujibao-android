@@ -174,7 +174,5 @@ public class CommunicationInterceptionSet extends MyAppCompatActivity implements
         }
         return super.onKeyDown(keyCode, event);
     }
-    private void makeToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
+
 }

@@ -5,49 +5,51 @@
     android:background="@drawable/background"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="60dip"
-        android:padding="10dip">
+    <include layout="@layout/content_toolbar"/>
 
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="40dip"
-            android:layout_height="50dip"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:paddingBottom="10dip"
-            android:paddingRight="30dip"
-            android:paddingTop="10dip"
-            android:scaleType="fitXY"
-            android:src="@drawable/back" />
-        <TextView
-            android:id="@+id/tv_selectall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="全选"
-            android:visibility="gone"
-            android:textSize="22sp" />
+    <!--<RelativeLayout-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="60dip"-->
+        <!--android:padding="10dip">-->
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="数据备份"
-            android:textSize="25sp" />
+        <!--<ImageView-->
+            <!--android:id="@+id/back"-->
+            <!--android:layout_width="40dip"-->
+            <!--android:layout_height="50dip"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:paddingBottom="10dip"-->
+            <!--android:paddingRight="30dip"-->
+            <!--android:paddingTop="10dip"-->
+            <!--android:scaleType="fitXY"-->
+            <!--android:src="@drawable/back" />-->
+        <!--<TextView-->
+            <!--android:id="@+id/tv_selectall"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:text="全选"-->
+            <!--android:visibility="gone"-->
+            <!--android:textSize="22sp" />-->
 
-        <TextView
-            android:id="@+id/tv_mulitchoices"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="多选"
-            android:textSize="22sp" />
-    </RelativeLayout>
+        <!--<TextView-->
+            <!--android:id="@+id/tv_title"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:text="数据备份"-->
+            <!--android:textSize="25sp" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/tv_mulitchoices"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:text="多选"-->
+            <!--android:textSize="22sp" />-->
+    <!--</RelativeLayout>-->
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -16,16 +16,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:text="日    期"
-            android:textSize="20sp"
+            android:text="@string/date"
+            android:textSize="@dimen/text_size_normal"
             android:textColor="#111111"/>
         
          <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="使用流量"
-            android:textSize="20sp"
+            android:text="@string/flows_used"
+            android:textSize="@dimen/text_size_normal"
             android:textColor="#111111"/>
     </RelativeLayout>
     

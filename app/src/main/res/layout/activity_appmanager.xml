@@ -37,7 +37,7 @@
                 android:id="@+id/tv_appmanager"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="软件管理"
+                android:text="@string/app_manager_app_manager"
                 android:textColor="#09bb07"/>
         </LinearLayout>
 
@@ -60,7 +60,7 @@
                 android:id="@+id/tv_netmanager"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="网络管理"
+                android:text="@string/app_manager_net_manager"
                 android:textColor="#adadad"/>
         </LinearLayout>
     </LinearLayout>

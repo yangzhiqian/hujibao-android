@@ -11,8 +11,8 @@
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentLeft="true"
 	    android:layout_marginLeft="40dip"
-	    android:text="时间"
-	    android:textSize="23dp"
+	    android:text="date"
+	    android:textSize="@dimen/text_size_middle"
 	    android:textColor="#111111"/>
 	
 	<TextView 
@@ -21,7 +21,7 @@
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentRight="true"
 	    android:layout_marginRight="40dip"
-	    android:text="流量"
-	    android:textSize="23dp"
+	    android:text="flows"
+	    android:textSize="@dimen/text_size_middle"
 	    android:textColor="#dd3333"/>
 </RelativeLayout>

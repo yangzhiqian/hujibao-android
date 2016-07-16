@@ -1,9 +1,7 @@
 package edu.ncu.safe.ui;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -11,22 +9,14 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import edu.ncu.safe.MyApplication;
 import edu.ncu.safe.R;
 import edu.ncu.safe.View.MyProgressBar;
 import edu.ncu.safe.db.dao.FlowsDatabase;
 import edu.ncu.safe.myadapter.MyAppCompatActivity;
 import edu.ncu.safe.util.FlowsFormartUtil;
-import edu.ncu.safe.util.FormatDate;
 
 public class FlowsProtectorActivity extends MyAppCompatActivity implements OnClickListener {
-
-    public static final String FLOWSSHAREDPREFERENCES = "flowsconfig";// sharedpreferences名字
-    public static final String FLOWSTOTAL = "flowstotal";// 用户输入的当月总流量
-    public static final String DBFLOWSOFFSET = "dbflowsoffset";// 用户输入后用来矫正数据库的偏差
-    // 该值 = 正确的数 -
-    // 数据库记录的数（每个月月初对该值进行清零）
-    public static final String DBFLOWSOFFSETUPDATETIME = "dbflowsoffsetupdatetime";// dbflowsoffset跟新的时间
-
     private MyProgressBar myProgressBar;
     private FlowsDatabase database;
     private TextView tv_month;
@@ -34,7 +24,6 @@ public class FlowsProtectorActivity extends MyAppCompatActivity implements OnCli
     private TextView tv_day;
     private LinearLayout ll_calibration;
     private LinearLayout ll_flows;
-    private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +37,6 @@ public class FlowsProtectorActivity extends MyAppCompatActivity implements OnCli
         myProgressBar = (MyProgressBar) this.findViewById(R.id.mpb_flows);
 
         database = new FlowsDatabase(this);
-        sp = this.getSharedPreferences(FLOWSSHAREDPREFERENCES,
-                Context.MODE_MULTI_PROCESS);
 
         ll_calibration.setOnClickListener(this);
         ll_flows.setOnClickListener(this);
@@ -61,29 +48,16 @@ public class FlowsProtectorActivity extends MyAppCompatActivity implements OnCli
     }
 
     private void initViewData() {
-        long dbFlowsOffset = sp.getLong(DBFLOWSOFFSET, 0);
-        int offsetUpdateDate = sp.getInt(DBFLOWSOFFSETUPDATETIME, 0);
-        int currentDate = FormatDate.getCurrentFormatIntDate();
-        if (currentDate / 100 != offsetUpdateDate / 100) {
-            // offset时间和当月时间不同
-            dbFlowsOffset = 0;
-            // 更新配置文件
-            Editor editor = sp.edit();
-            editor.putLong("DBFLOWSOFFSET", 0);// 初始化
-            editor.putInt("DBFLOWSOFFSETUPDATETIME", currentDate);// 初始化
-            editor.apply();
-        }
-
+        SharedPreferences sp = MyApplication.getSharedPreferences();
+        long dbFlowsOffset = sp.getLong(MyApplication.SP_LONG_DB_OFFSET, 0);
         long monthFlows = database.queryCurrentMonthTotalFlows()
                 + dbFlowsOffset;
         long dayFlows = database.queryCurrentDayTotalFlows();
-
         monthFlows = monthFlows <= 0 ? 0 : monthFlows;
         dayFlows = dayFlows <= 0 ? 0 : dayFlows;
-
         tv_month.setText(FlowsFormartUtil.toMBFormat(monthFlows));
         tv_day.setText(FlowsFormartUtil.toMBFormat(dayFlows));
-        long total = sp.getLong(FLOWSTOTAL,0);
+        long total = sp.getLong(MyApplication.SP_LONG_TOTAL_FLOWS,0);
         if(total>0) {
             myProgressBar.setPercentSlow((int) (monthFlows * 100 / total));
         }

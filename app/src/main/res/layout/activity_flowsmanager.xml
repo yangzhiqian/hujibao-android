@@ -35,8 +35,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="本月已用:"
-                android:textSize="20sp" />
+                android:text="@string/flows_protector_used_month"
+                android:textSize="@dimen/text_size_normal" />
 
             <TextView
                 android:id="@+id/tv_currentmonth"
@@ -45,13 +45,13 @@
                 android:singleLine="true"
                 android:text="0"
                 android:textColor="#11cc11"
-                android:textSize="30sp" />
+                android:textSize="@dimen/text_size_xbig" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="MB"
-                android:textSize="20sp" />
+                android:textSize="@dimen/text_size_normal" />
         </LinearLayout>
 
         <LinearLayout
@@ -60,21 +60,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="今天已用:"
-                android:textSize="20sp" />
+                android:text="@string/flows_protector_used_day"
+                android:textSize="@dimen/text_size_normal" />
             <TextView
                 android:id="@+id/tv_currentday"
                 android:layout_width="80dip"
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:textColor="#11cc11"
-                android:textSize="30sp" />
+                android:textSize="@dimen/text_size_xbig" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="MB"
-                android:textSize="20sp" />
+                android:textSize="@dimen/text_size_normal" />
         </LinearLayout>
     </LinearLayout>
 
@@ -83,10 +83,8 @@
         style="@style/item"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingBottom="10dip"
         android:paddingLeft="20dip"
-        android:paddingRight="10dip"
-        android:paddingTop="10dip">
+        android:paddingRight="10dip">
 
         <ImageView
             android:layout_width="40dip"
@@ -103,16 +101,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="流量校准"
+                android:text="@string/flows_protector_flows_calibration"
                 android:textColor="#000"
-                android:textSize="22dp" />
+                android:textSize="@dimen/text_size_normal" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="准确掌握流量的使用情况"
+                android:text="@string/flows_protector_flows_calibration_note"
                 android:textColor="#333333"
-                android:textSize="16dp" />
+                android:textSize="@dimen/text_size_minimum" />
         </LinearLayout>
 
         <ImageView
@@ -146,16 +144,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="流量详单"
+                android:text="@string/flows_protector_flows_detail"
                 android:textColor="#000"
-                android:textSize="22dp" />
+                android:textSize="@dimen/text_size_normal" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="看看你的流量都去哪里了"
+                android:text="@string/flows_protector_flows_detail_note"
                 android:textColor="#333333"
-                android:textSize="16dp" />
+                android:textSize="@dimen/text_size_minimum" />
         </LinearLayout>
 
         <ImageView

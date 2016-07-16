@@ -7,7 +7,7 @@
     android:gravity="center_horizontal">
 
     <LinearLayout
-        android:layout_width="250dip"
+        android:layout_width="280dip"
         android:layout_height="wrap_content"
         android:background="@color/theme"
         android:gravity="center"
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:text="护机宝提示"
             android:textColor="#FFFFFF"
-            android:textSize="@dimen/text_size_big" />
+            android:textSize="@dimen/text_size_middle" />
     </LinearLayout>
 
     <LinearLayout
@@ -43,7 +43,9 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/dialg_default_message"
-            android:textSize="@dimen/text_size_middle"
+            android:textSize="@dimen/text_size_short"
+            android:ellipsize="marquee"
+            android:singleLine="false"
             android:textColor="#000000"/>
     </LinearLayout>
 
@@ -62,8 +64,10 @@
         android:orientation="horizontal" >
         <LinearLayout
             android:id="@+id/ll_YES"
-            android:layout_width="70dip"
-            android:layout_height="30dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:background="@drawable/button_click_selector"
             android:gravity="center"
 
@@ -79,8 +83,10 @@
         </LinearLayout>
         <LinearLayout
             android:id="@+id/ll_NO"
-            android:layout_width="70dip"
-            android:layout_height="30dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:background="@drawable/button_click_selector"
             android:gravity="center"
             android:layout_marginLeft="20dip"

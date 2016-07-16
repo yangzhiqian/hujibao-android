@@ -1,6 +1,5 @@
 package edu.ncu.safe.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -17,7 +16,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -33,11 +31,11 @@ import java.util.UUID;
 import edu.ncu.safe.R;
 import edu.ncu.safe.View.CircleImageView;
 import edu.ncu.safe.domain.User;
+import edu.ncu.safe.myadapter.MyAppCompatActivity;
 import edu.ncu.safe.util.MD5Encoding;
 
-public class RegistActivity extends Activity implements OnClickListener {
+public class RegistActivity extends MyAppCompatActivity implements OnClickListener {
 
-    private static final int REQUEST_READ_CONTACTS = 0;
     private UserRegistTask mAuthTask = null;
     // UI references.
     private CircleImageView civ_icon;
@@ -53,6 +51,7 @@ public class RegistActivity extends Activity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_regist);
+        initToolBar(getResources().getString(R.string.title_regist));
         // Set up the login form.
         formView = findViewById(R.id.regist_form);
         progress = findViewById(R.id.progress);
@@ -297,13 +296,11 @@ public class RegistActivity extends Activity implements OnClickListener {
 
     @Override
     public void onBackPressed() {
-        setResult(1, null);
         finish();
+        overridePendingTransition(R.anim.activit3dtoright_in,
+                R.anim.activit3dtoright_out);
     }
 
 
-    private void makeToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
 }
 

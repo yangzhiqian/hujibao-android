@@ -15,7 +15,6 @@ public class TouchImageViewActivity extends Activity {
      * Called when the activity is first created.
      */
     private String fileName;
-    private String token;
     private MyTouchImageView mtiv_bmp;
     private MyProgressBar mpb_load;
     private TextView tv_empty;
@@ -25,7 +24,6 @@ public class TouchImageViewActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fileName = getIntent().getStringExtra("filename");
-        token = getIntent().getStringExtra("token");
         setContentView(R.layout.activity_showbitphoto);
         mtiv_bmp = (MyTouchImageView) this.findViewById(R.id.mtiv);
         mpb_load = (MyProgressBar) this.findViewById(R.id.mpb_load);
@@ -39,7 +37,7 @@ public class TouchImageViewActivity extends Activity {
         new Thread() {
             @Override
             public void run() {
-                BitmapUtil.loadImageToImageView(getApplicationContext(), token, fileName, DataLoader.TYPE_MIDDLE, mtiv_bmp, mpb_load);
+                BitmapUtil.loadImageToImageView(getApplicationContext(), fileName, DataLoader.TYPE_MIDDLE, mtiv_bmp, mpb_load);
             }
         }.start();
     }

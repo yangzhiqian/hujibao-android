@@ -23,10 +23,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"
-            android:text="黑白名单"
+            android:text="@string/popup_black_white_list"
             android:singleLine="true"
             android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="@dimen/text_size_normal" />
     </LinearLayout>
 
     <View
@@ -54,10 +54,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"
-            android:text="拦截设置"
+            android:text="@string/popup_interception_set"
             android:singleLine="true"
             android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="@dimen/text_size_normal" />
     </LinearLayout>
 
     <View
@@ -85,10 +85,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"
-            android:text="号码归属地"
+            android:text="@string/popup_number_place"
             android:textColor="#FFFFFF"
             android:singleLine="true"
-            android:textSize="20sp" />
+            android:textSize="@dimen/text_size_normal" />
     </LinearLayout>
 
 </LinearLayout>

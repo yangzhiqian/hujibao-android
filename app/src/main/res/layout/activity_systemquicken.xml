@@ -106,7 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="扫描内容"
-                android:textSize="14sp" />
+                android:textSize="@dimen/text_size_small" />
         </LinearLayout>
 
         <LinearLayout
@@ -132,8 +132,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="一键清理垃圾"
-                android:textSize="20sp" />
+                android:text="@string/button_clean"
+                android:textSize="@dimen/text_size_normal" />
         </LinearLayout>
 
     </RelativeLayout>

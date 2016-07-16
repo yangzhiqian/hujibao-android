@@ -26,14 +26,14 @@
             android:text="title"
             android:textColor="#000000"
             android:singleLine="true"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/text_size_small"/>
         <TextView
             android:id="@+id/tv_childnote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="title"
             android:textColor="#333333"
-            android:textSize="14sp"/>
+            android:textSize="@dimen/text_size_minimum"/>
     </LinearLayout>
     <TextView
         android:id="@+id/tv_childsize"
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:text="0B"
         android:textColor="#55333333"
-        android:textSize="16sp"
+        android:textSize="@dimen/text_size_small"
         android:layout_marginRight="5dp"/>
     <CheckBox
         android:id="@+id/cb_childcheck"

@@ -22,8 +22,8 @@
             <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="应用"
-            android:textSize="20sp"
+            android:text="@string/application"
+            android:textSize="@dimen/text_size_normal"
             android:textColor="#111111"/>
         </LinearLayout>
         
@@ -37,8 +37,8 @@
             <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="上传"
-            android:textSize="20sp"
+            android:text="@string/upload"
+            android:textSize="@dimen/text_size_normal"
             android:textColor="#111111"/>
             <ImageView 
                 android:id="@+id/iv_upload"
@@ -59,8 +59,8 @@
             <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="下载"
-            android:textSize="20sp"
+            android:text="@string/download"
+            android:textSize="@dimen/text_size_normal"
             android:textColor="#111111"/>
             <ImageView 
                 android:id="@+id/iv_download"
@@ -81,8 +81,8 @@
             <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="总计"
-            android:textSize="20sp"
+            android:text="@string/total"
+            android:textSize="@dimen/text_size_normal"
             android:textColor="#111111"/>
             <ImageView 
                 android:id="@+id/iv_total"

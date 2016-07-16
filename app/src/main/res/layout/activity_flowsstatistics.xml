@@ -45,9 +45,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="gprs流量"
+                    android:text="@string/flows_protector_detail_gprs_flows"
                     android:textColor="#dd3333"
-                    android:textSize="@dimen/lv_data_fontsize" />
+                    android:textSize="@dimen/text_size_small" />
             </LinearLayout>
 
             <LinearLayout
@@ -62,9 +62,9 @@
                     android:id="@+id/tv_dayflowsstatistics"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="日统计"
+                    android:text="@string/flows_protector_detail_day_flows"
                     android:textColor="#000000"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/text_size_normal" />
 
                 <View
                     android:layout_width="0.1dip"
@@ -77,9 +77,9 @@
                     android:id="@+id/tv_appflowsstatistics"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="软件统计"
+                    android:text="@string/flows_protector_detail_app_flows"
                     android:textColor="#777777"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/text_size_normal" />
             </LinearLayout>
 
             <LinearLayout
@@ -94,9 +94,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="wifi+gprs"
+                    android:text="@string/flows_protector_detail_gprs_app_flows"
                     android:textColor="#33dd33"
-                    android:textSize="@dimen/lv_data_fontsize" />
+                    android:textSize="@dimen/text_size_small" />
             </LinearLayout>
         </RelativeLayout>
 

@@ -15,10 +15,10 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="白名单数量:"
+            android:text="@string/communication_protector_number_of_white_list"
             android:textColor="#000000"
             android:layout_centerVertical="true"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/text_size_normal"/>
         
         <TextView 
             android:id="@+id/tv_msg_numbers"
@@ -28,7 +28,7 @@
             android:textColor="#6cbd45"
             android:layout_toRightOf="@id/tv_title"
             android:layout_centerVertical="true"
-            android:textSize="25sp"/>
+            android:textSize="@dimen/text_size_big"/>
         	
         	<LinearLayout 
         	    android:id="@+id/ll_add"
@@ -50,7 +50,7 @@
         	        android:layout_height="wrap_content"
         	        android:layout_marginLeft="3dip"
         	        android:textColor="#EEEEEE"
-        	        android:text="添加白名单"/>
+                    android:text="@string/communication_protector_add_white_list"/>
         	</LinearLayout>
     </RelativeLayout>
     

@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:text="title"
             android:textColor="@color/textcolor"
-            android:textSize="@dimen/whitetextsize" />
+            android:textSize="@dimen/text_size_small" />
 
         <TextView
             android:id="@+id/main_menu_anotation"
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:text="anotation"
             android:textColor="@color/graytextcolor"
-            android:textSize="@dimen/graytextsize" />
+            android:textSize="@dimen/text_size_smallest" />
     </LinearLayout>
 
     <TextView

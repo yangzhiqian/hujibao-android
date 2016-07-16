@@ -36,5 +36,5 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="gone"
-        android:text="加载失败！"/>
+        android:text="@string/error_load"/>
 </RelativeLayout>

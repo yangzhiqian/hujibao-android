@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#FFFFFF"
-    android:minHeight="50dip"
+    android:minHeight="40dip"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -19,7 +19,7 @@
             android:layout_centerVertical="true"
             android:text="address"
             android:textColor="#000000"
-            android:textSize="25sp" />
+            android:textSize="@dimen/text_size_normal" />
 
         <ImageView
             android:id="@+id/iv_message"
@@ -27,7 +27,7 @@
             android:layout_height="25dip"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/messageinterceptegray" />
 
         <ImageView
             android:id="@+id/iv_phone"
@@ -63,9 +63,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="删除"
+                android:text="@string/dialog_del"
                 android:textColor="#EEEEEE"
-                android:textSize="16dip" />
+                android:textSize="@dimen/text_size_small" />
         </LinearLayout>
 
         <LinearLayout
@@ -81,9 +81,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="编辑"
+                android:text="@string/dialog_edit"
                 android:textColor="#EEEEEE"
-                android:textSize="16dip" />
+                android:textSize="@dimen/text_size_small" />
         </LinearLayout>
 
         <LinearLayout
@@ -99,9 +99,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="更多"
+                android:text="@string/dialog_title_more"
                 android:textColor="#EEEEEE"
-                android:textSize="16dip" />
+                android:textSize="@dimen/text_size_small" />
         </LinearLayout>
     </LinearLayout>
 

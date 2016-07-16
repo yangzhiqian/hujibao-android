@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,8 +49,6 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
     public static final int SHOWTYPE_RECOVERY = 3;
     public static final int SHOW_NUMBERS = 15;
 
-    protected User user;
-
     protected PtrFrameLayout ptr;
     protected ListView lv;
     protected MyProgressBar mpb_load;
@@ -67,8 +64,7 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
     protected  boolean isLoading = false;
     protected  boolean isOver = false;
 
-    public BackupBaseFragment(User user, int type) {
-        this.user = user;
+    public BackupBaseFragment( int type) {
         this.currentDataType = type;
     }
 
@@ -98,7 +94,7 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
             }
         });
 
-        adapter = new BackupLVAdapter(getContext(), user);
+        adapter = new BackupLVAdapter(getContext());
         lv.setAdapter(adapter);
 
         adapter.setOnAdapterEventListener(this);
@@ -184,10 +180,10 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
             return null;
         }
         if(isOver){
-            makeToast("已经木有数据了");
+            makeToast(getResources().getString(R.string.toast_error_no_more_data));
             return null;
         }
-        makeToast("正在加载中...");
+        makeToast(getResources().getString(R.string.toast_loading));
         isLoading=true;
         if(adapter.getInfos().size()==0){
             showLoader(true);
@@ -196,18 +192,19 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
         loader.setOnDataObtainListener(new DataLoader.OnDataObtainedListener() {
             @Override
             public void onFailure(String error) {
-                Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+                makeToast(error);
                 showLoader(false);
+                isLoading = false;
                 if (ptr.isRefreshing()) {
                     ptr.refreshComplete();
                 }
-                isLoading = false;
             }
 
             @Override
             public void onResponse(String response) {
+                showLoader(false);
+                isLoading = false;
                 try {
-                    showLoader(false);
                     List<ITarget> iTargets = parseToInfos(response);
                     if(iTargets.size()<size){
                         isOver = true;
@@ -220,9 +217,8 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
                             cloudInfos.addAll(iTargets);
                             makeToast("加载了" + iTargets.size() + "条数据");
                         } else {
-                            makeToast("已经木有数据了");
+                            makeToast(getResources().getString(R.string.toast_error_no_more_data));
                             isOver = true;
-                            isLoading = false;
                             return;
                         }
                     }
@@ -241,18 +237,21 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
                     e.printStackTrace();
                 } catch (RuntimeException e) {
                 }
-                isLoading = false;
             }
         });
         String url = getContext().getResources().getString(R.string.loadbackup);
+        User user = User.getUserFromSP(getContext());
+        if(user==null){
+            makeToast(getResources().getString(R.string.toast_un_log_in));
+            showLoader(false);
+            isLoading = false;
+            return null;
+        }
         String[] valuesNames = {"token", "type", "offset", "number"};
         String[] values = {user.getToken(), currentDataType + "", beginIndex + "", size + ""};
         loader.loadServerJson(url, valuesNames, values);
         return null;
     }
-
-    ;
-
     /**
      * 显示popupwindow
      *
@@ -312,11 +311,11 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
         //构建所有控件的容器
         LinearLayout layout = getLayout();
         //构建控件
-        TextView tv_bk = getTextView("备份");
+        TextView tv_bk = getTextView(getResources().getString(R.string.backup_pupup_item_backup));
         View divider1 = getDivider();
-        TextView tv_msgback = getTextView("回短信");
+        TextView tv_msgback = getTextView(getResources().getString(R.string.backup_pupup_item_back_msg));
         View divider2 = getDivider();
-        TextView tv_callback = getTextView("回电话");
+        TextView tv_callback = getTextView(getResources().getString(R.string.backup_pupup_item_back_call));
         //装入控件
         layout.addView(tv_bk);
         layout.addView(divider1);
@@ -342,12 +341,17 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
                             makeToast(message);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            makeToast("备份失败:位置错误！");
+                            makeToast(getResources().getString(R.string.toast_error_unknow));
                         }
                     }
                 });
-                storer.storeData(user.getToken(), info);
                 popupWindow.dismiss();
+                User user = User.getUserFromSP(getContext());
+                if(user==null){
+                    makeToast(getResources().getString(R.string.toast_un_log_in));
+                    return ;
+                }
+                storer.storeData(user.getToken(), info);
             }
         });
         tv_msgback.setOnClickListener(new View.OnClickListener() {
@@ -383,9 +387,9 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
         //构建所有控件的容器
         LinearLayout layout = getLayout();
         //构建控件
-        TextView tv_bk = getTextView("恢复到本机");
+        TextView tv_bk = getTextView(getResources().getString(R.string.backup_pupup_item_recovery));
         View divider = getDivider();
-        TextView tv_del = getTextView("删除");
+        TextView tv_del = getTextView(getResources().getString(R.string.backup_pupup_item_delete));
         //添加监听
         tv_bk.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -420,10 +424,15 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getContext(), "删除失败:未知错误", Toast.LENGTH_SHORT).show();
+                            makeToast(getResources().getString(R.string.toast_error_unknow));
                         }
                     }
                 });
+                User user = User.getUserFromSP(getContext());
+                if(user==null){
+                    makeToast(getResources().getString(R.string.toast_un_log_in));
+                    return;
+                }
                 loader.deleteBackup(user.getToken(), currentDataType, info.getID());
             }
         });
@@ -496,10 +505,6 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
         return currentShowType;
     }
 
-    public User getUser() {
-        return user;
-    }
-
     public abstract void init();
 
     public abstract List<ITarget> loadLocalInfos();
@@ -512,10 +517,7 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
     public abstract List<ITarget> getRecoveryInfos();
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-        Log.i("TAG", "scrollState:" + scrollState);
-
     }
-
 
     long time = 0;
     @Override

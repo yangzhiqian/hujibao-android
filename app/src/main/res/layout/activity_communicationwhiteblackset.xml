@@ -36,7 +36,8 @@
                 <TextView 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="白名单"
+                    android:text="@string/title_communication_protector_white_list"
+                    android:textSize="@dimen/text_size_short"
                     android:layout_toRightOf="@id/iv_msg"
                     android:textColor="#000000"/>
                 
@@ -60,7 +61,8 @@
                 <TextView 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="黑名单"
+                    android:text="@string/title_communication_protector_black_list"
+                    android:textSize="@dimen/text_size_short"
                     android:layout_toRightOf="@id/iv_msg2"
                     android:textColor="#000000"/>
                 

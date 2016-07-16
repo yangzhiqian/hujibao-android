@@ -16,18 +16,13 @@
         android:orientation="horizontal"
         android:padding="5dip">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="号码:"
-            android:textColor="@color/textcolor_content"
-            android:textSize="25sp" />
 
         <EditText
             android:id="@+id/et_number"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:hint="@string/communication_protector_number_query_hint"
             android:phoneNumber="true" />
 
         <ImageButton
@@ -49,9 +44,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size_normal"
             android:background="@color/background_content"
-            android:text="查询历史" />
+            android:text="@string/communication_protector_number_query_history" />
 
         <ListView
             android:id="@+id/lv_queryrecoder"

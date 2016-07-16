@@ -4,12 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.sax.StartElementListener;
 import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import edu.ncu.safe.service.FLoatDesktopWindow;
-import edu.ncu.safe.ui.PhoneLostProtectActivity;
+
+import edu.ncu.safe.MyApplication;
 
 public class PhoneRestartReceiver extends BroadcastReceiver {
 	private static final String TAG = "PhoneRestartReceiver";
@@ -38,11 +37,8 @@ public class PhoneRestartReceiver extends BroadcastReceiver {
 	}
 
 	private void checkThePhoneUser(Context context) {
-		SharedPreferences sp = context.getSharedPreferences(
-				PhoneLostProtectActivity.SHAREPERFERENCESNAME,
-				context.MODE_PRIVATE);
-		boolean isInProtecting = sp.getBoolean(
-				PhoneLostProtectActivity.ISINPROTECTING, false);
+		SharedPreferences sp = MyApplication.getSharedPreferences();
+		boolean isInProtecting = sp.getBoolean(MyApplication.SP_BOOLEAN_IS_IN_PROTECTING, false);
 		if (!isInProtecting) {
 			return;
 		}
@@ -54,8 +50,7 @@ public class PhoneRestartReceiver extends BroadcastReceiver {
 			return;
 		}
 
-		String userNumber = sp.getString(
-				PhoneLostProtectActivity.USERPHONENUMBER, null);
+		String userNumber = sp.getString(MyApplication.SP_STRING_USER_PHONE_NUMBER, null);
 		if (userNumber == null) {
 			return;
 		}
@@ -64,8 +59,7 @@ public class PhoneRestartReceiver extends BroadcastReceiver {
 			return;
 		}
 
-		String safeNumber = sp.getString(
-				PhoneLostProtectActivity.SAFEPHONENUMBER, null);
+		String safeNumber = sp.getString(MyApplication.SP_STRING_SAFE_PHONE_NUMBER, null);
 		if (safeNumber == null) {
 			return;
 		}

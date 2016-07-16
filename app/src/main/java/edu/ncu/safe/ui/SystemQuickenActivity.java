@@ -19,7 +19,6 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -119,11 +118,6 @@ public class SystemQuickenActivity extends MyAppCompatActivity implements View.O
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         updateMemoryInfo();
@@ -136,7 +130,7 @@ public class SystemQuickenActivity extends MyAppCompatActivity implements View.O
         long totalMem = memoryInfo.totalMem;
         long availMem = memoryInfo.availMem;
         mpb_innerMemory.setPercentSlow((totalMem - availMem) * 100 / totalMem);
-        mpb_innerMemory.setTitle("总内存:" + String.format("%.2f", totalMem / (1024 * 1024 * 1024.0)) + "G");
+        mpb_innerMemory.setTitle(String.format(getResources().getString(R.string.system_quick_total_inner_memroy),totalMem / (1024 * 1024 * 1024.0)));
 
 
         File path = Environment.getDataDirectory();
@@ -146,7 +140,7 @@ public class SystemQuickenActivity extends MyAppCompatActivity implements View.O
         long availableBlocks = stat.getAvailableBlocks();
         String totalSize = Formatter.formatFileSize(getApplicationContext(), totalBlocks * blockSize);
         mpb_outerMemory.setPercentSlow((totalBlocks - availableBlocks) * 100 / totalBlocks);
-        mpb_outerMemory.setTitle("内部存储:" + totalSize);
+        mpb_outerMemory.setTitle(getResources().getString(R.string.system_quick_total_read_only_memory)+ totalSize);
     }
 
     private void updateELVData() {
@@ -185,25 +179,22 @@ public class SystemQuickenActivity extends MyAppCompatActivity implements View.O
 
     @Override
     public void onMemoryScanTaskStart(int sumTask) {
-        System.out.println("onMemoryScanTaskStart:" + sumTask);
-        mpb_sweep.setTitle("正在扫描内存垃圾");
+        mpb_sweep.setTitle(getResources().getString(R.string.system_quick_inner_rubbish_scanning));
         tv_sweepContent.setText("0/" + itemTask);
         itemTask = sumTask;
     }
 
     @Override
     public void onMemoryScanProgressChanged(String tastName, int progress) {
-        System.out.println("onMemoryScanProgressChanged:" + tastName + "/t" + progress);
         tv_sweepContent.setText(tastName + "(" + progress + "/" + itemTask + ")");
         mpb_sweep.setPercentSlow(progress * 50.0f / itemTask);
     }
 
     @Override
     public void onMemoryScanTaskEnded(List<RunningApplicationInfo> infos) {
-        System.out.println("onMemoryScanTaskEnded    size :" + infos.size());
         Collections.sort(infos, new MyCompator());
         ELVParentItemInfo data = new ELVParentItemInfo();
-        data.setItemName("内存垃圾");
+        data.setItemName(getResources().getString(R.string.system_quick_item_inner_memory_rubbish));
         data.setIsChecked(true);
         data.setChilds(infos);
         datas.add(data);
@@ -214,7 +205,7 @@ public class SystemQuickenActivity extends MyAppCompatActivity implements View.O
     public void onMemoryCleanTaskStart(int sumTask) {
         ll_emptyView.setVisibility(View.VISIBLE);
         mpb_sweep.setPercentimmediately(0);
-        mpb_sweep.setTitle("正在清理内存垃圾");
+        mpb_sweep.setTitle(getResources().getString(R.string.system_quick_inner_memory_cleaning));
         itemTask = sumTask;
         tv_sweepContent.setText("0/"+sumTask);
     }
@@ -228,13 +219,12 @@ public class SystemQuickenActivity extends MyAppCompatActivity implements View.O
     @Override
     public void onMemoryCleanTaskEnded(int res) {
         appRubbishCleanService.cleanRubbish();
-        mpb_sweep.setTitle("正在清理缓存垃圾");
+        mpb_sweep.setTitle(getResources().getString(R.string.system_quick_cache_cleaning));
     }
 
     @Override
     public void onRubbishTaskScanStart(int sumTask) {
-        System.out.println("onRubbishTaskScanStart:" + sumTask);
-        mpb_sweep.setTitle("正在扫描缓存垃圾");
+        mpb_sweep.setTitle(getResources().getString(R.string.system_quick_cache_scanning));
         mpb_sweep.setPercentSlow(0);
         tv_sweepContent.setText("0/" + itemTask);
         itemTask = sumTask;
@@ -242,17 +232,15 @@ public class SystemQuickenActivity extends MyAppCompatActivity implements View.O
 
     @Override
     public void onRubbishScanProgressChanged(String tastName, int progress) {
-        System.out.println("onRubbishScanProgressChanged:" + tastName + "/t" + progress);
         tv_sweepContent.setText(tastName + "(" + progress + "/" + itemTask + ")");
         mpb_sweep.setPercentSlow(50+progress * 50.0f / itemTask);
     }
 
     @Override
     public void onRubbishScanTaskEnded(List<CacheInfo> infos) {
-        System.out.println("onRubbishScanTaskEnded    size :" + infos.size());
         Collections.sort(infos, new MyCompator());
         ELVParentItemInfo data = new ELVParentItemInfo();
-        data.setItemName("应用缓存垃圾");
+        data.setItemName(getResources().getString(R.string.system_quick_item_cache));
         data.setIsChecked(true);
         data.setChilds(infos);
         datas.add(data);
@@ -273,7 +261,7 @@ public class SystemQuickenActivity extends MyAppCompatActivity implements View.O
 
     @Override
     public void onRubbishCleanTaskEnded(long size) {
-        Toast.makeText(this,"共清理内存"+size/(1024*1024)+"MB",Toast.LENGTH_LONG).show();
+        makeToast(getResources().getString(R.string.system_quick_clean_over));
         mpb_sweep.setPercentSlow(100);
         ll_emptyView.setVisibility(View.GONE);
         datas.clear();
@@ -326,16 +314,12 @@ public class SystemQuickenActivity extends MyAppCompatActivity implements View.O
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-        System.out.println("onScrollStateChanged:" + scrollState);
     }
 
     private int lastfirstVisibleItem = 0;
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        System.out.println("onScroll----firstVisibleItem:" + firstVisibleItem);
-        System.out.println("onScroll----visibleItemCount:" + visibleItemCount);
-        System.out.println("onScroll----totalItemCount:" + totalItemCount);
         if (firstVisibleItem - lastfirstVisibleItem > 0) {
             //向上滑动
             if (!isHide) {
@@ -372,4 +356,5 @@ public class SystemQuickenActivity extends MyAppCompatActivity implements View.O
             return -1;
         }
     }
+
 }

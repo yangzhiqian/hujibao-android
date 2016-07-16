@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#cccccc"
-    android:padding="5dip"
+    android:background="#fff"
+    android:paddingTop="5dip"
+    android:paddingBottom="5dp"
     android:gravity="center_vertical"
     android:orientation="horizontal" >
     <ImageView 
         android:id="@+id/iv"
+        android:layout_marginLeft="5dp"
         android:layout_width="30dip"
         android:layout_height="30dip"
         android:src="@drawable/appicon"/>
@@ -18,6 +20,6 @@
         android:layout_marginLeft="5dip"
         android:text="title"
         android:textColor="@color/textcolor_content"
-        android:textSize="20sp"/>
+        android:textSize="@dimen/text_size_short"/>
 
 </LinearLayout>

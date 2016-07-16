@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity{
         fm.beginTransaction().add(R.id.fl_menu, menuFragment, "").commit();
 
         // 检查是否有新版本信息，有则弹出升级对话框
-        startService(new Intent("edu.ncu.myservice.update"));
+      //  startService(new Intent("edu.ncu.myservice.update"));
     }
 
 

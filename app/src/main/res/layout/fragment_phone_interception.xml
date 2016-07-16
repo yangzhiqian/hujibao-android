@@ -15,10 +15,10 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="电话拦截数量:"
+            android:text="@string/communication_protector_number_of_call_intercepte"
             android:textColor="#000000"
             android:layout_centerVertical="true"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/text_size_normal"/>
         
         <TextView 
             android:id="@+id/tv_number"
@@ -28,7 +28,7 @@
             android:textColor="#6cbd45"
             android:layout_toRightOf="@id/tv_title"
             android:layout_centerVertical="true"
-            android:textSize="25sp"/>
+            android:textSize="@dimen/text_size_big"/>
     </RelativeLayout>
     
     

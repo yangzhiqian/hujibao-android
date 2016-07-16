@@ -1,16 +1,13 @@
 package edu.ncu.safe.ui;
 
-import android.app.AlertDialog.Builder;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,38 +26,40 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import edu.ncu.safe.MyApplication;
 import edu.ncu.safe.R;
 import edu.ncu.safe.View.MyDialog;
 import edu.ncu.safe.adapter.ContactsDialogAdapter;
 import edu.ncu.safe.engine.ContactsService;
 import edu.ncu.safe.myadapter.MyAppCompatActivity;
 import edu.ncu.safe.receiver.AdminReceiver;
+import edu.ncu.safe.util.MD5Encoding;
+import edu.ncu.safe.util.MyUtil;
 
 public class PhoneLostProtectActivity extends MyAppCompatActivity implements
 		OnClickListener, OnCheckedChangeListener {
 	public static final String[] ORDERS = {"#*delete*#","#*lock*#","#*ring*#","#*pwd*#","#*location*#"};
-	public static final String DEFAULT_PWD = "123456";
-
-	private static final String TAG = "PhoneLostProtectActivity";
-	public static final String SHAREPERFERENCESNAME = "phonelostprotectconfigure";
-	public static final String ISINPROTECTING = "ISINPROTECTING";
-	public static final String ISADMIN = "ISADMIN";
-	public static final String ISMESSAGE = "ISMESSAGE";
-	public static final String ISDELETE = "ISDELETE";
-	public static final String ISLOCK = "ISLOCK";
-	public static final String ISRING = "ISRING";
-	public static final String ISPWD = "ISPWD";
-	public static final String ISLOCATION = "ISLOCATION";
-	public static final String USERPHONENUMBER = "USERPHONENUMBER";
-	public static final String SAFEPHONENUMBER = "SAFEPHONENUMBER";
-
-	public static final String ENTERPWD = "ENTERPWD";
-	public static final String HASSETPWD = "HASSETPWD";
+//	public static final String DEFAULT_PWD = "123456";
+//
+//	private static final String TAG = "PhoneLostProtectActivity";
+//	public static final String SHAREPERFERENCESNAME = "phonelostprotectconfigure";
+//	public static final String ISINPROTECTING = "ISINPROTECTING";
+//	public static final String ISADMIN = "ISADMIN";
+//	public static final String ISMESSAGE = "ISMESSAGE";
+//	public static final String ISDELETE = "ISDELETE";
+//	public static final String ISLOCK = "ISLOCK";
+//	public static final String ISRING = "ISRING";
+//	public static final String ISPWD = "ISPWD";
+//	public static final String ISLOCATION = "ISLOCATION";
+//	public static final String USERPHONENUMBER = "USERPHONENUMBER";
+//	public static final String SAFEPHONENUMBER = "SAFEPHONENUMBER";
+//
+//	public static final String ENTERPWD = "ENTERPWD";
+//	public static final String HASSETPWD = "HASSETPWD";
 
 	private View swapLine;
 	private RotateAnimation swapLineAnimation;
 	private ImageView iv_protect;
-	private SharedPreferences sp;
 	private CheckBox cb_message;
 	private CheckBox cb_delete;
 	private CheckBox cb_lock;
@@ -107,9 +106,6 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
 				R.anim.clockwiserotate);
 		iv_handle.startAnimation(clockwiseRotate);
 
-		sp = this.getSharedPreferences(SHAREPERFERENCESNAME,
-				Context.MODE_MULTI_PROCESS);
-
 		iv_protect.setOnClickListener(this);
 		cb_message.setOnCheckedChangeListener(this);
 		cb_delete.setOnCheckedChangeListener(this);
@@ -126,22 +122,23 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
 	}
 
 	private void init() {
-		boolean isPhoneProtecting = sp.getBoolean(ISINPROTECTING, false);
-		boolean isSmsChangeSendMessage = sp.getBoolean(ISMESSAGE, false);
-		boolean isCanDelete = sp.getBoolean(ISDELETE, false);
-		boolean isCanLock = sp.getBoolean(ISLOCK, false);
-		boolean isCanRing = sp.getBoolean(ISRING, false);
-		boolean isCanChangePWD = sp.getBoolean(ISPWD, false);
-		boolean isCanGetLocation = sp.getBoolean(ISLOCATION, false);
+		SharedPreferences sp = MyApplication.getSharedPreferences();
+		boolean isPhoneProtecting = sp.getBoolean(MyApplication.SP_BOOLEAN_IS_IN_PROTECTING, false);
+		boolean isSmsChangeSendMessage = sp.getBoolean(MyApplication.SP_BOOLEAN_IS_SMS_CHANGE_MESSAGE, false);
+		boolean isCanDelete = sp.getBoolean(MyApplication.SP_BOOLEAN_IS_REMOTE_DELETE, false);
+		boolean isCanLock = sp.getBoolean(MyApplication.SP_BOOLEAN_IS_REMOTE_LOCK, false);
+		boolean isCanRing = sp.getBoolean(MyApplication.SP_BOOLEAN_IS_RING, false);
+		boolean isCanChangePWD = sp.getBoolean(MyApplication.SP_BOOLEAN_IS_REMOTE_CHANGE_LOCK_PWD, false);
+		boolean isCanGetLocation = sp.getBoolean(MyApplication.SP_BOOLEAN_IS_LOCATION, false);
 
 		if (isPhoneProtecting) {
 			swapLine.startAnimation(swapLineAnimation);
-			tv_protectState.setTextColor(Color.GREEN);
-			tv_protectState.setText("开启(点击轮盘关闭)");
+			tv_protectState.setTextColor(getResources().getColor(R.color.state_ok));
+			tv_protectState.setText(getResources().getString(R.string.phone_lost_protector_title_current_state_open));
 		} else {
 			swapLine.clearAnimation();
 			tv_protectState.setTextColor(Color.RED);
-			tv_protectState.setText("关闭(点击轮盘关闭)");
+			tv_protectState.setText(getResources().getString(R.string.phone_lost_protector_title_current_state_close));
 		}
 
 		if (isSmsChangeSendMessage) {
@@ -167,18 +164,17 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
 		if (isCanGetLocation) {
 			cb_location.setChecked(true);
 		}
-
 		showSimChange();
 	}
 
 	private void showSimChange() {
-		String userNumber = sp.getString(USERPHONENUMBER, null);
-		final String phoneNumber = getPhoneNumber();
-		if (phoneNumber == null) {
+		final String phoneNumber = MyUtil.getPhoneNumber(this);
+		if ("".equals(phoneNumber)) {
 			makeToast(getResources().getString(R.string.toast_no_sim));
 			return;
 		}
-		if (userNumber == null || !userNumber.equals(phoneNumber)) {
+		String userPhoneNumber = MyApplication.getSharedPreferences().getString(MyApplication.SP_STRING_USER_PHONE_NUMBER, "");
+		if (!userPhoneNumber.equals(phoneNumber)) {
 			MyDialog myDialog = new MyDialog(this);
 			myDialog.setTitle(getResources().getString(R.string.dialog_title_set_protect_number));
 			myDialog.setMessage(String.format(getResources().getString(R.string.dialog_message_toprotector), phoneNumber));
@@ -187,8 +183,8 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
 			myDialog.setNegativeListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Editor editor = sp.edit();
-					editor.putString(USERPHONENUMBER, phoneNumber);
+					Editor editor = MyApplication.getSharedPreferences().edit();
+					editor.putString(MyApplication.SP_STRING_USER_PHONE_NUMBER, phoneNumber);
 					editor.apply();
 				}
 			});
@@ -196,15 +192,7 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
 		}
 	}
 
-	private String getPhoneNumber() {
-		TelephonyManager manager = (TelephonyManager) this
-				.getSystemService(Context.TELEPHONY_SERVICE);
-		String phoneNumaber = manager.getLine1Number();
-		if (phoneNumaber != null && "".equals(phoneNumaber)) {
-			phoneNumaber = null;
-		}
-		return phoneNumaber;
-	}
+
 
 	@Override
 	public void onClick(View view) {
@@ -221,6 +209,7 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
 		case R.id.ll_device:
 			if (isDeviceAdmin()) {
 				// 当前是deviceadmin
+				cancleDeviceAdmin();
 			} else {
 				toDeviceAdmin();
 			}
@@ -230,16 +219,34 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
 		}
 	}
 
+	private void cancleDeviceAdmin() {
+		final MyDialog myDialog = new MyDialog(this);
+		myDialog.setMessage(getResources().getString(R.string.dialog_message_sure_to_cancle_device_admin));
+		myDialog.setPositiveListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				DevicePolicyManager manager = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+				ComponentName adminName = new ComponentName(
+						PhoneLostProtectActivity.this,
+						AdminReceiver.class);
+				manager.removeActiveAdmin(adminName);
+				makeToast(getResources().getString(R.string.phone_lost_protector_succeed_to_unregist_device_admin));
+				myDialog.dismiss();
+			}
+		});
+		myDialog.show();
+	}
+
 	private void changProtectingState() {
-		boolean isInProtecting = sp.getBoolean(ISINPROTECTING, false);
+		SharedPreferences sp = MyApplication.getSharedPreferences();
+		boolean isInProtecting = sp.getBoolean(MyApplication.SP_BOOLEAN_IS_IN_PROTECTING, false);
 		Editor editor = sp.edit();
 		if (isInProtecting) {
-            editor.putBoolean(ISINPROTECTING, false);
+            editor.putBoolean(MyApplication.SP_BOOLEAN_IS_IN_PROTECTING, false);
             editor.apply();
             swapLine.clearAnimation();
             tv_protectState.setTextColor(getResources().getColor(R.color.phone_lost_protector_title_current_close));
             tv_protectState.setText(getResources().getString(R.string.phone_lost_protector_title_current_state_close));
-
         } else {
             // 开启保护是要对保护号码和安全号码进行设置
             if (!isNumbersOK()) {// 还有未完成的设置
@@ -247,7 +254,7 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
                 return;
             }
             // 已经完成设置，可以开启
-            editor.putBoolean(ISINPROTECTING, true);
+            editor.putBoolean(MyApplication.SP_BOOLEAN_IS_IN_PROTECTING,true);
             editor.apply();
             swapLine.startAnimation(swapLineAnimation);
 			tv_protectState.setTextColor(getResources().getColor(R.color.phone_lost_protector_title_current_open));
@@ -258,27 +265,27 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		CheckBox cb = (CheckBox) buttonView;
-		Editor editor = sp.edit();
+		Editor editor = MyApplication.getSharedPreferences().edit();
 		switch (buttonView.getId()) {
 		case R.id.cb_message:
-			editor.putBoolean(ISMESSAGE, isChecked);
+			editor.putBoolean(MyApplication.SP_BOOLEAN_IS_SMS_CHANGE_MESSAGE, isChecked);
 			editor.apply();
 			break;
 		case R.id.cb_delete:
-			changeDeviceAdminFuntion(isChecked, cb, ISDELETE);
+			changeDeviceAdminFuntion(isChecked, cb, MyApplication.SP_BOOLEAN_IS_REMOTE_DELETE);
 			break;
 		case R.id.cb_lock:
-			changeDeviceAdminFuntion(isChecked, cb, ISLOCK);
+			changeDeviceAdminFuntion(isChecked, cb, MyApplication.SP_BOOLEAN_IS_REMOTE_LOCK);
 			break;
 		case R.id.cb_ring:
-			editor.putBoolean(ISRING, isChecked);
+			editor.putBoolean(MyApplication.SP_BOOLEAN_IS_RING, isChecked);
 			editor.apply();
 			break;
 		case R.id.cb_pwd:
-			changeDeviceAdminFuntion(isChecked, cb, ISPWD);
+			changeDeviceAdminFuntion(isChecked, cb, MyApplication.SP_BOOLEAN_IS_REMOTE_CHANGE_LOCK_PWD);
 			break;
 		case R.id.cb_location:
-			editor.putBoolean(ISLOCATION, isChecked);
+			editor.putBoolean(MyApplication.SP_BOOLEAN_IS_LOCATION, isChecked);
 			editor.apply();
 			break;
 		}
@@ -286,7 +293,7 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
 
 	private void changeDeviceAdminFuntion(boolean isChecked, CheckBox cb,
 			String name) {
-		Editor editor = sp.edit();
+		Editor editor = MyApplication.getSharedPreferences().edit();
 		// 已经是设备管理员，并且是取消功能
 		if (isChecked == false) {
 			editor.putBoolean(name, false);
@@ -305,31 +312,30 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
 	}
 
 	private void toDeviceAdmin() {
-		Builder builder = new Builder(this);
-		builder.setTitle("激活设备管理员");
-		builder.setMessage("是否跳转到激活该软件的设备管理者界面？");
-		builder.setNegativeButton("不去了", null);
-		builder.setPositiveButton("现在就去",
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						DevicePolicyManager manager = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
-						ComponentName adminName = new ComponentName(
-								PhoneLostProtectActivity.this,
-								AdminReceiver.class);
-						if (!manager.isAdminActive(adminName)) {
-							Intent intent = new Intent(
-									DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-							intent.putExtra(
-									DevicePolicyManager.EXTRA_DEVICE_ADMIN,
-									adminName);
-							startActivity(intent);
-						}
-					}
-				});
-		builder.create().show();
-
+		final MyDialog myDialog = new MyDialog(this);
+		myDialog.setTitle(getResources().getString(R.string.dialog_title_active_device_admin));
+		myDialog.setMessage(getResources().getString(R.string.dialog_message_active_device_admin));
+		myDialog.setYESText(getResources().getString(R.string.button_go_now));
+		myDialog.setNOText(getResources().getString(R.string.button_un_go));
+		myDialog.setPositiveListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				DevicePolicyManager manager = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+				ComponentName adminName = new ComponentName(
+						PhoneLostProtectActivity.this,
+						AdminReceiver.class);
+				if (!manager.isAdminActive(adminName)) {
+					Intent intent = new Intent(
+							DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+					intent.putExtra(
+							DevicePolicyManager.EXTRA_DEVICE_ADMIN,
+							adminName);
+					startActivity(intent);
+				}
+				myDialog.dismiss();
+			}
+		});
+		myDialog.show();
 	}
 
 	private boolean isDeviceAdmin() {
@@ -344,17 +350,18 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
 	 * @return ture 代表ok
 	 */
 	private boolean isNumbersOK() {
-		String safeNumber = sp.getString(SAFEPHONENUMBER, null);
-		if (safeNumber == null) {
+		String safeNumber = MyApplication.getSharedPreferences().getString(MyApplication.SP_STRING_USER_PHONE_NUMBER,"");
+		if ("".equals(safeNumber)) {
 			return false;
 		}
 		return true;
 	}
 
 	private void toSetNumbers() {
-		String phoneNumber = getPhoneNumber();
-		String userNumber = sp.getString(USERPHONENUMBER, null);
-		String safeNumber = sp.getString(SAFEPHONENUMBER, null);
+		String phoneNumber = MyUtil.getPhoneNumber(this);
+		final SharedPreferences sp = MyApplication.getSharedPreferences();
+		String userNumber = sp.getString(MyApplication.SP_STRING_USER_PHONE_NUMBER, null);
+		String safeNumber = sp.getString(MyApplication.SP_STRING_SAFE_PHONE_NUMBER, null);
 
 		final MyDialog myDialog = new MyDialog(this);
 		myDialog.setTitle(getResources().getString(R.string.dialog_title_set_numbers));
@@ -395,8 +402,8 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
 					return;
 				}
 				Editor edi = sp.edit();
-				edi.putString(USERPHONENUMBER, userNumber);
-				edi.putString(SAFEPHONENUMBER, safeNumber);
+				edi.putString(MyApplication.SP_STRING_USER_PHONE_NUMBER, userNumber);
+				edi.putString(MyApplication.SP_STRING_SAFE_PHONE_NUMBER, safeNumber);
 				edi.apply();
 				myDialog.dismiss();
 				makeToast(getResources().getString(R.string.number_modify_succeed));
@@ -446,12 +453,10 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
 				String pd = pwd_one.getText().toString().trim();
 				String pdAgain = pwd_two.getText().toString().trim();
 				if (pd.equals(pdAgain)) {
-					SharedPreferences sp = getSharedPreferences(
-									PhoneLostProtectActivity.SHAREPERFERENCESNAME,
-									Context.MODE_MULTI_PROCESS);
+					SharedPreferences sp = MyApplication.getSharedPreferences();
 					Editor editor = sp.edit();
-					editor.putString(PhoneLostProtectActivity.ENTERPWD, pd);
-					editor.putBoolean(PhoneLostProtectActivity.HASSETPWD, true);
+					editor.putString(MyApplication.SP_STRING_PWD, MD5Encoding.encoding(pd));
+					editor.putBoolean(MyApplication.SP_BOOLEAN_HAS_PWD, true);
 					editor.apply();
 					myDialog.dismiss();
 					makeToast(getResources().getString(R.string.pwd_modify_succeed));
@@ -473,7 +478,5 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
 		return super.onKeyDown(keyCode, event);
 	}
 
-	private void makeToast(String message){
-		Toast.makeText(PhoneLostProtectActivity.this, message, Toast.LENGTH_SHORT).show();
-	}
+
 }

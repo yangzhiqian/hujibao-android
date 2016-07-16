@@ -11,10 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import edu.ncu.safe.util.MyLog;
+
 /**
  * Created by Mr_Yang on 2016/5/24.
  */
 public final class IpTable {
+    public static final String TAG = "IpTable";
     public static final long timeout = 10000;
     public static final String PERFS_NAME = "IPTABLES";
     public static final String PERFS_WIFI = "WIFIS";
@@ -60,16 +63,17 @@ public final class IpTable {
     }
 
     public static boolean updateBlackIPTable(Context context) {
+        //判断时候有root权限
         if(hasRootAccess(context)==false){
             return false;
         }
+        //从sp中获取拦截表的uid
         SharedPreferences sp = context.getSharedPreferences(PERFS_NAME, Context.MODE_PRIVATE);
         List<Integer> uidsGPRS = new ArrayList<Integer>();
         StringTokenizer tokenizer = new StringTokenizer(sp.getString(PERFS_GPRS, "").toString().trim(), "|");
         while (tokenizer.hasMoreTokens()) {
             uidsGPRS.add(Integer.parseInt(tokenizer.nextToken()));
         }
-
         List<Integer> uidsWIFI = new ArrayList<Integer>();
         tokenizer = new StringTokenizer(sp.getString(PERFS_WIFI, "").toString().trim(), "|");
         while (tokenizer.hasMoreTokens()) {
@@ -83,7 +87,7 @@ public final class IpTable {
         final StringBuffer sb = new StringBuffer();
         if (runScript(context, "iptables -L ",sb) == 0) {
             //获取成功
-            System.out.println("获取成功：\n"+sb.toString());
+            MyLog.i(TAG,sb.toString());
         }
         return uids;
     }

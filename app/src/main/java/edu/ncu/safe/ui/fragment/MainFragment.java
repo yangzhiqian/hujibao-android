@@ -1,7 +1,6 @@
 package edu.ncu.safe.ui.fragment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -16,11 +15,11 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.GridView;
 
+import edu.ncu.safe.MyApplication;
 import edu.ncu.safe.R;
 import edu.ncu.safe.View.MyDialog;
 import edu.ncu.safe.adapter.MainGVAdapter;
 import edu.ncu.safe.domain.MainGVItemInfo;
-import edu.ncu.safe.domain.User;
 import edu.ncu.safe.ui.AppManagerAcitvity;
 import edu.ncu.safe.ui.BackUpsActivity;
 import edu.ncu.safe.ui.CommunicationProtectorActivity;
@@ -28,6 +27,7 @@ import edu.ncu.safe.ui.FlowsProtectorActivity;
 import edu.ncu.safe.ui.MainActivity;
 import edu.ncu.safe.ui.PhoneLostProtectActivity;
 import edu.ncu.safe.ui.SystemQuickenActivity;
+import edu.ncu.safe.util.MD5Encoding;
 
 /**
  * Created by Mr_Yang on 2016/7/12.
@@ -36,7 +36,7 @@ public class MainFragment extends Fragment {
     private static final MainGVItemInfo[] infos = {
             new MainGVItemInfo(R.drawable.phoneprotector, "手机防盗", "防盗未开启", Color.parseColor("#ff0000"), "toPhoneProtector", PhoneLostProtectActivity.class),
             new MainGVItemInfo(R.drawable.gprsflows, "流量监控", "监控未开启", Color.parseColor("#ff0000"), null, FlowsProtectorActivity.class),
-            new MainGVItemInfo(R.drawable.databackup, "数据备份", "", Color.parseColor("#ff0000"), "toBackup", BackUpsActivity.class),
+            new MainGVItemInfo(R.drawable.databackup, "数据备份", "", Color.parseColor("#ff0000"), null, BackUpsActivity.class),
             new MainGVItemInfo(R.drawable.communication, "通讯卫士", "", Color.parseColor("#ff0000"), null, CommunicationProtectorActivity.class),
             new MainGVItemInfo(R.drawable.softwaremanager, "软件管理", "", Color.parseColor("#ff0000"), null, AppManagerAcitvity.class),
             new MainGVItemInfo(R.drawable.systemfaster, "手机加速", "", Color.parseColor("#ff0000"), null, SystemQuickenActivity.class)
@@ -84,27 +84,26 @@ public class MainFragment extends Fragment {
 
 
     private void refrash() {
-        SharedPreferences sp = activity.getSharedPreferences(PhoneLostProtectActivity.SHAREPERFERENCESNAME, Context.MODE_MULTI_PROCESS);
-        boolean isInProtecting = sp.getBoolean(PhoneLostProtectActivity.ISINPROTECTING, false);
+        SharedPreferences sp = MyApplication.getSharedPreferences();
+        boolean isInProtecting = sp.getBoolean(MyApplication.SP_BOOLEAN_IS_IN_PROTECTING, false);
         if (isInProtecting) {
-            infos[0].setNote("手机保护中");
-            infos[0].setColor(Color.parseColor("#00ff00"));
+            infos[0].setNote(getResources().getString(R.string.main_fragment_note_phone_lost_in_protecting));
+            infos[0].setColor(getResources().getColor(R.color.state_ok));
         }
-
-        sp = activity.getSharedPreferences(FlowsProtectorActivity.FLOWSSHAREDPREFERENCES, Context.MODE_MULTI_PROCESS);
-        long flows = sp.getLong(FlowsProtectorActivity.FLOWSTOTAL, 0);
+        long flows = sp.getLong(MyApplication.SP_LONG_TOTAL_FLOWS, 0);
         if (flows > 0) {
-            infos[1].setNote("流量监控中");
-            infos[1].setColor(Color.parseColor("#00ff00"));
+            infos[1].setNote(getResources().getString(R.string.main_fragment_note_flows_in_protecting));
+            infos[1].setColor(getResources().getColor(R.color.state_ok));
         }
     }
 
+    /**
+     * 进入手机防盗要先进行验证
+     */
     public void toPhoneProtector() {
-        SharedPreferences sp = activity.getSharedPreferences(
-                PhoneLostProtectActivity.SHAREPERFERENCESNAME,
-                Context.MODE_MULTI_PROCESS);
+        SharedPreferences sp = MyApplication.getSharedPreferences();
         boolean hasSetPWD = sp.getBoolean(
-                PhoneLostProtectActivity.HASSETPWD, false);
+                MyApplication.SP_BOOLEAN_HAS_PWD, false);
         if (hasSetPWD) {// 已经设置过密码
             showInputPWDDialog();
         } else {// 还未设置密码
@@ -112,22 +111,6 @@ public class MainFragment extends Fragment {
         }
     }
 
-    public void toBackup() {
-        User u = new User();
-        if (u == null) {
-            //没有登录
-        } else {
-            Intent intent = new Intent();
-            intent.setClass(activity, BackUpsActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("user", u);
-            intent.putExtras(bundle);
-            startActivity(intent);
-            //切换动画
-            activity.overridePendingTransition(R.anim.activit3dtoleft_in,
-                    R.anim.activit3dtoleft_out);
-        }
-    }
 
     private void showSetPWDDialog() {
         final MyDialog myDialog = new MyDialog(activity);
@@ -142,13 +125,10 @@ public class MainFragment extends Fragment {
                 String pd = pwd_one.getText().toString().trim();
                 String pdAgain = pwd_two.getText().toString().trim();
                 if (pd.equals(pdAgain)) {
-                    SharedPreferences sp = activity
-                            .getSharedPreferences(
-                                    PhoneLostProtectActivity.SHAREPERFERENCESNAME,
-                                    Context.MODE_MULTI_PROCESS);
+                    SharedPreferences sp = MyApplication.getSharedPreferences();
                     SharedPreferences.Editor editor = sp.edit();
-                    editor.putString(PhoneLostProtectActivity.ENTERPWD, pd);
-                    editor.putBoolean(PhoneLostProtectActivity.HASSETPWD, true);
+                    editor.putString(MyApplication.SP_STRING_PWD, MD5Encoding.encoding(pd));
+                    editor.putBoolean(MyApplication.SP_BOOLEAN_HAS_PWD, true);
                     editor.apply();
                     myDialog.dismiss();
                     // 进入界面
@@ -166,20 +146,18 @@ public class MainFragment extends Fragment {
 
     public void showInputPWDDialog() {
         final MyDialog myDialog = new MyDialog(activity);
-        myDialog.setTitle(getResources().getString(R.string.dialog_enter_pwd));
+        myDialog.setTitle(getResources().getString(R.string.dialog_input_pwd));
         final View view = LayoutInflater.from(activity).inflate(R.layout.dialog_passwordenter, null);
         final AutoCompleteTextView pwd = (AutoCompleteTextView) view.findViewById(R.id.actv_pwd);
         myDialog.setMessageView(view);
         myDialog.setPositiveListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences sp = activity.getSharedPreferences(
-                        PhoneLostProtectActivity.SHAREPERFERENCESNAME,
-                        Context.MODE_MULTI_PROCESS);
+                SharedPreferences sp = MyApplication.getSharedPreferences();
                 String enterPwd = sp.getString(
-                        PhoneLostProtectActivity.ENTERPWD, "");
+                        MyApplication.SP_STRING_PWD, "");
                 String pd = pwd.getText().toString().trim();
-                if (enterPwd.equals(pd)) {// 正确输入密码，进入界面
+                if (enterPwd.equals(MD5Encoding.encoding(pd))) {// 正确输入密码，进入界面
                     toAntherActivity(PhoneLostProtectActivity.class);
                     myDialog.dismiss();
                     return;

@@ -1,5 +1,10 @@
 package edu.ncu.safe.engine;
 
+import android.content.Context;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,11 +12,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.content.Context;
-import android.util.Log;
 import edu.ncu.safe.R;
 import edu.ncu.safe.domain.VersionInfo;
 
@@ -24,7 +24,7 @@ public class LoadLatestVersionInfo {
 	
 	
 	public VersionInfo getVersionInfo() throws IOException, JSONException{
-		String path =context.getResources().getString(R.string.versionrul);
+		String path =context.getResources().getString(R.string.version);
 		URL url = new URL(path);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setConnectTimeout(5000);

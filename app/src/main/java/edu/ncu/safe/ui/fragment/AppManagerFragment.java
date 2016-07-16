@@ -135,8 +135,8 @@ public class AppManagerFragment extends Fragment implements View.OnClickListener
                 if (pkns.size() == 0) {
                     //用户没有选择要卸载的程序
                     MyDialog dialog = new MyDialog(getContext());
-                    dialog.setTitle("护机宝提示您");
-                    dialog.setMessage("您没有选择要卸载的程序！");
+                    dialog.setTitle(getResources().getString(R.string.dialog_title_normal_tip));
+                    dialog.setMessage(getResources().getString(R.string.dialog_message_no_app_selected));
                     dialog.show();
                     return;
                 }
@@ -148,9 +148,9 @@ public class AppManagerFragment extends Fragment implements View.OnClickListener
 
     private void readyToUninstall(String appName, final String packName) {
         final MyDialog dialog = new MyDialog(getContext());
-        dialog.setTitle("护机宝提示您");
+        dialog.setTitle(getResources().getString(R.string.dialog_title_normal_tip));
         dialog.setCancelable(false);
-        dialog.setMessage("确定要卸载" + appName + "吗?");
+        dialog.setMessage(String.format(getResources().getString(R.string.dialog_message_sure_to_uninstall),appName));
         dialog.setPositiveListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,13 +198,12 @@ public class AppManagerFragment extends Fragment implements View.OnClickListener
                     adapter.notifyDataSetChanged();//更新界面
                     listener.dataChange(null,packageName);//通知activity有程序被卸载
                     pkns.remove(0);//从卸载表中移除该项
-                    makeToast(packageName+"已成功被移除！");
+                    makeToast(String.format(getResources().getString(R.string.toast_succeed_to_uninstall),packageName));
                     if (pkns.size() > 0) {
                         Map.Entry<String, String> entry = pkns.get(0);
                         readyToUninstall(entry.getKey(), entry.getValue());
-                    }else{
-                        adapter.notifyDataSetChanged();
                     }
+                    adapter.notifyDataSetChanged();
                 }
             }
         };//自定义的广播接收类，接收到结果后的操作

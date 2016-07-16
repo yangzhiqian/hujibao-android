@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,9 +119,6 @@ public class AppManagerAcitvity extends MyAppCompatActivity implements View.OnCl
             overridePendingTransition(R.anim.activit3dtoright_in, R.anim.activit3dtoright_out);
         }
         return super.onKeyDown(keyCode, event);
-    }
-    private void makeToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
 

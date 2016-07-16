@@ -4,6 +4,5 @@
     android:layout_height="match_parent"
     android:background="@drawable/guide1"
     android:orientation="vertical" >
-    
 
 </LinearLayout>

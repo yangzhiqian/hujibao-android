@@ -1,8 +1,13 @@
 package edu.ncu.safe.domain;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.google.gson.Gson;
 
 import java.io.Serializable;
+
+import edu.ncu.safe.MyApplication;
 
 public class User implements Serializable {
 	private  int uid;
@@ -124,6 +129,18 @@ public class User implements Serializable {
 		Gson gson = new Gson();
 		return gson.fromJson(json, User.class);
 
+	}
+
+
+	public static User getUserFromSP(Context context){
+		//获取用户信息
+		SharedPreferences sp = MyApplication.getSharedPreferences();
+		String uStr = sp.getString(MyApplication.SP_STRING_USER, "");
+		if ("".equals(uStr)) {
+			//没有登录
+			return null;
+		}
+		return  User.toUser(uStr);
 	}
 	
 }

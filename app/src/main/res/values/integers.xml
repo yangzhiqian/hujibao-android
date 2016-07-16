@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="title_size">25</integer>
+    <integer name="wellcom_time">4000</integer>
+    <integer name="warnming_flows">31457280</integer>
 </resources>

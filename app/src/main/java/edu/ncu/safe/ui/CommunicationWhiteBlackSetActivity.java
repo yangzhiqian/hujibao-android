@@ -68,13 +68,13 @@ public class CommunicationWhiteBlackSetActivity extends MyAppCompatActivity impl
 				//msg
 				rl_msg.setBackgroundDrawable(bg_selected);
 				rl_phone.setBackgroundDrawable(bg_unselected);
+
 			}
-			else{
+			else {
 				//phone
 				rl_msg.setBackgroundDrawable(bg_unselected);
 				rl_phone.setBackgroundDrawable(bg_selected);
 			}
-			
 		}
 	}
 

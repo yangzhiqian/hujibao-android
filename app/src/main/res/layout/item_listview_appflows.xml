@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:text="appname"
             android:textColor="#111111"
-            android:textSize="@dimen/lv_data_fontsize" />
+            android:textSize="@dimen/text_size_small" />
     </LinearLayout>
 
     <LinearLayout
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:text="-"
             android:textColor="#33dd33"
-            android:textSize="@dimen/lv_data_fontsize" />
+            android:textSize="@dimen/text_size_small" />
     </LinearLayout>
     
     <LinearLayout
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:text="-"
             android:textColor="#33dd33"
-            android:textSize="@dimen/lv_data_fontsize" />
+            android:textSize="@dimen/text_size_small" />
     </LinearLayout>
     
     <LinearLayout
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:text="-"
             android:textColor="#33dd33"
-            android:textSize="@dimen/lv_data_fontsize" />
+            android:textSize="@dimen/text_size_small" />
     </LinearLayout>
     
     

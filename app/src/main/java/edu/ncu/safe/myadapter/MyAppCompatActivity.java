@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import edu.ncu.safe.R;
 
@@ -11,7 +12,6 @@ import edu.ncu.safe.R;
  * Created by Mr_Yang on 2016/7/12.
  */
 public class MyAppCompatActivity extends AppCompatActivity {
-
     protected Toolbar toolbar;
 
     protected void initToolBar(String title) {
@@ -29,5 +29,9 @@ public class MyAppCompatActivity extends AppCompatActivity {
                         R.anim.activit3dtoright_out);
             }
         });
+    }
+
+    protected void makeToast(String message){
+        Toast.makeText(MyAppCompatActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 }

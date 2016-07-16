@@ -1,14 +1,13 @@
 package edu.ncu.safe.ui.fragment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +24,7 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -32,6 +32,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import edu.ncu.safe.MyApplication;
 import edu.ncu.safe.R;
 import edu.ncu.safe.View.CircleImageView;
 import edu.ncu.safe.View.MyProgressBar;
@@ -40,13 +41,13 @@ import edu.ncu.safe.domain.MainMenuInfo;
 import edu.ncu.safe.domain.User;
 import edu.ncu.safe.ui.LoginActivity;
 import edu.ncu.safe.ui.MainActivity;
+import edu.ncu.safe.util.BitmapUtil;
 import edu.ncu.safe.util.FlowsFormartUtil;
 
 /**
  * Created by Mr_Yang on 2016/7/12.
  */
 public class MainMenuFragment extends Fragment implements AdapterView.OnItemClickListener, View.OnClickListener {
-    public static final String SHAREDPREFERENCES = "user";
     private ImageView iv_icon;
     private TextView tv_name;
     private MyProgressBar mpb_memory;
@@ -107,10 +108,12 @@ public class MainMenuFragment extends Fragment implements AdapterView.OnItemClic
     public void onClick(View v) {
         if (user == null) {
             activity.startActivityForResult(new Intent(activity, LoginActivity.class), 1);
+            activity.overridePendingTransition(R.anim.activit3dtoleft_in,
+                    R.anim.activit3dtoleft_out);
         } else {
-            SharedPreferences sp = activity.getSharedPreferences(SHAREDPREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences sp = MyApplication.getSharedPreferences();
             SharedPreferences.Editor edit = sp.edit();
-            edit.putString("user", "");
+            edit.putString(MyApplication.SP_STRING_USER, "");
             edit.apply();
             logout(user);
             initUser();
@@ -118,7 +121,7 @@ public class MainMenuFragment extends Fragment implements AdapterView.OnItemClic
     }
 
     private void logout(final User user) {
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
                 try {
@@ -142,12 +145,12 @@ public class MainMenuFragment extends Fragment implements AdapterView.OnItemClic
                     out.close();
 
                     String message = readString(conn.getInputStream());
-                    Log.i("SlidingMenuView", message);
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+
             private String readString(InputStream is) throws IOException {
                 byte[] bytes = new byte[1024];
                 int len = 0;
@@ -169,17 +172,17 @@ public class MainMenuFragment extends Fragment implements AdapterView.OnItemClic
             return;
         }
         //保存到sp中
-        SharedPreferences sp = activity.getSharedPreferences(SHAREDPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sp = MyApplication.getSharedPreferences();
         SharedPreferences.Editor edit = sp.edit();
-        edit.putString("user", user.toJson());
+        edit.putString(MyApplication.SP_STRING_USER, user.toJson());
         edit.commit();
         initUser(user);
     }
 
 
     private void initUser() {
-        SharedPreferences sp = activity.getSharedPreferences(SHAREDPREFERENCES, Context.MODE_PRIVATE);
-        String uStr = sp.getString("user", "");
+        SharedPreferences sp = MyApplication.getSharedPreferences();
+        String uStr = sp.getString(MyApplication.SP_STRING_USER, "");
         if ("".equals(uStr)) {
             initUser(null);
             return;
@@ -189,7 +192,7 @@ public class MainMenuFragment extends Fragment implements AdapterView.OnItemClic
 
     private void initUser(User user) {
         this.user = user;
-        if(user==null){
+        if (user == null) {
             user = new User();
         }
 
@@ -197,33 +200,41 @@ public class MainMenuFragment extends Fragment implements AdapterView.OnItemClic
         float percent = (float) (user.getUsed() * 100.0 / user.getTotal());
         mpb_memory.setPercentSlow(percent);
         mpb_memory.setTitle("云空间 " + FlowsFormartUtil.toMBFormat(user.getUsed()) + "M/" + FlowsFormartUtil.toMBFormat(user.getTotal()) + "M");
-        String url = activity.getResources().getString(R.string.loadicon)+"?token="+user.getToken();
+        String url = activity.getResources().getString(R.string.loadicon) + "?token=" + user.getToken();
         RequestQueue mQueue = Volley.newRequestQueue(activity);
-        ImageRequest imageRequest = new ImageRequest(
-                url,
-                new Response.Listener<Bitmap>() {
-                    @Override
-                    public void onResponse(Bitmap response) {
-                        iv_icon.setImageBitmap(response);
-                        System.out.println("-----------加载成功---------");
 
-                    }
-                }, 0, 0, Bitmap.Config.RGB_565, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                iv_icon.setImageResource(R.drawable.appicon);
-                System.out.println("-----------加载失败---------");
-            }
-        });
-        mQueue.add(imageRequest);
-        if(this.user==null){
-            bt_login.setText("登录");
-        }else {
-            bt_login.setText("注销");
+        final String fileName = user.getIconUrl();
+        File f = new File(getContext().getCacheDir(), fileName);
+        iv_icon.setImageResource(R.drawable.appicon);
+        if (f.exists()&&!"".equals(fileName)) {
+            Bitmap bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
+            iv_icon.setImageBitmap(bitmap);
+        } else {
+            ImageRequest imageRequest = new ImageRequest(
+                    url,
+                    new Response.Listener<Bitmap>() {
+                        @Override
+                        public void onResponse(Bitmap response) {
+                            try {
+                                BitmapUtil.saveBitmapToFile(getContext().getCacheDir().getAbsolutePath(), fileName, response);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            iv_icon.setImageBitmap(response);
+
+                        }
+                    }, 0, 0, Bitmap.Config.RGB_565, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    iv_icon.setImageResource(R.drawable.appicon);
+                }
+            });
+            mQueue.add(imageRequest);
         }
-    }
-
-    public User getUser(){
-        return user;
+        if (this.user == null) {
+            bt_login.setText(getResources().getString(R.string.button_log_in));
+        } else {
+            bt_login.setText(getResources().getString(R.string.button_log_out));
+        }
     }
 }

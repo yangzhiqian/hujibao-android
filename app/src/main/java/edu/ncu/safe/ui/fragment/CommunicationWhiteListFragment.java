@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.domain.WhiteBlackNumberInfo;
@@ -12,21 +11,19 @@ import edu.ncu.safe.myadapter.MyLIstViewFragment;
 import edu.ncu.safe.util.ContactUtil;
 
 public class CommunicationWhiteListFragment extends MyLIstViewFragment {
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //初始化显示的图片
         phoneActivtId = R.drawable.phonegreen;
         phoneInactivtId = R.drawable.phoneacceptgray;
         messageAcitvityID = R.drawable.messagegreen;
         messageInactivityID = R.drawable.messageacceptgray;
-        View view = super.onCreateView(inflater,container,savedInstanceState);
-        flash();
-        return view;
+        layout_id = R.layout.fragment_whitelist;
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    private void flash(){
+    protected  void flash(){
         infos = database.queryWhiteNumberInfos();
         initList();
     }
@@ -41,17 +38,17 @@ public class CommunicationWhiteListFragment extends MyLIstViewFragment {
                 ivMessageClicked((Integer) view.getTag());
                 break;
             case R.id.ll_delete:
-                showConfirmDialog("护机宝提示", "确定要删除该白名单吗？", (Integer) view.getTag());
+                showConfirmDialog(getResources().getString(R.string.dialog_title_normal_tip),getResources().getString(R.string.dialog_message_sure_to_del_msg), (Integer) view.getTag());
                 break;
             case R.id.ll_edit:
-                showEditListDialog("修改白名单", infos.get((Integer) view.getTag()));
+                showEditListDialog(getResources().getString(R.string.dialog_title_edit_white_list), infos.get((Integer) view.getTag()));
                 break;
             case R.id.ll_more:
                 setDialogInfos((Integer) view.getTag());
-                showMoreDialog("更多",(Integer) view.getTag());
+                showMoreDialog(getResources().getString(R.string.dialog_title_more),(Integer) view.getTag());
                 break;
             case R.id.ll_add:
-                showEditListDialog("添加白名单",null);
+                showEditListDialog(getResources().getString(R.string.dialog_title_add_white_list),null);
                 break;
             default:
                 itemClicked(view);
@@ -62,10 +59,11 @@ public class CommunicationWhiteListFragment extends MyLIstViewFragment {
     protected void doWhileButton3ItemClicked(int position, int innerPosition) {
         switch (innerPosition) {
             case 0://删除
-                showConfirmDialog("护机宝提示", "确定要删除该白名单吗？", position);
+                showConfirmDialog(getResources().getString(R.string.dialog_title_normal_tip),
+                        getResources().getString(R.string.dialog_message_sure_to_del_white_list), position);
                 break;
             case 1://编辑
-                showEditListDialog("修改白名单", infos.get(position));
+                showEditListDialog(getResources().getString(R.string.dialog_title_edit_white_list), infos.get(position));
                 break;
             case 2://回短信
                 ContactUtil.sendMessageTo(getActivity(),infos.get(position).getNumber());
@@ -77,9 +75,10 @@ public class CommunicationWhiteListFragment extends MyLIstViewFragment {
                 boolean del = database.deleteWhiteNumber(infos.get(position).getNumber());
                 boolean ins = database.insertBlackNumber(infos.get(position));
                 if (del && ins) {
-                    makeToast("号码" + infos.get(position).getNumber() + "已成功到黑白名单表中");
+                    makeToast(String.format(getResources().getString(R.string.toast_succeed_to_add_black_list),infos.get(position).getNumber()));
+                    flash();
                 } else {
-                    makeToast("添加失败,请重试！");
+                    makeToast(String.format(getResources().getString(R.string.toast_fail_to_add_white_list),infos.get(position).getNumber()));
                     database.insertWhiteNumber(infos.get(position));
                 }
                 break;
@@ -108,15 +107,12 @@ public class CommunicationWhiteListFragment extends MyLIstViewFragment {
     }
     private void setDialogInfos(int position) {
         dialogInfos.clear();
-        ItemInfo info1 = new ItemInfo(R.drawable.delete, "删除");
-        ItemInfo info2 = new ItemInfo(R.drawable.edit, "编辑");
-        ItemInfo info3 = new ItemInfo(R.drawable.message, "给"
-                + infos.get(position).getNumber() + "回复短信");
-        ItemInfo info4 = new ItemInfo(R.drawable.phone, "给"
-                + infos.get(position).getNumber() + "回拨电话");
-        ItemInfo info5 = new ItemInfo(R.drawable.blacklist, "更改"
-                + infos.get(position).getNumber() + "为黑名单");
-        ItemInfo info6 = new ItemInfo(R.drawable.cancel, "取消");
+        ItemInfo info1 = new ItemInfo(R.drawable.delete, getResources().getString(R.string.dialog_del));
+        ItemInfo info2 = new ItemInfo(R.drawable.edit, getResources().getString(R.string.dialog_edit));
+        ItemInfo info3 = new ItemInfo(R.drawable.message, String.format(getResources().getString(R.string.dialog_back_message_to),infos.get(position).getNumber()));
+        ItemInfo info4 = new ItemInfo(R.drawable.phone, String.format(getResources().getString(R.string.dialog_back_call_to),infos.get(position).getNumber()));
+        ItemInfo info5 = new ItemInfo(R.drawable.blacklist, String.format(getResources().getString(R.string.dialog_set_to_black_list),infos.get(position).getNumber()));
+        ItemInfo info6 = new ItemInfo(R.drawable.cancel,getResources().getString(R.string.dialog_cancle));
 
         dialogInfos.add(info1);
         dialogInfos.add(info2);
@@ -130,14 +126,11 @@ public class CommunicationWhiteListFragment extends MyLIstViewFragment {
     protected void doWhileButton1OKClicked(int position) {
         if (database.deleteWhiteNumber(infos.get(position).getNumber())) {
             // 删除成功
-            Toast.makeText(getActivity(),
-                    "号码" + infos.get(position).getNumber() + "已成功移除白名单！", 1)
-                    .show();
+            makeToast(getResources().getString(R.string.toast_del_succeed));
             ll_list.removeView(items.get(position));
         } else {
-            Toast.makeText(getActivity(),
-                    "号码" + infos.get(position).getNumber() + "移除失败！", 1).show();
             // 删除失败
+            makeToast(getResources().getString(R.string.toast_del_fail));
         }
 
     }
@@ -146,21 +139,20 @@ public class CommunicationWhiteListFragment extends MyLIstViewFragment {
     protected void doWhileButton2OKClicked(WhiteBlackNumberInfo info) {
         //编辑
         if (database.updateWhiteNumber(info)) {
-            makeToast("修改成功");
+            makeToast(getResources().getString(R.string.toast_modify_succeed));
             initList();
         } else {
-            makeToast("修改失败,原因未知");
+            makeToast(getResources().getString(R.string.toast_modify_fail));
         }
     }
 
     @Override
     protected void doWhileListAdd(WhiteBlackNumberInfo info) {
         if (database.insertWhiteNumber(info)) {
-            Toast.makeText(getActivity(), "添加成功", 1).show();
+            makeToast(getResources().getString(R.string.toast_add_succeed));
             flash();
         } else {
-            Toast.makeText(getActivity(),
-                    "添加失败,号码" + info.getNumber() + "可能已在黑白名单表中", 1).show();
+            makeToast(String.format(getResources().getString(R.string.toast_add_fail), info.getNumber()));
         }
     }
 }

@@ -20,9 +20,9 @@
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:paddingTop="5dip"
-            android:text="您可以使用个短信校准向运营商发送免费查询短信，查询本月剩余流量"
+            android:text="@string/flows_protector_celibration_tips"
             android:textColor="#111111"
-            android:textSize="18sp" />
+            android:textSize="@dimen/text_size_short" />
 
         <View style="@style/divideline_horizontal" />
 
@@ -37,9 +37,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="短信校准"
+                android:text="@string/flows_celibration_message"
                 android:textColor="#00EE00"
-                android:textSize="22sp" />
+                android:textSize="@dimen/text_size_middle" />
         </LinearLayout>
 
         <View style="@style/divideline_horizontal" />
@@ -52,7 +52,7 @@
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:paddingTop="5dip"
-            android:text="在这里输入充运营商查询到的结果"
+            android:text="@string/flows_protector_celibration_modify_tips"
             android:textColor="#111111"
             android:textSize="18sp" />
 
@@ -69,9 +69,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="本月剩余流量"
+                android:text="@string/flows_protector_celibration_flows_remain"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="@dimen/text_size_normal" />
 
             <EditText
                 android:id="@+id/et_flowsremain"
@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:text="MB"
                 android:textColor="#00ff00"
-                android:textSize="20sp" />
+                android:textSize="@dimen/text_size_normal" />
         </LinearLayout>
 
         <View style="@style/divideline_horizontal" />
@@ -109,9 +109,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="套餐总流量"
+                android:text="@string/flows_protector_celibration_flows_total"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="@dimen/text_size_normal" />
 
             <EditText
                 android:id="@+id/et_flowstotal"
@@ -132,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:text="MB"
                 android:textColor="#00ff00"
-                android:textSize="20sp" />
+                android:textSize="@dimen/text_size_normal" />
         </LinearLayout>
 
         <View style="@style/divideline_horizontal" />

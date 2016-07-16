@@ -103,13 +103,12 @@ public class BitmapUtil {
     /**
      * 加载（内存缓存->文件缓存->网络）图片
      * @param context   上下文
-     * @param token       用户网络下载时的用户标示
      * @param fileName      文件名或文件路径，如果下载的图片来自本地，则表示文件全路径，如果文件来自网络，则表示文件名
      * @param type          图片类型   0代表小图标，1代表预览图片（400x600,由服务器决定,2代表原图）
      * @param view           如果用于加载到imageview上显示，可指定该参数，异步加载完成后会自动显示，可以为null
      * @param mpb           加载进度
      */
-    public static void loadImageToImageView(final Context context,String token,final String fileName,final int type ,final ImageView view,final MyProgressBar mpb){
+    public static void loadImageToImageView(final Context context,final String fileName,final int type ,final ImageView view,final MyProgressBar mpb){
         //实例化加载工具
         DataLoader loader = new DataLoader(context);
         //实例化监听器，监听器运行的线程为主线程
@@ -140,7 +139,7 @@ public class BitmapUtil {
             }
         });
         String url = context.getResources().getString(R.string.loadimg);
-        loader.loadImg(url,token,fileName,type,mpb);
+        loader.loadImg(url,fileName,type,mpb);
     }
 
     public static Bitmap getRequireBitmap(String url, int reqWidth, int reqHeight) {

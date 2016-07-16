@@ -35,13 +35,9 @@ import edu.ncu.safe.util.BitmapUtil;
  * Created by Mr_Yang on 2016/6/1.
  */
 public class PictureBackupFragment extends BackupBaseFragment {
-
-    private static final String TAG = "PictureBackupFragment";
-
-    public PictureBackupFragment(User user, int type) {
-        super(user, type);
+    public PictureBackupFragment(int type) {
+        super(type);
     }
-
     @Override
     public void init() {
         showLocal();
@@ -80,7 +76,7 @@ public class PictureBackupFragment extends BackupBaseFragment {
 
     protected View getBackupView(final View parent, final int position, final ITarget info) {
         LinearLayout layout = getLayout();
-        TextView tv_bk = getTextView("备份到云端");
+        TextView tv_bk = getTextView(getResources().getString(R.string.backup_pupup_item_backup_cloud));
         layout.addView(tv_bk);
         tv_bk.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,10 +101,15 @@ public class PictureBackupFragment extends BackupBaseFragment {
                             Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getContext(), "上传失败:位置错误", Toast.LENGTH_SHORT).show();
+                            makeToast(getResources().getString(R.string.toast_error_unknow));
                         }
                     }
                 });
+                User user = User.getUserFromSP(getContext());
+                if(user==null){
+                    makeToast(getResources().getString(R.string.toast_un_log_in));
+                    return;
+                }
                 storer.storeImg(info.getIconPath(), url, user.getToken(), holder.mpb_downloadProgress);
             }
         });
@@ -149,12 +150,14 @@ public class PictureBackupFragment extends BackupBaseFragment {
         popupWindow.dismiss();
         BackupLVAdapter.ViewHolder holder = (BackupLVAdapter.ViewHolder) parent.getTag();
 
-        new DataLoader(getContext()).loadImage(user.getToken(), info.getTitle(), DataLoader.TYPE_BIG, holder.mpb_downloadProgress, new DataLoader.OnImageObtainedListener() {
+        User user = User.getUserFromSP(getContext());
+
+        new DataLoader(getContext()).loadImage( info.getTitle(), DataLoader.TYPE_BIG, holder.mpb_downloadProgress, new DataLoader.OnImageObtainedListener() {
             @Override
             public void onFailure(String error) {
                 info.setIsInDownload(false);
                 adapter.setItemInDownloading(parent, position, false);
-                makeToast("加载图片失败！");
+                makeToast(getResources().getString(R.string.toast_error_fail_to_load_img));
             }
 
             @Override
@@ -170,7 +173,7 @@ public class PictureBackupFragment extends BackupBaseFragment {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    makeToast("图片保存失败");
+                    makeToast(getResources().getString(R.string.toast_error_fail_to_save_img));
                 }
             }
         });
@@ -222,7 +225,6 @@ public class PictureBackupFragment extends BackupBaseFragment {
         Intent intent = new Intent();
         intent.setClass(getContext(), TouchImageViewActivity.class);
         intent.putExtra("filename", info.getPath());
-        intent.putExtra("token", getUser().getToken());
         startActivity(intent);
     }
 }

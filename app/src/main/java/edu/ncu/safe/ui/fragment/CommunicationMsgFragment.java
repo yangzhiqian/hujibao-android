@@ -16,7 +16,6 @@ import edu.ncu.safe.R;
 import edu.ncu.safe.adapter.CommunicationLVMASGAdapter;
 import edu.ncu.safe.db.dao.CommunicationDatabase;
 import edu.ncu.safe.myadapter.MyLIstViewBaseAdapter.OnDataChangedListener;
-import edu.ncu.safe.util.MyLog;
 
 public class CommunicationMsgFragment extends Fragment implements
         OnItemClickListener, OnDataChangedListener {
@@ -34,7 +33,6 @@ public class CommunicationMsgFragment extends Fragment implements
         lv = (ListView) view.findViewById(R.id.lv_msg_interception);
         database = new CommunicationDatabase(getActivity());
         adapter = new CommunicationLVMASGAdapter(getActivity(),database.queryInterceptionMSGInfos(30,0));
-
 
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
@@ -64,8 +62,5 @@ public class CommunicationMsgFragment extends Fragment implements
 
     private void makeToast(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
-    }
-    private void logi(String message) {
-        MyLog.i("CommunicationMsgFragment", message);
     }
 }

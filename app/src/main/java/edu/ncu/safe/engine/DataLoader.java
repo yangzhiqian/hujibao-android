@@ -12,6 +12,7 @@ import java.io.IOException;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.View.MyProgressBar;
+import edu.ncu.safe.domain.User;
 import edu.ncu.safe.external.ACache;
 import edu.ncu.safe.external.okhttpprogress.ProgressResponseBody;
 import edu.ncu.safe.external.okhttpprogress.UIProgressResponseListener;
@@ -110,19 +111,18 @@ public class DataLoader {
 
     /**
      * 加载（内存缓存->文件缓存->网络）图片
-     * @param token       用户网络下载时的用户标示
      * @param fileName      文件名或文件路径，如果下载的图片来自本地，则表示文件全路径，如果文件来自网络，则表示文件名
      * @param type          图片类型   0代表小图标，1代表预览图片（400x600,由服务器决定,2代表原图）
      * @param mpb           加载进度
      */
-    public  void loadImage(String token,final String fileName,final int type ,final MyProgressBar mpb,OnImageObtainedListener listener){
+    public  void loadImage(final String fileName,final int type ,final MyProgressBar mpb,OnImageObtainedListener listener){
         //实例化监听器，监听器运行的线程为主线程
         setOnImageObtainedListener(listener);
         String url = context.getResources().getString(R.string.loadimg);
-        loadImg(url, token, fileName, type, mpb);
+        loadImg(url, fileName, type, mpb);
     }
 
-    public void loadImg(String url, String token, String filename, int type, final MyProgressBar mpb) {
+    public void loadImg(String url,String filename, int type, final MyProgressBar mpb) {
         //本地缓存中获取
         Bitmap bitmap = ACache.get(context).getAsBitmap(filename + "-" + type);
         if(bitmap!=null){
@@ -147,7 +147,17 @@ public class DataLoader {
             myHandler.sendMessage(msg);
             return;
         }
+
         //本地没有，网络上获取
+        //获取用户信息
+        User user = User.getUserFromSP(context);
+        if(user==null){
+            Message msg = Message.obtain();
+            msg.what = TYPE_IMG_ERROR;
+            msg.obj = "您还未登录";
+            myHandler.sendMessage(msg);
+            return;
+        }
         final UIProgressResponseListener uiProgressResponseListener = new UIProgressResponseListener() {
             @Override
             public void onUIResponseProgress(long bytesRead, long contentLength, boolean done) {
@@ -161,7 +171,7 @@ public class DataLoader {
             }
         };
         RequestBody requestBodyPost = new FormBody.Builder()
-                .add("token", token)
+                .add("token", user.getToken())
                 .add("filename", filename)
                 .add("type", type + "")
                 .build();

@@ -12,7 +12,6 @@ import edu.ncu.safe.View.CircleImageView;
 import edu.ncu.safe.domain.MainGVItemInfo;
 
 public class MainGVAdapter extends BaseAdapter {
-	private static final String TAG = "MainGVAdapter";
 	private LayoutInflater flater;
 	private MainGVItemInfo[] infos;
 	public MainGVAdapter(Context context){

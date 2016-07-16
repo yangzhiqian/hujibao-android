@@ -3,6 +3,8 @@ package edu.ncu.safe.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
+import edu.ncu.safe.R;
 import edu.ncu.safe.service.FLoatDesktopWindow;
 import edu.ncu.safe.service.FlowsRecordService;
 
@@ -17,7 +19,7 @@ public class RelefeReceiver extends BroadcastReceiver {
 
 		Intent flowsRecorderIntent = new Intent(context,
 				FlowsRecordService.class);
-		flowsRecorderIntent.setAction("edu.ncu.myservice.flowsrecorder");
+		flowsRecorderIntent.setAction(context.getResources().getString(R.string.action_service_refrash_flows));
 		context.startService(flowsRecorderIntent);
 	}
 }

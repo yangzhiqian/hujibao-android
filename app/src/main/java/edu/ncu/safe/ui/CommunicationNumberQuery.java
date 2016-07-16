@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -107,7 +106,5 @@ public class CommunicationNumberQuery extends MyAppCompatActivity implements OnO
         }
     }
 
-    private void makeToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-    }
+
 }

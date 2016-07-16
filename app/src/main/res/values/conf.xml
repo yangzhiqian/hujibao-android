@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="protocolurl">http://10.0.2.2:8080/protocol.xml</string>
-    <string name="versionrul">http://10.0.2.2:8080/versioninfo.json</string>
+    
 </resources>

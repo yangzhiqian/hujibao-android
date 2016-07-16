@@ -1,7 +1,6 @@
 package edu.ncu.safe.ui;
 
 import android.app.AlertDialog.Builder;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,9 +12,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
+import edu.ncu.safe.MyApplication;
 import edu.ncu.safe.R;
+import edu.ncu.safe.View.MyDialog;
 import edu.ncu.safe.db.dao.FlowsDatabase;
 import edu.ncu.safe.myadapter.MyAppCompatActivity;
 import edu.ncu.safe.util.FlowsFormartUtil;
@@ -28,7 +28,6 @@ public class FlowsCalibrationActicity extends MyAppCompatActivity implements OnC
 	private LinearLayout ll_messageCelibration;
 	private EditText et_flowsRemian;
 	private EditText et_flowsTotal;
-	private SharedPreferences sp;
 	private FlowsDatabase database;
 
 	@Override
@@ -37,9 +36,6 @@ public class FlowsCalibrationActicity extends MyAppCompatActivity implements OnC
 		setContentView(R.layout.activity_flowscalibration);
 		initToolBar(getResources().getString(R.string.title_flows_calibration));
 		database = new FlowsDatabase(this);
-		sp = getSharedPreferences(
-				FlowsProtectorActivity.FLOWSSHAREDPREFERENCES,
-				Context.MODE_MULTI_PROCESS);
 
 		ll_messageCelibration = (LinearLayout) this
 				.findViewById(R.id.ll_messagecelibration);
@@ -54,13 +50,14 @@ public class FlowsCalibrationActicity extends MyAppCompatActivity implements OnC
 	}
 
 	private void initViewData() {
-		long total = sp.getLong(FlowsProtectorActivity.FLOWSTOTAL, 0);
+		SharedPreferences sp = MyApplication.getSharedPreferences();
+		long total = sp.getLong(MyApplication.SP_LONG_TOTAL_FLOWS, 0);
 		if (total == 0) {
 			// 当前没有设置数据
 			et_flowsRemian.setText(0 + "");
 			et_flowsTotal.setText(0 + "");
 		} else {
-			long offset = sp.getLong(FlowsProtectorActivity.DBFLOWSOFFSET, 0);
+			long offset = sp.getLong(MyApplication.SP_LONG_DB_OFFSET, 0);
 			// 该处不用检测offset的更新时间，应为在上一个界面一定会更新
 			long dbFlows = database.queryCurrentMonthTotalFlows();
 			long used = dbFlows + offset;
@@ -77,7 +74,7 @@ public class FlowsCalibrationActicity extends MyAppCompatActivity implements OnC
 		switch (v.getId()) {
 		case R.id.ll_messagecelibration:
 			Builder builder = new Builder(this);
-			builder.setTitle("选择运营商");
+			builder.setTitle(getResources().getString(R.string.dialog_title_choose_operator));
 
 			builder.setSingleChoiceItems(R.array.company, 0,
 					new DialogInterface.OnClickListener() {
@@ -111,28 +108,26 @@ public class FlowsCalibrationActicity extends MyAppCompatActivity implements OnC
 	}
 
 	private void showInputRemainDialog() {
-		Builder builder = new Builder(this);
-		builder.setTitle("请输入剩余流量");
+		final MyDialog myDialog = new MyDialog(this);
+		myDialog.setTitle(getResources().getString(R.string.dialog_title_input_remaind_flows));
 		final EditText input = new EditText(this);
 		input.setHint("以MB为单位");
-		builder.setView(input);
-		
-		builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+		myDialog.setMessageView(input);
+		myDialog.setPositiveListener(new OnClickListener() {
 			@Override
-			public void onClick(DialogInterface dialog, int which) {
+			public void onClick(View v) {
 				long remain = 0;
 				try {
 					remain = (long) (Float.parseFloat(input.getText()
 							.toString().trim()) * 1024 * 1024);
 				} catch (Exception e) {
-					Toast.makeText(getApplicationContext(), "输入的数据不合法！", Toast.LENGTH_SHORT)
-							.show();
+					makeToast(getResources().getString(R.string.toast_error_invalid_input));
 					return;
 				}
 				// 更新显示数据
 				et_flowsRemian.setText(FlowsFormartUtil.toMBFormat(remain));
-
-				long total = sp.getLong(FlowsProtectorActivity.FLOWSTOTAL, 0);
+				SharedPreferences sp = MyApplication.getSharedPreferences();
+				long total = sp.getLong(MyApplication.SP_LONG_TOTAL_FLOWS, 0);
 				if (total == 0) {
 					// 没有设置过数据流量的值
 					long db = database.queryCurrentMonthTotalFlows();
@@ -140,10 +135,10 @@ public class FlowsCalibrationActicity extends MyAppCompatActivity implements OnC
 					et_flowsTotal.setText(FlowsFormartUtil.toMBFormat(total));
 
 					Editor editor = sp.edit();
-					editor.putLong(FlowsProtectorActivity.FLOWSTOTAL, total);
-					editor.putLong(FlowsProtectorActivity.DBFLOWSOFFSET, 0);
+					editor.putLong(MyApplication.SP_LONG_TOTAL_FLOWS, total);
+					editor.putLong(MyApplication.SP_LONG_DB_OFFSET, 0);
 					editor.putInt(
-							FlowsProtectorActivity.DBFLOWSOFFSETUPDATETIME,
+							MyApplication.SP_INT_OFFSET_UPDATE,
 							FormatDate.getCurrentFormatIntDate());
 					editor.apply();
 				} else {
@@ -152,72 +147,51 @@ public class FlowsCalibrationActicity extends MyAppCompatActivity implements OnC
 					long offset = total - remain - db;
 
 					Editor editor = sp.edit();
-					editor.putLong(FlowsProtectorActivity.DBFLOWSOFFSET, offset);
+					editor.putLong(MyApplication.SP_LONG_DB_OFFSET, offset);
 					editor.putInt(
-							FlowsProtectorActivity.DBFLOWSOFFSETUPDATETIME,
+							MyApplication.SP_INT_OFFSET_UPDATE,
 							FormatDate.getCurrentFormatIntDate());
 					editor.apply();
 				}
+				myDialog.dismiss();
 			}
 		});
-		builder.setNegativeButton("取消", null);
-		builder.create().show();
+		myDialog.show();
 	}
 
 	private void showInputTotalDialog() {
-		Builder builder = new Builder(this);
-		builder.setTitle("请输入套餐内总流量");
+		final MyDialog myDialog = new MyDialog(this);
+		myDialog.setTitle(getResources().getString(R.string.dialog_title_total_flows));
 		final EditText input = new EditText(this);
 		input.setHint("以MB为单位");
-		builder.setView(input);
-		
-		builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+		myDialog.setMessageView(input);
+		myDialog.setPositiveListener(new OnClickListener() {
 			@Override
-			public void onClick(DialogInterface dialog, int which) {
+			public void onClick(View v) {
 				long total = 0;
 				try {
 					total = (long) (Float.parseFloat(input.getText()
 							.toString().trim()) * 1024 * 1024);
 				} catch (Exception e) {
-					Toast.makeText(getApplicationContext(), "输入的数据不合法！", Toast.LENGTH_SHORT)
-							.show();
+					makeToast(getResources().getString(R.string.toast_error_invalid_input));
 					return;
 				}
 				// 更新显示数据
 				et_flowsTotal.setText(FlowsFormartUtil.toMBFormat(total));
-				
+
 				long db = database.queryCurrentMonthTotalFlows();
-				long remain = (long)(Float.parseFloat(et_flowsRemian.getText().toString().trim())*1024*1024);
+				long remain = (long) (Float.parseFloat(et_flowsRemian.getText().toString().trim()) * 1024 * 1024);
 				long offset = total - db - remain;
-				
+				SharedPreferences sp = MyApplication.getSharedPreferences();
 				Editor editor = sp.edit();
-				editor.putLong(FlowsProtectorActivity.FLOWSTOTAL, total);
-				editor.putLong(FlowsProtectorActivity.DBFLOWSOFFSET, offset);
-				editor.putInt(FlowsProtectorActivity.DBFLOWSOFFSETUPDATETIME, FormatDate.getCurrentFormatIntDate());
+				editor.putLong(MyApplication.SP_LONG_TOTAL_FLOWS, total);
+				editor.putLong(MyApplication.SP_LONG_DB_OFFSET, offset);
+				editor.putInt(MyApplication.SP_INT_OFFSET_UPDATE, FormatDate.getCurrentFormatIntDate());
 				editor.apply();
+				myDialog.dismiss();
 			}
 		});
-		builder.setNegativeButton("取消", null);
-		builder.create().show();
-	}
-	
-	
-	
-	
-	private long getOffset() {
-		long offset = sp.getLong(FlowsProtectorActivity.DBFLOWSOFFSET, 0);
-		int offsetUpdateDate = sp.getInt(
-				FlowsProtectorActivity.DBFLOWSOFFSETUPDATETIME, 0);
-		int date = FormatDate.getCurrentFormatIntDate();
-		if (offsetUpdateDate / 100 != date / 100) {
-			// offset不是本月的
-			offset = 0;
-			Editor editor = sp.edit();
-			editor.putLong(FlowsProtectorActivity.DBFLOWSOFFSET, 0);
-			editor.putInt(FlowsProtectorActivity.DBFLOWSOFFSETUPDATETIME, date);
-			editor.apply();
-		}
-		return offset;
+		myDialog.show();
 	}
 
 	@Override
@@ -228,4 +202,6 @@ public class FlowsCalibrationActicity extends MyAppCompatActivity implements OnC
 		}
 		return super.onKeyDown(keyCode, event);
 	}
+
+
 }

@@ -1,19 +1,16 @@
 package edu.ncu.safe.ui;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,17 +24,16 @@ import java.net.URLEncoder;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.domain.User;
+import edu.ncu.safe.myadapter.MyAppCompatActivity;
 import edu.ncu.safe.util.MD5Encoding;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends MyAppCompatActivity {
 
-    private static final int REQUEST_READ_CONTACTS = 0;
     private UserLoginTask mAuthTask = null;
     // UI references.
     private AutoCompleteTextView userName;
     private EditText pwd;
     private Button btn_longin;
-    private Button btn_regist;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -45,7 +41,7 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // Set up the login form.
+        initToolBar(getResources().getString(R.string.title_log_in));
         userName = (AutoCompleteTextView) findViewById(R.id.uname);
         pwd = (EditText) findViewById(R.id.password);
         btn_longin = (Button) findViewById(R.id.btn_login);
@@ -54,15 +50,22 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
                 attemptLogin();
-                btn_longin.setText("正在登陆");
-                btn_longin.requestFocus();
             }
         });
 
         findViewById(R.id.btn_regist).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this,RegistActivity.class));
+                startActivity(new Intent(LoginActivity.this, RegistActivity.class));
+                overridePendingTransition(R.anim.activit3dtoleft_in,
+                        R.anim.activit3dtoleft_out);
+            }
+        });
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+
             }
         });
         mLoginFormView = findViewById(R.id.login_form);
@@ -93,6 +96,8 @@ public class LoginActivity extends Activity {
             focusView.requestFocus();
         } else {
             showProgress(true);
+            btn_longin.setText(getResources().getString(R.string.button_log_in_doing));
+            btn_longin.setEnabled(false);
             mAuthTask = new UserLoginTask(name, password);
             mAuthTask.execute((Void) null);
         }
@@ -149,13 +154,13 @@ public class LoginActivity extends Activity {
                 responesCode = conn.getResponseCode();
                 System.out.println(responesCode);
                 if (responesCode != 200) {
-                    message = "登录失败！";
+                    message = getResources().getString(R.string.error_log_in);
                     return null;
                 }
                 return parseToUser(readString(conn.getInputStream()));
             } catch (Exception e) {
                 e.printStackTrace();
-                message = "连接服务器异常！";
+                message = getResources().getString(R.string.error_fail_to_connect_server);
                 return null;
             }
         }
@@ -172,7 +177,6 @@ public class LoginActivity extends Activity {
 
         private User parseToUser(String json) {
             try {
-                Log.i("TAG",json);
                 JSONObject object = new JSONObject(json);
                 boolean isSuccess = object.getBoolean("succeed");
                 message = object.getString("message");
@@ -181,11 +185,10 @@ public class LoginActivity extends Activity {
                 }
                 JSONObject jsonuUser = object.getJSONObject("user");
                 User user = User.toUser(jsonuUser.toString());
-                Log.i("TAG",user.getToken());
                 return user;
             } catch (JSONException e) {
                 e.printStackTrace();
-                message = "json数据解析错误";
+                message = getResources().getString(R.string.error_JSON_parse);
                 return null;
             }
         }
@@ -193,7 +196,8 @@ public class LoginActivity extends Activity {
         @Override
         protected void onPostExecute(User user) {
             makeToast(message);
-            btn_longin.setText("登录");
+            btn_longin.setText(getResources().getString(R.string.button_log_in));
+            btn_longin.setEnabled(true);
             if (user != null) {
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
@@ -202,7 +206,7 @@ public class LoginActivity extends Activity {
                 setResult(1,intent);
                 finish();
             } else {
-                //    pwd.setError(getString(R.string.error_incorrect_password));
+                pwd.setError(getString(R.string.error_incorrect_password));
                 pwd.requestFocus();
             }
             mAuthTask = null;
@@ -215,14 +219,13 @@ public class LoginActivity extends Activity {
             showProgress(false);
         }
     }
-    private void makeToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void onBackPressed() {
-        setResult(-1,null);
+        setResult(-1, null);
         finish();
+        overridePendingTransition(R.anim.activit3dtoright_in,
+                R.anim.activit3dtoright_out);
     }
 }
 

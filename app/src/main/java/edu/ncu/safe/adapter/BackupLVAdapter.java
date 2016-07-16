@@ -15,7 +15,6 @@ import java.util.List;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.View.MyProgressBar;
-import edu.ncu.safe.domain.User;
 import edu.ncu.safe.domainadapter.ITarget;
 import edu.ncu.safe.engine.DataLoader;
 import edu.ncu.safe.util.BitmapUtil;
@@ -26,17 +25,15 @@ import edu.ncu.safe.util.BitmapUtil;
 public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
     private Context context;
     private List<ITarget> infos;
-    private User user;
     private boolean isShowMultiChoice = false;
 
-    public BackupLVAdapter(Context context,User user) {
-        this(new ArrayList<ITarget>(), context,user);
+    public BackupLVAdapter(Context context) {
+        this(new ArrayList<ITarget>(), context);
     }
 
-    public BackupLVAdapter(List<ITarget> infos, Context context,User user) {
+    public BackupLVAdapter(List<ITarget> infos, Context context) {
         this.infos = infos;
         this.context = context;
-        this.user = user;
     }
 
     public void setInfos(List<ITarget> infos) {
@@ -96,7 +93,7 @@ public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnChe
         if (infos.get(position).getIconPath() != null) {
             holder.iv_icon.setVisibility(View.VISIBLE);
             holder.iv_icon.setImageResource(R.drawable.appicon);
-            BitmapUtil.loadImageToImageView(context,user.getToken(),infos.get(position).getIconPath(), DataLoader.TYPE_SMALL, holder.iv_icon,null);
+            BitmapUtil.loadImageToImageView(context,infos.get(position).getIconPath(), DataLoader.TYPE_SMALL, holder.iv_icon,null);
         } else {
             holder.iv_icon.setVisibility(View.GONE);
         }

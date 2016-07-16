@@ -13,6 +13,7 @@ import android.telephony.SmsMessage;
 
 import java.util.List;
 
+import edu.ncu.safe.MyApplication;
 import edu.ncu.safe.R;
 import edu.ncu.safe.db.dao.CommunicationDatabase;
 import edu.ncu.safe.domain.InterceptionInfo;
@@ -76,10 +77,10 @@ public class SmsReceiver extends BroadcastReceiver {
 	 * @param message
 	 */
 	private boolean  dealWhiteByPhoneLostProtector(SmsMessage message){
-		SharedPreferences sp = context.getSharedPreferences(PhoneLostProtectActivity.SHAREPERFERENCESNAME, Context.MODE_MULTI_PROCESS);
+		SharedPreferences sp = MyApplication.getSharedPreferences();
 		String number = message.getOriginatingAddress();// 获取发信人地址
-		final String safeNumber = sp.getString(PhoneLostProtectActivity.SAFEPHONENUMBER, "");
-		boolean isInProtecting  = sp.getBoolean(PhoneLostProtectActivity.ISINPROTECTING,false);
+		final String safeNumber = sp.getString(MyApplication.SP_STRING_SAFE_PHONE_NUMBER, "");
+		boolean isInProtecting  = sp.getBoolean(MyApplication.SP_BOOLEAN_IS_IN_PROTECTING,false);
 		if("".equals(safeNumber) || !number.equals(safeNumber)|| !isInProtecting){
 			//未设置安全号码或者不是安全号码的短信或则手机没有开启保护，不处理
 			return false;
@@ -94,79 +95,79 @@ public class SmsReceiver extends BroadcastReceiver {
 //		{"#*delete*#","#*lock*#","#*ring*#","#*pwd*#","#*location*#"};
 		switch(id){
 			case 0://重置
-				if(sp.getBoolean(PhoneLostProtectActivity.ISDELETE,false)){
+				if(sp.getBoolean(MyApplication.SP_BOOLEAN_IS_REMOTE_DELETE,false)){
 					//开启了可以重置手机
 					if(isAdmin){
 						//手机恢复出厂设置
 						DevicePolicyManager manager = (DevicePolicyManager) context
 								.getSystemService(Context.DEVICE_POLICY_SERVICE);
 						manager.wipeData(0);// 重置手机
-						sendMessageNumber("目标手机正在重置！", safeNumber);
+						sendMessageNumber(context.getString(R.string.phone_lost_message_body_delete_ok), safeNumber);
 					}else{
-						sendMessageNumber("软件没有设备管理权限！", safeNumber);
+						sendMessageNumber(context.getString(R.string.error_no_device_admin), safeNumber);
 					}
 				}else{
-					sendMessageNumber("重置失败：手机没有开启重置功能！", safeNumber);
+					sendMessageNumber(context.getString(R.string.phone_lost_message_body_delete_error), safeNumber);
 				}
 				return true;
 			case 1://锁频
-				if(sp.getBoolean(PhoneLostProtectActivity.ISLOCK,false)){
+				if(sp.getBoolean(MyApplication.SP_BOOLEAN_IS_REMOTE_LOCK,false)){
 					//开启了可以锁住手机
 					if(isAdmin){
 						//锁住
 						DevicePolicyManager manager = (DevicePolicyManager) context
 								.getSystemService(Context.DEVICE_POLICY_SERVICE);
-						String pwd = body.length > 1?body[1]:PhoneLostProtectActivity.DEFAULT_PWD;
+						String pwd = body.length > 1?body[1]:MyApplication.PHONE_LOST_DEFAULT_PWD;
 						manager.resetPassword(pwd, 0);
 						manager.lockNow();
-						sendMessageNumber("目标手机正在锁屏，锁屏密码是:" + pwd, safeNumber);
+						sendMessageNumber(context.getResources().getString(R.string.phone_lost_message_body_lock_ok) + pwd, safeNumber);
 					}else{
-						sendMessageNumber("软件没有设备管理权限！", safeNumber);
+						sendMessageNumber(context.getResources().getString(R.string.error_no_device_admin), safeNumber);
 					}
 				}else{
-					sendMessageNumber("锁屏失败：手机没有开启锁频功能！", safeNumber);
+					sendMessageNumber(context.getResources().getString(R.string.phone_lost_message_body_lock_error), safeNumber);
 				}
 				return true;
 			case 2://响铃
-				if(sp.getBoolean(PhoneLostProtectActivity.ISRING, false)){
+				if(sp.getBoolean(MyApplication.SP_BOOLEAN_IS_RING, false)){
 					MediaPlayer player = MediaPlayer.create(context, R.raw.ring);
 					player.setVolume(1.0f, 1.0f);
 					player.start();
 				}else{
-					sendMessageNumber("响铃操作未被程序允许", safeNumber);
+					sendMessageNumber(context.getResources().getString(R.string.phone_lost_message_body_ring_error), safeNumber);
 				}
 				return true;
 			case 3://修改密码
-				if(sp.getBoolean(PhoneLostProtectActivity.ISPWD, false)){
+				if(sp.getBoolean(MyApplication.SP_BOOLEAN_IS_REMOTE_CHANGE_LOCK_PWD, false)){
 					if(isAdmin){
 						DevicePolicyManager manager = (DevicePolicyManager) context
 								.getSystemService(Context.DEVICE_POLICY_SERVICE);
-						String pwd = body.length > 1?body[1]:PhoneLostProtectActivity.DEFAULT_PWD;
+						String pwd = body.length > 1?body[1]:MyApplication.PHONE_LOST_DEFAULT_PWD;
 						manager.resetPassword(pwd, 0);
 						manager.lockNow();
-						sendMessageNumber("目标手机正在锁屏，锁屏密码是:" + pwd, safeNumber);
+						sendMessageNumber(context.getResources().getString(R.string.phone_lost_message_body_change_pwd_ok)+ pwd, safeNumber);
 					}else{
-						sendMessageNumber("软件没有设备管理权限！", safeNumber);
+						sendMessageNumber(context.getResources().getString(R.string.error_no_device_admin), safeNumber);
 					}
 				}else{
-					sendMessageNumber("远程改密操作未被允许", safeNumber);
+					sendMessageNumber(context.getResources().getString(R.string.phone_lost_message_body_change_pwd_error), safeNumber);
 				}
 				return true;
 			case 4://定位
-				if(sp.getBoolean(PhoneLostProtectActivity.ISLOCATION, false)){
+				if(sp.getBoolean(MyApplication.SP_BOOLEAN_IS_LOCATION, false)){
 					OnLoacationChangedListener listener = new OnLoacationChangedListener() {
 						@Override
 						public void locationChanged(Location location) {
 							double latitude = location.getLatitude();// 维度
 							double longtitude = location.getLongitude();// 精度
-							sendMessageNumber("纬度:" + latitude + "," + "精度:"
-									+ longtitude, safeNumber);
+							String msg = context.getResources().getString(R.string.phone_lost_message_body_location_ok);
+							sendMessageNumber(String.format("经度:%d,维度:%d",longtitude,latitude), safeNumber);
 						}
 					};
 					LoadLocation loadLocation = LoadLocation.getInstance(context);
 					loadLocation.addOnLocationChangeListener(listener);
 				}else{
-					sendMessageNumber("定位操作未被程序允许", safeNumber);
+					sendMessageNumber(context.getResources().getString(R.string.phone_lost_message_body_location_error), safeNumber);
 				}
 				return true;
 		}

@@ -13,9 +13,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="确定"
+            android:text="@string/ok"
             android:textColor="@color/textcolor_theme"
-            android:textSize="16dip" />
+            android:textSize="@dimen/text_size_short" />
     </LinearLayout>
 
     <LinearLayout
@@ -25,9 +25,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="取消"
+            android:text="@string/cancle"
             android:textColor="@color/textcolor_theme"
-            android:textSize="16dip" />
+            android:textSize="@dimen/text_size_short" />
     </LinearLayout>
 
 </LinearLayout>
