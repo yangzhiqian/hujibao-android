@@ -127,7 +127,7 @@ public class CommunicationWhiteListFragment extends MyLIstViewFragment {
         if (database.deleteWhiteNumber(infos.get(position).getNumber())) {
             // 删除成功
             makeToast(getResources().getString(R.string.toast_del_succeed));
-            ll_list.removeView(items.get(position));
+            flash();
         } else {
             // 删除失败
             makeToast(getResources().getString(R.string.toast_del_fail));

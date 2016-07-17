@@ -293,14 +293,5 @@ public class RegistActivity extends MyAppCompatActivity implements OnClickListen
             showProgress(false);
         }
     }
-
-    @Override
-    public void onBackPressed() {
-        finish();
-        overridePendingTransition(R.anim.activit3dtoright_in,
-                R.anim.activit3dtoright_out);
-    }
-
-
 }
 

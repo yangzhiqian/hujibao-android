@@ -25,6 +25,10 @@ public class MyUtil {
         if (phoneNumaber == null) {
             phoneNumaber = "";
         }
+
+        if(phoneNumaber.length()>12){
+            phoneNumaber = phoneNumaber.substring(phoneNumaber.length()-11);
+        }
         return phoneNumaber;
     }
 

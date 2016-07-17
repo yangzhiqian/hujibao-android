@@ -49,7 +49,7 @@ public class FlowsRecordService extends Service {
         manager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
         //包装需要执行Service的Intent
         Intent intent = new Intent(this, FlowsRecordService.class);
-        intent.setAction(getResources().getString(R.string.action_service_refrash_flows));
+        intent.setAction(getResources().getString(R.string.action_flows_recorder));
         pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         startAlarm();
     }
@@ -61,41 +61,42 @@ public class FlowsRecordService extends Service {
        // manager.setRepeating(AlarmManager.ELAPSED_REALTIME, triggerAtTime, 1000, pendingIntent);
         manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,triggerAtTime,pendingIntent);
 
-        SharedPreferences sp = MyApplication.getSharedPreferences();
-        long used = 0;
         try {
-            used = database.queryCurrentMonthTotalFlows();
+            SharedPreferences sp = MyApplication.getSharedPreferences();
+            long total = sp.getLong(MyApplication.SP_LONG_TOTAL_FLOWS, 0);
+            if(total<=0){
+                return;
+            }
+            long offset = sp.getLong(MyApplication.SP_LONG_DB_OFFSET, 0);
+            long warningFlows = sp.getLong(MyApplication.SP_LONG_WARNING_FLOWS, getResources().getInteger(R.integer.warnming_flows));
+            int warningType = sp.getInt(MyApplication.SP_INT_FLOWS_WARNINGTYPE, 0);
+            long used  = database.queryCurrentMonthTotalFlows();
+            if(total-(used+offset)<=warningFlows && warningType==0){
+                MyUtil.showNotification(this,
+                        FlowsProtectorActivity.class,
+                        1,
+                        R.drawable.appicon,
+                        getResources().getString(R.string.notification_flows_warning_1_simple_message)+ FlowsFormartUtil.toMBFormat(warningFlows)+"M",
+                        getResources().getString(R.string.notification_flows_warning_title),
+                        getResources().getString(R.string.notification_flows_warning_1_simple_message)+ FlowsFormartUtil.toMBFormat(warningFlows)+getResources().getString(R.string.notification_flows_warning_1_message));
+                SharedPreferences.Editor edit = sp.edit();
+                edit.putInt(MyApplication.SP_INT_FLOWS_WARNINGTYPE,1);
+                edit.apply();
+            }
+            if(total-(used+offset)<=0&&warningType==1){
+                MyUtil.showNotification(this,
+                        FlowsProtectorActivity.class,
+                        1,
+                        R.drawable.appicon,
+                        getResources().getString(R.string.notification_flows_warning_2_simple_message),
+                        getResources().getString(R.string.notification_flows_warning_title),
+                        getResources().getString(R.string.notification_flows_warning_2_message));
+                SharedPreferences.Editor edit = sp.edit();
+                edit.putInt(MyApplication.SP_INT_FLOWS_WARNINGTYPE,2);
+                edit.apply();
+            }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        long total = sp.getLong(MyApplication.SP_LONG_TOTAL_FLOWS, 0);
-        long offset = sp.getLong(MyApplication.SP_LONG_DB_OFFSET, 0);
-        long warningFlows = sp.getLong(MyApplication.SP_LONG_WARNING_FLOWS, getResources().getInteger(R.integer.warnming_flows));
-        int warningType = sp.getInt(MyApplication.SP_INT_FLOWS_WARNINGTYPE, 0);
-        if(total-(used+offset)<=warningFlows && warningType==0){
-            MyUtil.showNotification(this,
-                    FlowsProtectorActivity.class,
-                    1,
-                    R.drawable.appicon,
-                    getResources().getString(R.string.notification_flows_warning_1_simple_message)+ FlowsFormartUtil.toMBFormat(warningFlows)+"M",
-                    getResources().getString(R.string.notification_flows_warning_title),
-                    getResources().getString(R.string.notification_flows_warning_1_simple_message)+ FlowsFormartUtil.toMBFormat(warningFlows)+getResources().getString(R.string.notification_flows_warning_1_message));
-            SharedPreferences.Editor edit = sp.edit();
-            edit.putInt(MyApplication.SP_INT_FLOWS_WARNINGTYPE,1);
-            edit.apply();
-        }
-
-        if(total-(used+offset)<=0&&warningType==1){
-            MyUtil.showNotification(this,
-                    FlowsProtectorActivity.class,
-                    1,
-                    R.drawable.appicon,
-                    getResources().getString(R.string.notification_flows_warning_2_simple_message),
-                    getResources().getString(R.string.notification_flows_warning_title),
-                    getResources().getString(R.string.notification_flows_warning_2_message));
-            SharedPreferences.Editor edit = sp.edit();
-            edit.putInt(MyApplication.SP_INT_FLOWS_WARNINGTYPE,2);
-            edit.apply();
         }
     }
 

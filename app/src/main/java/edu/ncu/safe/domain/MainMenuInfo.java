@@ -5,10 +5,10 @@ import edu.ncu.safe.R;
 public class MainMenuInfo {
 	
 	public static final int[] re = {
-		R.drawable.ic_launcher,R.drawable.ic_launcher};
-	public static final String[] titles={"编辑资料","安全扫码"};
-	public static final String[] anotations = {"","网购、支付前扫一扫"};
-	public static final boolean[] hasdirection = {true,true};
+		R.drawable.share,R.drawable.appicon,R.drawable.appicon,R.drawable.appicon,R.drawable.appicon,R.drawable.appicon};
+	public static final String[] titles={"代码分享","敬请期待","敬请期待","敬请期待","敬请期待","敬请期待"};
+	public static final String[] anotations = {"","敬请期待","敬请期待","敬请期待","敬请期待","敬请期待"};
+	public static final boolean[] hasdirection = {true,true,true,true,true,true};
 	
 	private int imgID;
 	private String title;

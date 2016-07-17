@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -112,15 +111,6 @@ public class AppManagerAcitvity extends MyAppCompatActivity implements View.OnCl
     public void onPageScrollStateChanged(int state) {
 
     }
-
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (KeyEvent.KEYCODE_BACK == keyCode) {
-            this.finish();
-            overridePendingTransition(R.anim.activit3dtoright_in, R.anim.activit3dtoright_out);
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
 
     @Override
     public void dataChange(List<UserAppBaseInfo> infos, String packName) {

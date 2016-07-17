@@ -11,38 +11,19 @@
         <item>中国联通</item>
         <item>中国电信</item>
     </string-array>
-    <string name="baiduphonenumberownerplaceurl">http://apis.baidu.com/chazhao/mobilesearch/phonesearch</string>
-    <string name="baiduphonenumberownerplacekey">3d2e9cc7c8ed9cf0d2a9f18ae053cc2d</string>
+
 
     <item name="tag_group" type="id"></item>
     <item name="tag_child" type="id"></item>
-
     <item name="tag_position" type="id"></item>
     <item name="tag_view" type="id"></item>
-    <string name="title_activity_login">登录</string>
 
-    <!-- Strings related to login -->
-    <string name="error_invalid_email">This email address is invalid</string>
+
+    <string name="title_activity_login">登录</string>
     <string name="error_invalid_password">密码长度不少于6位</string>
     <string name="error_invalid_password_different">两次密码不相同</string>
     <string name="error_incorrect_password">用户名密码不正确</string>
     <string name="error_field_required">此处不能为空</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
-
-
-    <string name="login">http://123.206.202.242:8080/androidsafe/LoginServlet</string>
-    <string name="regist">http://123.206.202.242:8080/androidsafe/RegistServlet</string>
-    <string name="logout">http://123.206.202.242:8080/androidsafe/LogoutServlet</string>
-    <string name="loadicon">http://123.206.202.242:8080/androidsafe/DownloadIconServlet</string>
-    <string name="loadbackup">http://123.206.202.242:8080/androidsafe/LoadBackupServlet</string>
-    <string name="loadimg">http://123.206.202.242:8080/androidsafe/DownloadImageServlet</string>
-    <string name="storeimg">http://123.206.202.242:8080/androidsafe/StoreImgServlet</string>
-    <string name="storebackup">http://123.206.202.242:8080/androidsafe/UploadBackupServlet</string>
-    <string name="deletebackup">http://123.206.202.242:8080/androidsafe/DeleteBackupServlet</string>
-    <string name="protocol">http://123.206.202.242:8080/androidsafe/protocol.xml</string>
-    <string name="version">http://123.206.202.242:8080/androidsafe/versioninfo.json</string>
 
 
     <string name="input_pwd">请输入密码</string>
@@ -100,7 +81,6 @@
     <string name="menu_net">网络</string>
     <string name="menu_backup">未备份</string>
     <string name="menu_recovery">未还原</string>
-    <string name="action_broadcast_start_app_service">edu.ncu.safe.reveiver.relefe</string>
     <string name="title_protocol">App说明</string>
     <string name="button_enter_app">进入程序</string>
     <string name="main_fragment_note_phone_lost_in_protecting">手机保护中</string>
@@ -119,14 +99,12 @@
     <string name="phone_lost_message_body_ring_error">\"响铃操作未被程序允许\"</string>
     <string name="phone_lost_message_body_change_pwd_ok">修改密码成功，密码是：</string>
     <string name="phone_lost_message_body_change_pwd_error">远程改密操作未被允许</string>
-    <string name="phone_lost_message_body_location_ok">经度:%%d,维度:%%d</string>
     <string name="phone_lost_message_body_location_error">定位操作未被程序允许</string>
     <string name="phone_lost_protector_succeed_to_unregist_device_admin">取消激活成功</string>
     <string name="dialog_title_choose_operator">选择运营商</string>
     <string name="dialog_title_input_remaind_flows">剩余流量</string>
     <string name="toast_error_invalid_input">输入的数据不合法！</string>
     <string name="dialog_title_total_flows">套餐内总流量</string>
-    <string name="action_service_refrash_flows">edu.ncu.yang.androidsafe.service.flowsrecorder.refrash</string>
     <string name="user_name">用户名</string>
     <string name="password">密码</string>
     <string name="button_to_regist">新用户注册</string>
@@ -268,5 +246,41 @@
     <string name="popup_interception_set">拦截设置</string>
     <string name="popup_number_place">号码归属地</string>
     <string name="dialog_message_sure_to_cancle_device_admin">确定取消App设备管理者?</string>
+    <string name="message_location_start_find">目标手机正在定位中。。。</string>
+    <string name="message_location_last_location_obtained">获取到上次的定位信息，新的定位信息在3分钟内获取到。</string>
+    <string name="message_location_location_obtained">已获取到最新定位数据</string>
+    <string name="input_hint_as_MB">以MB为单位</string>
+    <string name="dialog_title_phone_lost_introduction">介绍</string>
+    <string name="dialog_message_phone_lost_introduction">开发者太懒，什么都没留下！</string>
+    <string name="share_text_android_app_code">android App源码</string>
+    <string name="share_url_android_app_code">https://github.com/yangzhiqian/safe</string>
+    <string name="share_text_web_server_code">服务器端源码</string>
+    <string name="share_url_web_server_code">服务器端源码</string>
+    <string name="share_text_coder_email">开发者邮箱</string>
+    <string name="share_content_coder_email">936810097@qq.com</string>
+    <string name="title_share">分享</string>
 
+    <!-- action-->
+    <string name="action_update">edu.ncu.yang.myservice.update</string>
+    <string name="action_flows_recorder">edu.ncu.yang.myservice.flows.recorder</string>
+    <string name="action_float_window_show">edu.ncu.yang.myservice.float.window.show</string>
+    <string name="action_float_window_update">edu.ncu.yang.myservice.float.window.update</string>
+    <string name="action_float_window_dismiss">edu.ncu.yang.myservice.float.window.dismiss</string>
+    <string name="action_relife">edu.ncu.yang.myreceiver.relife</string>
+
+    <!-- url-->
+    <string name="baiduphonenumberownerplaceurl">http://apis.baidu.com/chazhao/mobilesearch/phonesearch</string>
+    <string name="baiduphonenumberownerplacekey">3d2e9cc7c8ed9cf0d2a9f18ae053cc2d</string>
+
+    <string name="login">http://123.206.202.242:8080/androidsafe/LoginServlet</string>
+    <string name="regist">http://123.206.202.242:8080/androidsafe/RegistServlet</string>
+    <string name="logout">http://123.206.202.242:8080/androidsafe/LogoutServlet</string>
+    <string name="loadicon">http://123.206.202.242:8080/androidsafe/DownloadIconServlet</string>
+    <string name="loadbackup">http://123.206.202.242:8080/androidsafe/LoadBackupServlet</string>
+    <string name="loadimg">http://123.206.202.242:8080/androidsafe/DownloadImageServlet</string>
+    <string name="storeimg">http://123.206.202.242:8080/androidsafe/StoreImgServlet</string>
+    <string name="storebackup">http://123.206.202.242:8080/androidsafe/UploadBackupServlet</string>
+    <string name="deletebackup">http://123.206.202.242:8080/androidsafe/DeleteBackupServlet</string>
+    <string name="protocol">http://123.206.202.242:8080/androidsafe/protocol.xml</string>
+    <string name="version">http://123.206.202.242:8080/androidsafe/versioninfo.json</string>
 </resources>

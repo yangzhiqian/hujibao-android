@@ -135,7 +135,7 @@ public class CommunicationBlackListFragment extends MyLIstViewFragment {
 		if (database.deleteBlackNumber(infos.get(position).getNumber())) {
 			// 删除成功
 			makeToast(getContext().getResources().getString(R.string.toast_del_succeed));
-			ll_list.removeView(items.get(position));
+			flash();
 		} else {
 			// 删除失败
 			makeToast(getContext().getResources().getString(R.string.toast_del_fail));

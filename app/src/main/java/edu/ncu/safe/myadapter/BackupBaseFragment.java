@@ -1,5 +1,6 @@
 package edu.ncu.safe.myadapter;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -21,8 +22,10 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.List;
 
+import edu.ncu.safe.MyApplication;
 import edu.ncu.safe.R;
 import edu.ncu.safe.View.MyProgressBar;
 import edu.ncu.safe.adapter.BackupLVAdapter;
@@ -206,7 +209,7 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
                 isLoading = false;
                 try {
                     List<ITarget> iTargets = parseToInfos(response);
-                    if(iTargets.size()<size){
+                    if (iTargets.size() < size) {
                         isOver = true;
                     }
                     if (cloudInfos == null) {
@@ -222,7 +225,7 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
                             return;
                         }
                     }
-                    switch (getCurrentShowType()){
+                    switch (getCurrentShowType()) {
                         case SHOWTYPE_CLOUD:
                             showCloud();
                             break;
@@ -347,9 +350,9 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
                 });
                 popupWindow.dismiss();
                 User user = User.getUserFromSP(getContext());
-                if(user==null){
+                if (user == null) {
                     makeToast(getResources().getString(R.string.toast_un_log_in));
-                    return ;
+                    return;
                 }
                 storer.storeData(user.getToken(), info);
             }
@@ -415,8 +418,16 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
                             JSONObject object = new JSONObject(response);
                             boolean succeed = object.getBoolean("succeed");
                             String message = object.getString("message");
-                            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                            makeToast(message);
                             if (succeed) {
+                                if(currentDataType==TYPE_IMG){
+                                    User user = User.getUserFromSP(getContext());
+                                    File file = new File(info.getIconPath());
+                                    user.setUsed( user.getUsed() -  file.length());
+                                    SharedPreferences.Editor edit = MyApplication.getSharedPreferences().edit();
+                                    edit.putString(MyApplication.SP_STRING_USER,user.toJson());
+                                    edit.apply();
+                                }
                                 List<ITarget> infos = adapter.getInfos();
                                 infos.remove(info);
                                 adapter.setInfos(infos);

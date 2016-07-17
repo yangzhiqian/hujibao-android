@@ -31,11 +31,12 @@ public class BitmapUtil {
      * 在用imageview的设置图片时尽量不要用 setImageBitmap或setImageResource或BitmapFactory.decodeResource来设置一张大图
      * 因为这些函数在完成decode后，最终都是通过java层的createBitmap来完成的，需要消耗更多内存。
      * 导致出现oom
-     * @param context  上下文
-     * @param resId    资源id
-     * @return    bitmap对象
+     *
+     * @param context 上下文
+     * @param resId   资源id
+     * @return bitmap对象
      */
-    public static Bitmap readBitMap(Context context, int resId){
+    public static Bitmap readBitMap(Context context, int resId) {
         BitmapFactory.Options opt = new BitmapFactory.Options();
         opt.inPreferredConfig = Bitmap.Config.RGB_565;
         //下面两句可有效解决oom问题
@@ -43,7 +44,7 @@ public class BitmapUtil {
         opt.inInputShareable = true;
         //获取资源图片
         InputStream is = context.getResources().openRawResource(resId);
-        return BitmapFactory.decodeStream(is,null,opt);
+        return BitmapFactory.decodeStream(is, null, opt);
     }
 
     private static int calculateInSampleSize(
@@ -66,7 +67,6 @@ public class BitmapUtil {
         }
         return inSampleSize;
     }
-
 
 
     /**
@@ -102,76 +102,88 @@ public class BitmapUtil {
 
     /**
      * 加载（内存缓存->文件缓存->网络）图片
-     * @param context   上下文
-     * @param fileName      文件名或文件路径，如果下载的图片来自本地，则表示文件全路径，如果文件来自网络，则表示文件名
-     * @param type          图片类型   0代表小图标，1代表预览图片（400x600,由服务器决定,2代表原图）
-     * @param view           如果用于加载到imageview上显示，可指定该参数，异步加载完成后会自动显示，可以为null
-     * @param mpb           加载进度
+     *
+     * @param context  上下文
+     * @param fileName 文件名或文件路径，如果下载的图片来自本地，则表示文件全路径，如果文件来自网络，则表示文件名
+     * @param type     图片类型   0代表小图标，1代表预览图片（400x600,由服务器决定,2代表原图）
+     * @param view     如果用于加载到imageview上显示，可指定该参数，异步加载完成后会自动显示，可以为null
+     * @param mpb      加载进度
      */
-    public static void loadImageToImageView(final Context context,final String fileName,final int type ,final ImageView view,final MyProgressBar mpb){
+    public static void loadImageToImageView(final Context context, final String fileName, final int type, final ImageView view, final MyProgressBar mpb) {
         //实例化加载工具
         DataLoader loader = new DataLoader(context);
         //实例化监听器，监听器运行的线程为主线程
         loader.setOnImageObtainedListener(new DataLoader.OnImageObtainedListener() {
             @Override
             public void onFailure(String error) {
-                if(mpb!=null){
+                if (mpb != null) {
                     mpb.setVisibility(View.GONE);
                 }
                 Toast.makeText(context, "加载图片失败！", Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onResponse(final Bitmap bmp) {
-                //缓存
-                new Thread(){
-                    @Override
-                    public void run() {
-                        //比较耗时，放到子线程完成
-                         ACache.get(context).put(Constant.getImageCacheFileName(fileName,type), bmp, Constant.ACACHE_LIFETIME);//缓存七天
+                try {
+                    //缓存
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            //比较耗时，放到子线程完成
+                            ACache.get(context).put(Constant.getImageCacheFileName(fileName, type), bmp, Constant.ACACHE_LIFETIME);//缓存七天
+                        }
+                    }.start();
+                    if (view != null) {
+                        view.setImageBitmap(bmp);
                     }
-                }.start();
-                if(view!=null) {
-                    view.setImageBitmap(bmp);
-                }
-                if(mpb!=null){
-                    mpb.setVisibility(View.GONE);
+                    if (mpb != null) {
+                        mpb.setVisibility(View.GONE);
+                    }
+                } catch (Exception e) {
+                    if (view != null) {
+                        view.setImageResource(R.drawable.appicon);
+                    }
+                    if (mpb != null) {
+                        mpb.setVisibility(View.GONE);
+                    }
                 }
             }
         });
         String url = context.getResources().getString(R.string.loadimg);
-        loader.loadImg(url,fileName,type,mpb);
+        loader.loadImg(url, fileName, type, mpb);
     }
 
     public static Bitmap getRequireBitmap(String url, int reqWidth, int reqHeight) {
         // First decode with inJustDecodeBounds=true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(url,options);
+        BitmapFactory.decodeFile(url, options);
         // Calculate inSampleSize
         options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
 
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeFile(url,options);
+        return BitmapFactory.decodeFile(url, options);
     }
 
     /**
      * 将bitmap对象保存在文件中
-     * @param path       文件保存的路径
-     * @param fileName    文件名
-     * @param bmp           要保存的bitmap 对象
-     * @return              ture表示保存成功
+     *
+     * @param path     文件保存的路径
+     * @param fileName 文件名
+     * @param bmp      要保存的bitmap 对象
+     * @return ture表示保存成功
      * @throws FileNotFoundException
      */
-    public static boolean  saveBitmapToFile(String path,String fileName,Bitmap bmp) throws IOException {
-        File file = new File(path,fileName);
-        Log.i("TAG",path+"/"+fileName);
-        if(!file.exists()){
+    public static boolean saveBitmapToFile(String path, String fileName, Bitmap bmp) throws IOException {
+        File file = new File(path, fileName);
+        Log.i("TAG", path + "/" + fileName);
+        if (!file.exists()) {
             file.createNewFile();
         }
-        Bitmap.CompressFormat format= Bitmap.CompressFormat.JPEG;
+        Bitmap.CompressFormat format = Bitmap.CompressFormat.JPEG;
         int quality = 100;
         OutputStream stream = new FileOutputStream(file);
-        return bmp.compress(format,quality,stream);
+        return bmp.compress(format, quality, stream);
     }
 }

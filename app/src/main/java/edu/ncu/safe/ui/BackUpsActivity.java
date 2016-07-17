@@ -3,7 +3,6 @@ package edu.ncu.safe.ui;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -257,15 +256,6 @@ public class BackUpsActivity  extends MyAppCompatActivity implements View.OnClic
             transaction.hide(contactsBackupFragment);
         }
 
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (KeyEvent.KEYCODE_BACK == keyCode) {
-            this.finish();
-            overridePendingTransition(R.anim.activit3dtoright_in, R.anim.activit3dtoright_out);
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
     @Override

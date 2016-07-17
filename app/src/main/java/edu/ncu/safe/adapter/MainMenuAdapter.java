@@ -14,9 +14,9 @@ import edu.ncu.safe.View.CircleImageView;
 import edu.ncu.safe.domain.MainMenuInfo;
 
 public class MainMenuAdapter extends BaseAdapter {
-	List<MainMenuInfo> list;
-	LayoutInflater inflater;
-	Context context;
+	private List<MainMenuInfo> list;
+	private LayoutInflater inflater;
+	private Context context;
 
 	public MainMenuAdapter(Context context,List<MainMenuInfo> list) {
 		this.list = list;

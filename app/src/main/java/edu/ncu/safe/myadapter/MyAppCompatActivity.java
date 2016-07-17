@@ -1,7 +1,9 @@
 package edu.ncu.safe.myadapter;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +33,22 @@ public class MyAppCompatActivity extends AppCompatActivity {
         });
     }
 
+    protected void toAntherAvitvity(Class clazz) {
+        Intent intent = new Intent();
+        intent.setClass(this, clazz);
+        startActivity(intent);
+        overridePendingTransition(R.anim.activit3dtoleft_in, R.anim.activit3dtoleft_out);
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(KeyEvent.KEYCODE_BACK == keyCode){
+            this.finish();
+            overridePendingTransition(R.anim.activit3dtoright_in, R.anim.activit3dtoright_out);
+        }
+        return super.onKeyDown(keyCode, event);
+    }
     protected void makeToast(String message){
         Toast.makeText(MyAppCompatActivity.this, message, Toast.LENGTH_SHORT).show();
     }

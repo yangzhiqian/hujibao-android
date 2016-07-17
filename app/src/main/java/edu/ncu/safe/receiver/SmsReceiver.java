@@ -11,16 +11,17 @@ import android.media.MediaPlayer;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import edu.ncu.safe.MyApplication;
 import edu.ncu.safe.R;
 import edu.ncu.safe.db.dao.CommunicationDatabase;
 import edu.ncu.safe.domain.InterceptionInfo;
-import edu.ncu.safe.engine.InterceptionJudger;
 import edu.ncu.safe.engine.ContactsService;
-import edu.ncu.safe.engine.LoadLocation;
-import edu.ncu.safe.engine.LoadLocation.OnLoacationChangedListener;
+import edu.ncu.safe.engine.InterceptionJudger;
+import edu.ncu.safe.engine.LocationFinder;
 import edu.ncu.safe.ui.PhoneLostProtectActivity;
 
 public class SmsReceiver extends BroadcastReceiver {
@@ -78,7 +79,7 @@ public class SmsReceiver extends BroadcastReceiver {
 	 */
 	private boolean  dealWhiteByPhoneLostProtector(SmsMessage message){
 		SharedPreferences sp = MyApplication.getSharedPreferences();
-		String number = message.getOriginatingAddress();// 获取发信人地址
+		final String number = message.getOriginatingAddress();// 获取发信人地址
 		final String safeNumber = sp.getString(MyApplication.SP_STRING_SAFE_PHONE_NUMBER, "");
 		boolean isInProtecting  = sp.getBoolean(MyApplication.SP_BOOLEAN_IS_IN_PROTECTING,false);
 		if("".equals(safeNumber) || !number.equals(safeNumber)|| !isInProtecting){
@@ -155,17 +156,37 @@ public class SmsReceiver extends BroadcastReceiver {
 				return true;
 			case 4://定位
 				if(sp.getBoolean(MyApplication.SP_BOOLEAN_IS_LOCATION, false)){
-					OnLoacationChangedListener listener = new OnLoacationChangedListener() {
+
+					LocationFinder finder = LocationFinder.getInstance(context);
+					LocationFinder.LocationFinderListener listener = new LocationFinder.LocationFinderListener() {
 						@Override
-						public void locationChanged(Location location) {
-							double latitude = location.getLatitude();// 维度
-							double longtitude = location.getLongitude();// 精度
-							String msg = context.getResources().getString(R.string.phone_lost_message_body_location_ok);
-							sendMessageNumber(String.format("经度:%d,维度:%d",longtitude,latitude), safeNumber);
+						public void onFail(String error) {
+							sendMessageNumber(error,number);
+						}
+
+						@Override
+						public void onStartLoacate(String type) {
+							sendMessageNumber(context.getResources().getString(R.string.message_location_start_find),number);
+						}
+
+						@Override
+						public void onLastLocationObtained(Location location) {
+							if(location!=null) {
+								String str = "\n经度:"+location.getLongitude()+"\n纬度:"+location.getLatitude()+"\n更新时间:"+ new SimpleDateFormat("yy/MM/dd HH:mm:ss").format(new Date(System.currentTimeMillis()));;
+								sendMessageNumber(context.getResources().getString(R.string.message_location_last_location_obtained)+str, number);
+							}
+						}
+
+						@Override
+						public void onLocationObtained(Location location) {
+							String str = "\n经度:"+location.getLongitude()+"\n纬度:"+location.getLatitude()+"\n更新时间:"+ new SimpleDateFormat("yy/MM/dd HH:mm:ss").format(new Date(System.currentTimeMillis()));;
+							sendMessageNumber(context.getResources().getString(R.string.message_location_location_obtained)+str, number);
 						}
 					};
-					LoadLocation loadLocation = LoadLocation.getInstance(context);
-					loadLocation.addOnLocationChangeListener(listener);
+					finder.addLocationFinderListener(listener);
+					finder.start();
+
+
 				}else{
 					sendMessageNumber(context.getResources().getString(R.string.phone_lost_message_body_location_error), safeNumber);
 				}

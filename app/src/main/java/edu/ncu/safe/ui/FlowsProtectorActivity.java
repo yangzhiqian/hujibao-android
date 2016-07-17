@@ -1,9 +1,7 @@
 package edu.ncu.safe.ui;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
@@ -73,21 +71,5 @@ public class FlowsProtectorActivity extends MyAppCompatActivity implements OnCli
                 toAntherAvitvity(FlowsStatisticsActivity.class);
                 break;
         }
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (KeyEvent.KEYCODE_BACK == keyCode) {
-            this.finish();
-            overridePendingTransition(R.anim.activit3dtoright_in, R.anim.activit3dtoright_out);
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    private void toAntherAvitvity(Class clazz) {
-        Intent intent = new Intent();
-        intent.setClass(this, clazz);
-        startActivity(intent);
-        overridePendingTransition(R.anim.activit3dtoleft_in, R.anim.activit3dtoleft_out);
     }
 }

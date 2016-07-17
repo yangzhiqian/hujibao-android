@@ -9,6 +9,8 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import edu.ncu.safe.MyApplication;
+import edu.ncu.safe.service.FLoatDesktopWindow;
+import edu.ncu.safe.service.FlowsRecordService;
 
 public class PhoneRestartReceiver extends BroadcastReceiver {
 	private static final String TAG = "PhoneRestartReceiver";
@@ -25,14 +27,12 @@ public class PhoneRestartReceiver extends BroadcastReceiver {
 	}
 
 	private void startFlowsRecorderService(Context context) {
-		Intent flowsService = new Intent();
-		flowsService.setAction("edu.ncu.myservice.flowsrecorder");
+		Intent flowsService = new Intent(context, FlowsRecordService.class);
 		context.startService(flowsService);
 	}
 	
 	private void showFloatWindow(Context context){
-		Intent intent = new Intent();
-		intent.setAction("edu.ncu.safe.service.showFloatWindod");
+		Intent intent = new Intent(context, FLoatDesktopWindow.class);
 		context.startService(intent);
 	}
 

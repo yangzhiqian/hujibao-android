@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import edu.ncu.safe.MyApplication;
 import edu.ncu.safe.R;
@@ -175,17 +173,18 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
 		}
 		String userPhoneNumber = MyApplication.getSharedPreferences().getString(MyApplication.SP_STRING_USER_PHONE_NUMBER, "");
 		if (!userPhoneNumber.equals(phoneNumber)) {
-			MyDialog myDialog = new MyDialog(this);
+			final MyDialog myDialog = new MyDialog(this);
 			myDialog.setTitle(getResources().getString(R.string.dialog_title_set_protect_number));
 			myDialog.setMessage(String.format(getResources().getString(R.string.dialog_message_toprotector), phoneNumber));
 			myDialog.setYESText(getResources().getString(R.string.dialog_button_ok_set_number));
 			myDialog.setNOText(getResources().getString(R.string.dialog_button_cancle_setpout));
-			myDialog.setNegativeListener(new OnClickListener() {
+			myDialog.setPositiveListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					Editor editor = MyApplication.getSharedPreferences().edit();
 					editor.putString(MyApplication.SP_STRING_USER_PHONE_NUMBER, phoneNumber);
 					editor.apply();
+					myDialog.dismiss();
 				}
 			});
 			myDialog.show();
@@ -215,8 +214,16 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
 			}
 			break;
 		case R.id.ll_introduction:
+			introduction();
 			break;
 		}
+	}
+
+	private void introduction() {
+		final MyDialog myDialog = new MyDialog(this);
+		myDialog.setTitle(getResources().getString(R.string.dialog_title_phone_lost_introduction));
+		myDialog.setMessage(getResources().getString(R.string.dialog_message_phone_lost_introduction));
+		myDialog.show();
 	}
 
 	private void cancleDeviceAdmin() {
@@ -397,8 +404,16 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
 					et_userNumber.setError(getResources().getString(R.string.error_number_can_not_null));
 					return;
 				}
+				if(!MyUtil.isMobileNO(userNumber)){
+					et_userNumber.setError(getResources().getString(R.string.error_number_format));
+					return;
+				}
 				if("".equals(safeNumber)){
 					et_safeNumber.setError(getResources().getString(R.string.error_number_can_not_null));
+					return;
+				}
+				if(!MyUtil.isMobileNO(safeNumber)){
+					et_safeNumber.setError(getResources().getString(R.string.error_number_format));
 					return;
 				}
 				Editor edi = sp.edit();
@@ -468,15 +483,4 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
 		});
 		myDialog.show();
 	}
-
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (KeyEvent.KEYCODE_BACK == keyCode) {
-			this.finish();
-			overridePendingTransition(R.anim.activit3dtoright_in, R.anim.activit3dtoright_out);
-		}
-		return super.onKeyDown(keyCode, event);
-	}
-
-
 }

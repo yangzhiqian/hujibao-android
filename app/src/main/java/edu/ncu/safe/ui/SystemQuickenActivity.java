@@ -10,7 +10,6 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.os.StatFs;
 import android.text.format.Formatter;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -168,14 +167,6 @@ public class SystemQuickenActivity extends MyAppCompatActivity implements View.O
         unbindService(rubbishServiceConnection);
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            finish();
-            overridePendingTransition(R.anim.activit3dtoright_in, R.anim.activit3dtoright_out);
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 
     @Override
     public void onMemoryScanTaskStart(int sumTask) {

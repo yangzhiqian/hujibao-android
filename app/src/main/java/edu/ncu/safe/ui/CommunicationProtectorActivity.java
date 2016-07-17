@@ -1,11 +1,9 @@
 package edu.ncu.safe.ui;
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -121,23 +119,4 @@ public class CommunicationProtectorActivity extends MyAppCompatActivity implemen
 		}
 	}
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if(KeyEvent.KEYCODE_BACK == keyCode){
-			this.finish();
-			overridePendingTransition(R.anim.activit3dtoright_in, R.anim.activit3dtoright_out);
-		}
-		return super.onKeyDown(keyCode, event);
-	}
-
-	private void toAntherAvitvity(Class clazz){
-		Intent intent = new Intent();
-		intent.setClass(this, clazz);
-		startActivity(intent);
-		overridePendingTransition(R.anim.activit3dtoleft_in, R.anim.activit3dtoleft_out);
-
-		if(popupWindow!=null&&popupWindow.isShowing()){
-			popupWindow.dismiss();
-		}
-	}
 }

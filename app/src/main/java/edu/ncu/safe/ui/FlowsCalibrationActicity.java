@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -83,7 +82,7 @@ public class FlowsCalibrationActicity extends MyAppCompatActivity implements OnC
 							select = which;
 						}
 					});
-			builder.setPositiveButton("确定",
+			builder.setPositiveButton(getResources().getString(R.string.ok),
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
@@ -95,7 +94,7 @@ public class FlowsCalibrationActicity extends MyAppCompatActivity implements OnC
 							startActivity(intent);
 						}
 					});
-			builder.setNegativeButton("取消", null);
+			builder.setNegativeButton(getResources().getString(R.string.cancle), null);
 			builder.create().show();
 			break;
 		case R.id.et_flowsremain:
@@ -111,7 +110,7 @@ public class FlowsCalibrationActicity extends MyAppCompatActivity implements OnC
 		final MyDialog myDialog = new MyDialog(this);
 		myDialog.setTitle(getResources().getString(R.string.dialog_title_input_remaind_flows));
 		final EditText input = new EditText(this);
-		input.setHint("以MB为单位");
+		input.setHint(getResources().getString(R.string.input_hint_as_MB));
 		myDialog.setMessageView(input);
 		myDialog.setPositiveListener(new OnClickListener() {
 			@Override
@@ -163,7 +162,7 @@ public class FlowsCalibrationActicity extends MyAppCompatActivity implements OnC
 		final MyDialog myDialog = new MyDialog(this);
 		myDialog.setTitle(getResources().getString(R.string.dialog_title_total_flows));
 		final EditText input = new EditText(this);
-		input.setHint("以MB为单位");
+		input.setHint(getResources().getString(R.string.input_hint_as_MB));
 		myDialog.setMessageView(input);
 		myDialog.setPositiveListener(new OnClickListener() {
 			@Override
@@ -193,15 +192,4 @@ public class FlowsCalibrationActicity extends MyAppCompatActivity implements OnC
 		});
 		myDialog.show();
 	}
-
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (KeyEvent.KEYCODE_BACK == keyCode) {
-			this.finish();
-			overridePendingTransition(R.anim.activit3dtoright_in, R.anim.activit3dtoright_out);
-		}
-		return super.onKeyDown(keyCode, event);
-	}
-
-
 }

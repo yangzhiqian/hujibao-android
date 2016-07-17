@@ -1,21 +1,23 @@
 package edu.ncu.safe.ui.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ncu.safe.MyApplication;
 import edu.ncu.safe.R;
 import edu.ncu.safe.adapter.BackupLVAdapter;
 import edu.ncu.safe.constant.Constant;
@@ -81,7 +83,7 @@ public class PictureBackupFragment extends BackupBaseFragment {
         tv_bk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adapter.setItemInDownloading(parent, position, true);
+
                 popupWindow.dismiss();
                 String url = getContext().getResources().getString(R.string.storeimg);
                 BackupLVAdapter.ViewHolder holder = (BackupLVAdapter.ViewHolder) parent.getTag();
@@ -89,7 +91,7 @@ public class PictureBackupFragment extends BackupBaseFragment {
                 storer.setOnImgUploadedListener(new DataStorer.OnImgUploadedListener() {
                     @Override
                     public void onFailure(String error) {
-                        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+                        makeToast(error);
                         adapter.setItemInDownloading(parent, position, false);
                     }
 
@@ -97,9 +99,18 @@ public class PictureBackupFragment extends BackupBaseFragment {
                     public void onSucceed(String message) {
                         adapter.setItemInDownloading(parent, position, false);
                         try {
-                            message = new JSONObject(message).getString("message");
-                            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-                        } catch (JSONException e) {
+                            JSONObject object = new JSONObject(message);
+                            message = object.getString("message");
+                            if(object.getBoolean("succeed")){
+                                User user = User.getUserFromSP(getContext());
+                                File file = new File(info.getIconPath());
+                                user.setUsed( user.getUsed() +  file.length());
+                                SharedPreferences.Editor edit = MyApplication.getSharedPreferences().edit();
+                                edit.putString(MyApplication.SP_STRING_USER,user.toJson());
+                                edit.apply();
+                            }
+                            makeToast(message);
+                        } catch (Exception e) {
                             e.printStackTrace();
                             makeToast(getResources().getString(R.string.toast_error_unknow));
                         }
@@ -110,6 +121,7 @@ public class PictureBackupFragment extends BackupBaseFragment {
                     makeToast(getResources().getString(R.string.toast_un_log_in));
                     return;
                 }
+                adapter.setItemInDownloading(parent, position, true);
                 storer.storeImg(info.getIconPath(), url, user.getToken(), holder.mpb_downloadProgress);
             }
         });
@@ -149,8 +161,6 @@ public class PictureBackupFragment extends BackupBaseFragment {
         adapter.setItemInDownloading(parent, position, true);
         popupWindow.dismiss();
         BackupLVAdapter.ViewHolder holder = (BackupLVAdapter.ViewHolder) parent.getTag();
-
-        User user = User.getUserFromSP(getContext());
 
         new DataLoader(getContext()).loadImage( info.getTitle(), DataLoader.TYPE_BIG, holder.mpb_downloadProgress, new DataLoader.OnImageObtainedListener() {
             @Override

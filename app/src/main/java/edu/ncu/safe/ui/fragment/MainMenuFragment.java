@@ -41,6 +41,7 @@ import edu.ncu.safe.domain.MainMenuInfo;
 import edu.ncu.safe.domain.User;
 import edu.ncu.safe.ui.LoginActivity;
 import edu.ncu.safe.ui.MainActivity;
+import edu.ncu.safe.ui.ShareActivity;
 import edu.ncu.safe.util.BitmapUtil;
 import edu.ncu.safe.util.FlowsFormartUtil;
 
@@ -75,13 +76,17 @@ public class MainMenuFragment extends Fragment implements AdapterView.OnItemClic
         lv = (ListView) menuView.findViewById(R.id.main_menu_lv);
         bt_login = (Button) menuView.findViewById(R.id.bt_login);
 
-
         adapter = new MainMenuAdapter(getActivity(), getMainMenuInfo());
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
         bt_login.setOnClickListener(this);
-        initUser();
         return menuView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initUser();
     }
 
     //获取侧滑菜单里listview的信息
@@ -101,7 +106,13 @@ public class MainMenuFragment extends Fragment implements AdapterView.OnItemClic
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        switch (position){
+            case 0:
+                activity.startActivity(new Intent(activity, ShareActivity.class));
+                activity.overridePendingTransition(R.anim.activit3dtoleft_in,
+                        R.anim.activit3dtoleft_out);
+                break;
+        }
     }
 
     @Override
@@ -165,6 +176,9 @@ public class MainMenuFragment extends Fragment implements AdapterView.OnItemClic
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode + requestCode == 0) {
+            return;
+        }
+        if(data==null){
             return;
         }
         user = (User) data.getExtras().getSerializable("user");

@@ -1,7 +1,6 @@
 package edu.ncu.safe.ui;
 
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -11,7 +10,6 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.View.MyDialog;
@@ -165,14 +163,6 @@ public class CommunicationInterceptionSet extends MyAppCompatActivity implements
         adapter.setItemSelected(view, position);
         setInfo.setMode(position);
         operation.commitInterceptionSetInfo(setInfo);
-    }
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (KeyEvent.KEYCODE_BACK == keyCode) {
-            this.finish();
-            overridePendingTransition(R.anim.activit3dtoright_in, R.anim.activit3dtoright_out);
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
 }

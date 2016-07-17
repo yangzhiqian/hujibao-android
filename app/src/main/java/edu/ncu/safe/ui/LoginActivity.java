@@ -61,13 +61,6 @@ public class LoginActivity extends MyAppCompatActivity {
                         R.anim.activit3dtoleft_out);
             }
         });
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-
-            }
-        });
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
@@ -218,14 +211,6 @@ public class LoginActivity extends MyAppCompatActivity {
             mAuthTask = null;
             showProgress(false);
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        setResult(-1, null);
-        finish();
-        overridePendingTransition(R.anim.activit3dtoright_in,
-                R.anim.activit3dtoright_out);
     }
 }
 

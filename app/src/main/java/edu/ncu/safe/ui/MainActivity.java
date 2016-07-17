@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import edu.ncu.safe.R;
+import edu.ncu.safe.service.UpdateAppService;
 import edu.ncu.safe.ui.fragment.MainFragment;
 import edu.ncu.safe.ui.fragment.MainMenuFragment;
 
@@ -35,7 +36,8 @@ public class MainActivity extends AppCompatActivity{
         fm.beginTransaction().add(R.id.fl_menu, menuFragment, "").commit();
 
         // 检查是否有新版本信息，有则弹出升级对话框
-      //  startService(new Intent("edu.ncu.myservice.update"));
+       // startService(new Intent(getResources().getString(R.string.action_update)));
+        startService(new Intent(this, UpdateAppService.class));
     }
 
 

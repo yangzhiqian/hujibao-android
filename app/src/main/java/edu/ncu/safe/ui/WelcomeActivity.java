@@ -33,8 +33,8 @@ public class WelcomeActivity extends Activity {
 		}
 		setContentView(R.layout.activity_welecome);
 		tv_bigName = (TextView) this.findViewById(R.id.tv_bigname);
-		// 开启程序所需的广播
-		sendBroadcast(new Intent(getResources().getString(R.string.action_broadcast_start_app_service)));
+		// 开启程序所需的广播]
+		sendBroadcast(new Intent(getResources().getString(R.string.action_relife)));
 		// 获取SharedPreferences
 		handler.post(new Runnable() {
 			@Override

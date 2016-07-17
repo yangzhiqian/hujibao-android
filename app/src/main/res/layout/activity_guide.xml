@@ -1,44 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff" >
-
+    android:background="#ffffff">
     <android.support.v4.view.ViewPager
         android:id="@+id/guide_vp"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-    </android.support.v4.view.ViewPager>
+        android:layout_height="fill_parent"></android.support.v4.view.ViewPager>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_alignParentBottom="true" >
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal">
 
-        <RadioGroup
-            android:id="@+id/guide_rg"
+        <github.chenupt.springindicator.SpringIndicator
+            android:id="@+id/si"
+            app:siTextSize="@dimen/text_size_minimum"
+            app:siIndicatorColors="@array/indicator_colors"
+            app:siTextColor="@color/colorPrimaryDark"
+            app:siSelectedTextColor="@android:color/white"
+            app:siIndicatorColor="@color/colorPrimary"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="150dp"
-            android:orientation="horizontal" >
-
-            <RadioButton
-                android:id="@+id/pg1"
-                style="@style/guid_rb"
-                android:checked="true" />
-
-            <RadioButton 
-                android:id="@+id/pg2"
-                style="@style/guid_rb" />
-
-            <RadioButton style="@style/guid_rb" 
-                android:id="@+id/pg3"/>
-
-            <RadioButton style="@style/guid_rb" 
-                android:id="@+id/pg4"/>
-        </RadioGroup>
+            android:layout_height="60dp"/>
     </LinearLayout>
-"
-
 </RelativeLayout>

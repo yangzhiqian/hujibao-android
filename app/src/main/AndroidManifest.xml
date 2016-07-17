@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.ncu.safe">
-
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -21,16 +20,16 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.GET_PACKAGE_SIZE" />
     <uses-permission android:name="android.permission.CLEAR_APP_CACHE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/appicon"
         android:label="@string/app_name"
-        android:theme="@style/AppCompatTheme"
-        android:largeHeap="true" >
+        android:largeHeap="true"
+        android:theme="@style/AppCompatTheme">
         <uses-library android:name="android.test.runner" />
 
         <activity
@@ -39,6 +38,7 @@
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -58,15 +58,15 @@
         <activity android:name=".ui.AppManagerAcitvity" />
         <activity android:name=".ui.SystemQuickenActivity" />
         <activity android:name=".ui.BackUpsActivity" />
-        <activity android:name=".ui.LoginActivity"/>
-        <activity android:name=".ui.RegistActivity"/>
+        <activity android:name=".ui.LoginActivity" />
+        <activity android:name=".ui.RegistActivity" />
+        <activity android:name=".ui.TouchImageViewActivity" />
+        <activity android:name=".ui.ShareActivity"/>
 
         <service
-            android:name=".service.UpdateAppService"
-            android:enabled="true"
-            android:process="system">
+            android:name=".service.UpdateAppService">
             <intent-filter>
-                <action android:name="edu.ncu.myservice.update" />
+                <action android:name="edu.ncu.yang.myservice.update" />
             </intent-filter>
         </service>
         <service
@@ -74,9 +74,7 @@
             android:enabled="true"
             android:process="system">
             <intent-filter>
-                <action android:name="edu.ncu.myservice.flowsrecorder" />
-                <action android:name="edu.ncu.myservice.flowsupdate" />
-                <action android:name="edu.ncu.myservice.checkisworking" />
+                <action android:name="edu.ncu.yang.myservice.flows.recorder" />
             </intent-filter>
         </service>
         <service
@@ -84,20 +82,20 @@
             android:enabled="true"
             android:process="system">
             <intent-filter android:priority="1000">
-                <action android:name="edu.ncu.safe.service.showFloatWindod" />
-                <action android:name="edu.ncu.safe.service.stopFloatWindod" />
-                <action android:name="edu.ncu.safe.service.updateFloatWindod" />
-                <action android:name="edu.ncu.safe.service.checkisworking" />
+                <action android:name="edu.ncu.yang.myservice.float.window.show" />
+                <action android:name="edu.ncu.yang.myservice.float.window.update" />
+                <action android:name="edu.ncu.yang.myservice.float.window.dismiss" />
             </intent-filter>
         </service>
         <service android:name=".service.AppRubbishCleanService" />
         <service android:name=".service.InnerMemoryCleanService" />
 
-        <receiver android:name=".receiver.RelefeReceiver">
+        <receiver android:name=".receiver.RelifeReceiver">
             <intent-filter>
-                <action android:name="edu.ncu.safe.reveiver.relefe" />
+                <action android:name="edu.ncu.yang.myreceiver.relife" />
             </intent-filter>
         </receiver>
+
         <receiver android:name=".receiver.PhoneRestartReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -133,15 +131,7 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
-        <!--
-             ATTENTION: This was auto-generated to add Google Play services to your project for
-             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
-        -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".ui.TouchImageViewActivity" />
     </application>
 
 </manifest>

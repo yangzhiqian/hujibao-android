@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
@@ -153,13 +152,5 @@ public class FlowsStatisticsActivity extends MyAppCompatActivity implements
 			tv_flowsDayStatistics.setTextColor(appColor);
 			tv_flowsAppStatistics.setTextColor(dayColor);
 		}
-	}
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (KeyEvent.KEYCODE_BACK == keyCode) {
-			this.finish();
-			overridePendingTransition(R.anim.activit3dtoright_in, R.anim.activit3dtoright_out);
-		}
-		return super.onKeyDown(keyCode, event);
 	}
 }
