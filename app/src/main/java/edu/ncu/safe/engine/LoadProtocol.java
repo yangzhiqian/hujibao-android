@@ -38,7 +38,7 @@ public class LoadProtocol {
 
 			while (type != XmlPullParser.END_DOCUMENT) {
 				if(type == XmlPullParser.START_TAG){
-					if("text".equals(parser.getName())){
+					if("protocol".equals(parser.getName())){
 						String text = parser.nextText();
 						return text;
 					}

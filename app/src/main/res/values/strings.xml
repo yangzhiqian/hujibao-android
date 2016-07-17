@@ -255,7 +255,7 @@
     <string name="share_text_android_app_code">android App源码</string>
     <string name="share_url_android_app_code">https://github.com/yangzhiqian/safe</string>
     <string name="share_text_web_server_code">服务器端源码</string>
-    <string name="share_url_web_server_code">服务器端源码</string>
+    <string name="share_url_web_server_code">https://github.com/yangzhiqian/safe_server</string>
     <string name="share_text_coder_email">开发者邮箱</string>
     <string name="share_content_coder_email">936810097@qq.com</string>
     <string name="title_share">分享</string>
@@ -282,5 +282,5 @@
     <string name="storebackup">http://123.206.202.242:8080/androidsafe/UploadBackupServlet</string>
     <string name="deletebackup">http://123.206.202.242:8080/androidsafe/DeleteBackupServlet</string>
     <string name="protocol">http://123.206.202.242:8080/androidsafe/protocol.xml</string>
-    <string name="version">http://123.206.202.242:8080/androidsafe/versioninfo.json</string>
+    <string name="version">http://123.206.202.242:8080/androidsafe/versioninfo.xml</string>
 </resources>
