@@ -211,7 +211,7 @@ public class BackUpsActivity  extends MyAppCompatActivity implements View.OnClic
         switch (position) {
             case MESSAGEFRAGMENT:
                 if (messageBackupFragment == null) {
-                    messageBackupFragment = new MessageBackupFragment(BackupBaseFragment.TYPE_MESSAGE);
+                    messageBackupFragment = MessageBackupFragment.newInstance(BackupBaseFragment.TYPE_MESSAGE);
                     transaction.add(R.id.fl_container, messageBackupFragment);
                 } else {
                     transaction.show(messageBackupFragment);
@@ -222,7 +222,7 @@ public class BackUpsActivity  extends MyAppCompatActivity implements View.OnClic
                 break;
             case PICTUREFRAGMENT:
                 if (pictureBackupFragment == null) {
-                    pictureBackupFragment = new PictureBackupFragment(BackupBaseFragment.TYPE_IMG);
+                    pictureBackupFragment = PictureBackupFragment.newInstance(BackupBaseFragment.TYPE_IMG);
                     transaction.add(R.id.fl_container, pictureBackupFragment);
                 } else {
                     transaction.show(pictureBackupFragment);
@@ -233,7 +233,7 @@ public class BackUpsActivity  extends MyAppCompatActivity implements View.OnClic
                 break;
             case CONTACTSFRAGMENT:
                 if (contactsBackupFragment == null) {
-                    contactsBackupFragment = new ContactsBackupFragment(BackupBaseFragment.TYPE_CONTACT);
+                    contactsBackupFragment = ContactsBackupFragment.newInstance(BackupBaseFragment.TYPE_CONTACT);
                     transaction.add(R.id.fl_container, contactsBackupFragment);
                 } else {
                     transaction.show(contactsBackupFragment);

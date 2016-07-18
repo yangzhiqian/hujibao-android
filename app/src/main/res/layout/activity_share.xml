@@ -22,6 +22,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:autoLink="all"
             android:text="@string/share_url_android_app_code"
             android:textSize="@dimen/text_size_short" />
@@ -38,6 +40,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:autoLink="all"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:text="@string/share_url_web_server_code"
             android:textSize="@dimen/text_size_short" />
 
@@ -52,6 +56,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:autoLink="email"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:text="@string/share_content_coder_email"
             android:textSize="@dimen/text_size_short" />
     </LinearLayout>

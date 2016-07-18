@@ -20,9 +20,13 @@ import edu.ncu.safe.myadapter.BackupBaseFragment;
  * Created by Mr_Yang on 2016/6/1.
  */
 public class ContactsBackupFragment extends BackupBaseFragment {
-    public ContactsBackupFragment(int type){
-        super(type);
+
+    public static ContactsBackupFragment newInstance(int type) {
+        ContactsBackupFragment f = new ContactsBackupFragment();
+        f.setDataType(type);
+        return f;
     }
+
     @Override
     public void init() {
         currentShowType = SHOWTYPE_LOCAL;

@@ -37,8 +37,10 @@ import edu.ncu.safe.util.BitmapUtil;
  * Created by Mr_Yang on 2016/6/1.
  */
 public class PictureBackupFragment extends BackupBaseFragment {
-    public PictureBackupFragment(int type) {
-        super(type);
+   public  static PictureBackupFragment newInstance(int type) {
+        PictureBackupFragment f = new PictureBackupFragment();
+        f.setDataType(type);
+        return f;
     }
     @Override
     public void init() {

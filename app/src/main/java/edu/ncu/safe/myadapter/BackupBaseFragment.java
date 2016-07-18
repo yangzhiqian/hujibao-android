@@ -67,7 +67,7 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
     protected  boolean isLoading = false;
     protected  boolean isOver = false;
 
-    public BackupBaseFragment( int type) {
+    public void setDataType( int type) {
         this.currentDataType = type;
     }
 

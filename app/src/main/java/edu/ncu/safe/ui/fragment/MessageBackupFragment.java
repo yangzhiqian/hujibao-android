@@ -22,8 +22,10 @@ import edu.ncu.safe.myadapter.BackupBaseFragment;
  * Created by Mr_Yang on 2016/6/1.
  */
 public class MessageBackupFragment extends BackupBaseFragment {
-    public MessageBackupFragment(int type){
-        super(type);
+   public  static MessageBackupFragment newInstance(int type) {
+        MessageBackupFragment f = new MessageBackupFragment();
+        f.setDataType(type);
+        return f;
     }
     @Override
     public void init() {

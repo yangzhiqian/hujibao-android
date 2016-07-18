@@ -262,12 +262,14 @@
 
     <!-- action-->
     <string name="action_update">edu.ncu.yang.myservice.update</string>
+    <string name="action_download_new_apk">edu.ncu.yang.myservice.update.load</string>
     <string name="action_flows_recorder">edu.ncu.yang.myservice.flows.recorder</string>
     <string name="action_float_window_show">edu.ncu.yang.myservice.float.window.show</string>
     <string name="action_float_window_update">edu.ncu.yang.myservice.float.window.update</string>
     <string name="action_float_window_dismiss">edu.ncu.yang.myservice.float.window.dismiss</string>
     <string name="action_relife">edu.ncu.yang.myreceiver.relife</string>
-
+    <string name="action_reveiver_update">edu.ncu.yang.receiver.update</string>
+    <string name="action_reveiver_dwonload_new_apk">edu.ncu.yang.receiver.download.new.apk</string>
     <!-- url-->
     <string name="baiduphonenumberownerplaceurl">http://apis.baidu.com/chazhao/mobilesearch/phonesearch</string>
     <string name="baiduphonenumberownerplacekey">3d2e9cc7c8ed9cf0d2a9f18ae053cc2d</string>
@@ -283,4 +285,12 @@
     <string name="deletebackup">http://123.206.202.242:8080/androidsafe/DeleteBackupServlet</string>
     <string name="protocol">http://123.206.202.242:8080/androidsafe/protocol.xml</string>
     <string name="version">http://123.206.202.242:8080/androidsafe/versioninfo.xml</string>
+    <string name="dialog_title_update_note">发现新版本:%s</string>
+    <string name="button_update_now">立即更新</string>
+    <string name="button_update_later">稍后升级</string>
+    <string name="progress_dialog_title">正在下载护机宝%s</string>
+    <string name="toast_error_download">下载失败</string>
+
+
+
 </resources>
