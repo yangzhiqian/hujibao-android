@@ -26,10 +26,9 @@ import android.widget.TextView;
 
 import edu.ncu.safe.MyApplication;
 import edu.ncu.safe.R;
-import edu.ncu.safe.View.MyDialog;
+import edu.ncu.safe.customerview.MyDialog;
 import edu.ncu.safe.adapter.ContactsDialogAdapter;
 import edu.ncu.safe.engine.ContactsService;
-import edu.ncu.safe.myadapter.MyAppCompatActivity;
 import edu.ncu.safe.receiver.AdminReceiver;
 import edu.ncu.safe.util.MD5Encoding;
 import edu.ncu.safe.util.MyUtil;

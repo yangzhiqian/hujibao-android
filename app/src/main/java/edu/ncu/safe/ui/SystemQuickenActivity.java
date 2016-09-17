@@ -26,12 +26,11 @@ import java.util.Comparator;
 import java.util.List;
 
 import edu.ncu.safe.R;
-import edu.ncu.safe.View.MyProgressBar;
+import edu.ncu.safe.customerview.MyProgressBar;
 import edu.ncu.safe.adapter.SystemQuickenELVAdapter;
 import edu.ncu.safe.domain.CacheInfo;
 import edu.ncu.safe.domain.ELVParentItemInfo;
 import edu.ncu.safe.domain.RunningApplicationInfo;
-import edu.ncu.safe.myadapter.MyAppCompatActivity;
 import edu.ncu.safe.myinterface.ChildItemData;
 import edu.ncu.safe.service.AppRubbishCleanService;
 import edu.ncu.safe.service.InnerMemoryCleanService;

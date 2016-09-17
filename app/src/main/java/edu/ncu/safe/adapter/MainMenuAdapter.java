@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import edu.ncu.safe.R;
-import edu.ncu.safe.View.CircleImageView;
+import edu.ncu.safe.customerview.CircleImageView;
 import edu.ncu.safe.domain.MainMenuInfo;
 
 public class MainMenuAdapter extends BaseAdapter {

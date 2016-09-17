@@ -3,7 +3,6 @@
     xmlns:my="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
     android:orientation="vertical">
 
     <include layout="@layout/content_toolbar"/>
@@ -21,7 +20,7 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <edu.ncu.safe.View.MyProgressBar
+            <edu.ncu.safe.customerview.MyProgressBar
                 android:id="@+id/mpb_innermemory"
                 android:layout_width="200dip"
                 android:layout_height="match_parent"
@@ -33,7 +32,7 @@
                 my:usedEndColor="#ff0000" />
 
 
-            <edu.ncu.safe.View.MyProgressBar
+            <edu.ncu.safe.customerview.MyProgressBar
                 android:id="@+id/mpb_outermemory"
                 android:layout_width="120dip"
                 android:layout_height="100dip"
@@ -84,7 +83,7 @@
             android:layout_centerInParent="true"
             android:orientation="vertical"
             android:gravity="center">
-            <edu.ncu.safe.View.MyProgressBar
+            <edu.ncu.safe.customerview.MyProgressBar
                 android:id="@+id/mpb_sweep"
                 android:layout_width="match_parent"
                 android:layout_height="80dip"

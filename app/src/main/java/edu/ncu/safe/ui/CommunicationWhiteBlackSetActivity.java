@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.adapter.CommunicationWhiteBlackSetVPAdatpter;
-import edu.ncu.safe.myadapter.MyAppCompatActivity;
 
 public class CommunicationWhiteBlackSetActivity extends MyAppCompatActivity implements OnClickListener{
 	private RelativeLayout rl_msg;

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ncu.safe.R;
-import edu.ncu.safe.View.MyProgressBar;
+import edu.ncu.safe.customerview.MyProgressBar;
 import edu.ncu.safe.domain.ContactsInfo;
 import edu.ncu.safe.domain.SmsInfo;
 import edu.ncu.safe.domainadapter.ContactsAdapter;

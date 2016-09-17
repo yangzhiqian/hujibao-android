@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 import edu.ncu.safe.R;
-import edu.ncu.safe.View.MyProgressBar;
+import edu.ncu.safe.customerview.MyProgressBar;
 import edu.ncu.safe.domain.User;
 import edu.ncu.safe.external.ACache;
 import edu.ncu.safe.external.okhttpprogress.ProgressResponseBody;

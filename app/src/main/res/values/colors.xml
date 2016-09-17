@@ -28,7 +28,7 @@
     <color name="phone_lost_protector_title_item">#ff111111</color>
     <color name="phone_lost_protector_note_item">#77111111</color>
     <color name="state_ok">#00ff00</color>
-
+    <color name="state_not_ok">#ff0000</color>
 
 
 
@@ -51,7 +51,6 @@
     <color name="indicator_2">#64A4A4</color>
     <color name="indicator_3">#66D7B9</color>
     <color name="indicator_4">#FDBC7D</color>
-
 
 
 

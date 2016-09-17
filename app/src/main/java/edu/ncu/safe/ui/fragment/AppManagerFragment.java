@@ -31,8 +31,8 @@ import java.util.List;
 import java.util.Map;
 
 import edu.ncu.safe.R;
-import edu.ncu.safe.View.MyDialog;
-import edu.ncu.safe.View.MyLoadBar;
+import edu.ncu.safe.customerview.MyDialog;
+import edu.ncu.safe.customerview.MyLoadBar;
 import edu.ncu.safe.adapter.AppManagerLVAdapter;
 import edu.ncu.safe.domain.UserAppBaseInfo;
 import edu.ncu.safe.engine.LoadAppInfos;

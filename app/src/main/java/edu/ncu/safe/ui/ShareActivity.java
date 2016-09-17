@@ -3,7 +3,6 @@ package edu.ncu.safe.ui;
 import android.os.Bundle;
 
 import edu.ncu.safe.R;
-import edu.ncu.safe.myadapter.MyAppCompatActivity;
 
 public class ShareActivity extends MyAppCompatActivity {
 

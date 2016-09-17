@@ -14,9 +14,8 @@ import android.widget.LinearLayout;
 
 import edu.ncu.safe.MyApplication;
 import edu.ncu.safe.R;
-import edu.ncu.safe.View.MyDialog;
+import edu.ncu.safe.customerview.MyDialog;
 import edu.ncu.safe.db.dao.FlowsDatabase;
-import edu.ncu.safe.myadapter.MyAppCompatActivity;
 import edu.ncu.safe.util.FlowsFormartUtil;
 import edu.ncu.safe.util.FormatDate;
 

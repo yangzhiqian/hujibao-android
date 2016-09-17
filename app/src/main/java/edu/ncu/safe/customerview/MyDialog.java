@@ -1,4 +1,4 @@
-package edu.ncu.safe.View;
+package edu.ncu.safe.customerview;
 
 import android.app.Dialog;
 import android.content.Context;

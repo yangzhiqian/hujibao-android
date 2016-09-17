@@ -104,7 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true">
-            <edu.ncu.safe.View.MyLoadBar
+            <edu.ncu.safe.customerview.MyLoadBar
                 android:id="@+id/lb_loadingbar"
                 android:layout_width="50dip"
                 android:layout_height="50dip" />

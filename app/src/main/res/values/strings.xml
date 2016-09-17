@@ -290,7 +290,9 @@
     <string name="button_update_later">稍后升级</string>
     <string name="progress_dialog_title">正在下载护机宝%s</string>
     <string name="toast_error_download">下载失败</string>
-
+    <string name="main_fragment_note_phone_lost_not_in_protecting">防盗未开启</string>
+    <string name="main_fragment_note_flows_not_in_protecting">监控未开启</string>
+    <string name="error_pwd_format">输入格式有误</string>
 
 
 </resources>

@@ -17,7 +17,6 @@ import java.util.List;
 import edu.ncu.safe.R;
 import edu.ncu.safe.adapter.FlowsStatisticVPAdapter;
 import edu.ncu.safe.db.dao.FlowsDatabase;
-import edu.ncu.safe.myadapter.MyAppCompatActivity;
 import lecho.lib.hellocharts.gesture.ContainerScrollType;
 import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.model.Axis;

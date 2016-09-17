@@ -4,7 +4,6 @@
     xmlns:my="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
     android:orientation="vertical">
 
     <include layout="@layout/content_toolbar"/>
@@ -16,7 +15,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <edu.ncu.safe.View.MyProgressBar
+        <edu.ncu.safe.customerview.MyProgressBar
             android:id="@+id/mpb_flows"
             android:layout_width="match_parent"
             android:layout_height="0dip"

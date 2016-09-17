@@ -18,7 +18,6 @@ import edu.ncu.safe.db.dao.CommunicationDatabase;
 import edu.ncu.safe.engine.LoadPhoneNumberOwnerPalce;
 import edu.ncu.safe.engine.LoadPhoneNumberOwnerPalce.NumberPlaceInfo;
 import edu.ncu.safe.engine.LoadPhoneNumberOwnerPalce.OnOwnerPlaceObtainedListener;
-import edu.ncu.safe.myadapter.MyAppCompatActivity;
 
 /**
  * Created by Mr_Yang on 2016/5/16.

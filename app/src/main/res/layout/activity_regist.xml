@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
     android:orientation="vertical">
 
     <include layout="@layout/content_toolbar" />
@@ -29,7 +28,7 @@
                 android:orientation="vertical"
                 android:padding="30dp">
 
-                <edu.ncu.safe.View.CircleImageView
+                <edu.ncu.safe.customerview.CircleImageView
                     android:id="@+id/civ_icon"
                     android:layout_width="100dp"
                     android:layout_height="100dp"

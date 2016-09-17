@@ -29,9 +29,8 @@ import java.net.URL;
 import java.util.UUID;
 
 import edu.ncu.safe.R;
-import edu.ncu.safe.View.CircleImageView;
+import edu.ncu.safe.customerview.CircleImageView;
 import edu.ncu.safe.domain.User;
-import edu.ncu.safe.myadapter.MyAppCompatActivity;
 import edu.ncu.safe.util.MD5Encoding;
 
 public class RegistActivity extends MyAppCompatActivity implements OnClickListener {

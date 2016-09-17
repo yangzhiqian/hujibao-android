@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ncu.safe.R;
-import edu.ncu.safe.View.MyDialog;
+import edu.ncu.safe.customerview.MyDialog;
 import edu.ncu.safe.db.dao.CommunicationDatabase;
 import edu.ncu.safe.domain.WhiteBlackNumberInfo;
 import edu.ncu.safe.util.MyUtil;

@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.myadapter.BackupBaseFragment;
-import edu.ncu.safe.myadapter.MyAppCompatActivity;
 import edu.ncu.safe.ui.fragment.ContactsBackupFragment;
 import edu.ncu.safe.ui.fragment.MessageBackupFragment;
 import edu.ncu.safe.ui.fragment.PictureBackupFragment;

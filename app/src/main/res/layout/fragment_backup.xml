@@ -30,7 +30,7 @@
     </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 
 
-    <edu.ncu.safe.View.MyProgressBar
+    <edu.ncu.safe.customerview.MyProgressBar
         android:id="@+id/mpb_load"
         android:layout_width="50dip"
         android:layout_height="50dip"

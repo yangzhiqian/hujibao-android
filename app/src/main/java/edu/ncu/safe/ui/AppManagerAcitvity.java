@@ -16,7 +16,6 @@ import java.util.List;
 import edu.ncu.safe.R;
 import edu.ncu.safe.adapter.AppManagerPVAdapter;
 import edu.ncu.safe.domain.UserAppBaseInfo;
-import edu.ncu.safe.myadapter.MyAppCompatActivity;
 import edu.ncu.safe.ui.fragment.AppManagerFragment;
 import edu.ncu.safe.ui.fragment.NetManagerFragment;
 import edu.ncu.safe.util.BitmapUtil;

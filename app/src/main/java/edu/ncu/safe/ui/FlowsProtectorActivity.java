@@ -9,9 +9,8 @@ import android.widget.TextView;
 
 import edu.ncu.safe.MyApplication;
 import edu.ncu.safe.R;
-import edu.ncu.safe.View.MyProgressBar;
+import edu.ncu.safe.customerview.MyProgressBar;
 import edu.ncu.safe.db.dao.FlowsDatabase;
-import edu.ncu.safe.myadapter.MyAppCompatActivity;
 import edu.ncu.safe.util.FlowsFormartUtil;
 
 public class FlowsProtectorActivity extends MyAppCompatActivity implements OnClickListener {

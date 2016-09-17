@@ -27,7 +27,7 @@ import java.util.List;
 
 import edu.ncu.safe.MyApplication;
 import edu.ncu.safe.R;
-import edu.ncu.safe.View.MyProgressBar;
+import edu.ncu.safe.customerview.MyProgressBar;
 import edu.ncu.safe.adapter.BackupLVAdapter;
 import edu.ncu.safe.domain.User;
 import edu.ncu.safe.domainadapter.ContactsAdapter;

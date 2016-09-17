@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.adapter.CommunicationVPAdatpter;
-import edu.ncu.safe.myadapter.MyAppCompatActivity;
 
 public class CommunicationProtectorActivity extends MyAppCompatActivity implements OnClickListener{
 	private ImageView iv_showPopup;

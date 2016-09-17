@@ -12,11 +12,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import edu.ncu.safe.R;
-import edu.ncu.safe.View.MyDialog;
+import edu.ncu.safe.customerview.MyDialog;
 import edu.ncu.safe.adapter.CommunicationLVInterceptionSetAdapter;
 import edu.ncu.safe.domain.InterceptionSetInfo;
 import edu.ncu.safe.engine.InterceptionSetOperation;
-import edu.ncu.safe.myadapter.MyAppCompatActivity;
 
 /**
  * Created by Mr_Yang on 2016/5/17.

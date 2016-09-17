@@ -7,28 +7,31 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import edu.ncu.safe.R;
-import edu.ncu.safe.View.CircleImageView;
+import edu.ncu.safe.customerview.CircleImageView;
 import edu.ncu.safe.domain.MainGVItemInfo;
 
 public class MainGVAdapter extends BaseAdapter {
 	private LayoutInflater flater;
-	private MainGVItemInfo[] infos;
+	private List<MainGVItemInfo> infos;
 	public MainGVAdapter(Context context){
-		this(context,new MainGVItemInfo[0]);
+		this(context,new LinkedList<MainGVItemInfo>());
 	}
-	public MainGVAdapter(Context context,MainGVItemInfo[] infos){
+	public MainGVAdapter(Context context,List<MainGVItemInfo> infos){
 		this.infos = infos;
 		flater = LayoutInflater.from(context);
 	}
 
-	public void setInfos(MainGVItemInfo[] infos) {
+	public void setInfos(List<MainGVItemInfo> infos) {
 		this.infos = infos;
 	}
 
 	@Override
 	public int getCount() {
-		return infos.length;
+		return infos.size();
 	}
 
 	@Override
@@ -57,10 +60,10 @@ public class MainGVAdapter extends BaseAdapter {
 		}else{
 			holder = (ViewHolder)view.getTag();
 		}
-		holder.img.setImageResource(infos[position].getIconR());
-		holder.title.setText(infos[position].getTitle());
-		holder.anotation.setText(infos[position].getNote());
-		holder.anotation.setTextColor(infos[position].getColor());
+		holder.img.setImageResource(infos.get(position).getIconR());
+		holder.title.setText(infos.get(position).getTitle());
+		holder.anotation.setText(infos.get(position).getNote());
+		holder.anotation.setTextColor(infos.get(position).getColor());
 		return view;
 	}
 	
@@ -69,5 +72,4 @@ public class MainGVAdapter extends BaseAdapter {
 		public TextView title;
 		public TextView anotation;
 	}
-
 }

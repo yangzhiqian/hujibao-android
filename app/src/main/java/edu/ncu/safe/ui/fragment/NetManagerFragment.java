@@ -25,7 +25,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import edu.ncu.safe.R;
-import edu.ncu.safe.View.MyLoadBar;
+import edu.ncu.safe.customerview.MyLoadBar;
 import edu.ncu.safe.adapter.NetManagerLVAdapter;
 import edu.ncu.safe.db.dao.FlowsDatabase;
 import edu.ncu.safe.domain.UserAppBaseInfo;

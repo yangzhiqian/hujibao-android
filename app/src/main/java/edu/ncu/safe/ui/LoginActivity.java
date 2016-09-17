@@ -24,7 +24,6 @@ import java.net.URLEncoder;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.domain.User;
-import edu.ncu.safe.myadapter.MyAppCompatActivity;
 import edu.ncu.safe.util.MD5Encoding;
 
 public class LoginActivity extends MyAppCompatActivity {

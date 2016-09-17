@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import edu.ncu.safe.R;
-import edu.ncu.safe.View.SlideView;
+import edu.ncu.safe.customerview.SlideView;
 import edu.ncu.safe.db.dao.CommunicationDatabase;
 import edu.ncu.safe.engine.LoadPhoneNumberOwnerPalce;
 

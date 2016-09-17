@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import edu.ncu.safe.R;
-import edu.ncu.safe.View.MyProgressBar;
-import edu.ncu.safe.View.MyTouchImageView;
+import edu.ncu.safe.customerview.MyProgressBar;
+import edu.ncu.safe.customerview.MyTouchImageView;
 import edu.ncu.safe.engine.DataLoader;
 import edu.ncu.safe.util.BitmapUtil;
 

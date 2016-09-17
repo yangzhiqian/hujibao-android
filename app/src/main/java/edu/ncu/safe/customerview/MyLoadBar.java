@@ -1,4 +1,4 @@
-package edu.ncu.safe.View;
+package edu.ncu.safe.customerview;
 
 import android.content.Context;
 import android.graphics.BlurMaskFilter;

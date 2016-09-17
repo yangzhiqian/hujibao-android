@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     android:background="@color/background_content"
     android:orientation="vertical">
-    <edu.ncu.safe.View.SlideView
+    <edu.ncu.safe.customerview.SlideView
         android:id="@+id/sv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></edu.ncu.safe.View.SlideView>
+        android:layout_height="wrap_content"></edu.ncu.safe.customerview.SlideView>
 </LinearLayout>

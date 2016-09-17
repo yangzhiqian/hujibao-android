@@ -78,7 +78,7 @@
 
     </LinearLayout>
 
-    <edu.ncu.safe.View.MyProgressBar
+    <edu.ncu.safe.customerview.MyProgressBar
         android:id="@+id/mpb_downloadprogress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

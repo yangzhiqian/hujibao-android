@@ -1,4 +1,4 @@
-package edu.ncu.safe.View;
+package edu.ncu.safe.customerview;
 
 /**
  * Created by Mr_Yang on 2016/6/22.
