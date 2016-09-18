@@ -1,92 +1,90 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="#ffffffff">
 
-    <include layout="@layout/content_toolbar" />
-
-    <LinearLayout
+    <include
+        layout="@layout/content_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ffffffff"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
 
-        <ScrollView
-            android:id="@+id/login_form"
+    <ScrollView
+        android:id="@+id/login_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <LinearLayout
+            android:id="@+id/email_login_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
-            <LinearLayout
-                android:id="@+id/email_login_form"
+            android:orientation="vertical"
+            android:padding="30dp">
+
+            <EditText
+                android:id="@+id/uname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="30dp">
+                android:hint="@string/user_name"
+                android:maxLines="1"
+                android:paddingLeft="15dp"
+                android:singleLine="true" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/uname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/user_name"
-                    android:maxLines="1"
-                    android:singleLine="true" />
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:imeActionId="@+id/login"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:paddingLeft="15dp"
+                android:singleLine="true" />
 
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/password"
-                    android:imeActionId="@+id/login"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:singleLine="true" />
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/button_log_in"
+                android:textSize="@dimen/text_size_normal" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
 
                 <Button
-                    android:id="@+id/btn_login"
-                    android:layout_width="match_parent"
+                    android:id="@+id/btn_regist"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/button_log_in"
-                    android:textSize="@dimen/text_size_normal" />
+                    android:layout_alignParentLeft="true"
+                    android:background="@null"
+                    android:text="@string/button_to_regist"
+                    android:textColor="#0000ff" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/btn_backUser"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
-
-                    <Button
-                        android:id="@+id/btn_regist"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="10dp"
-                        android:background="@null"
-                        android:text="@string/button_to_regist"
-                        android:textColor="#0000ff" />
-
-                    <Button
-                        android:id="@+id/btn_backUser"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="right"
-                        android:layout_marginRight="10dp"
-                        android:background="@null"
-                        android:visibility="gone"
-                        android:text="@string/button_forgot_password"
-                        android:textColor="#0000ff" />
-                </RelativeLayout>
-            </LinearLayout>
-        </ScrollView>
-        <!-- Login progress -->
-        <ProgressBar
-            android:id="@+id/login_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="gone" />
-    </LinearLayout>
-</LinearLayout>
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:background="@null"
+                    android:text="@string/button_forgot_password"
+                    android:textColor="#0000ff"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+    <!-- Login progress -->
+    <ProgressBar
+        android:id="@+id/login_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+</RelativeLayout>

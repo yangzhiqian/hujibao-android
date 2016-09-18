@@ -293,6 +293,9 @@
     <string name="main_fragment_note_phone_lost_not_in_protecting">防盗未开启</string>
     <string name="main_fragment_note_flows_not_in_protecting">监控未开启</string>
     <string name="error_pwd_format">输入格式有误</string>
+    <string name="toast_succeed_log_in">登陆成功</string>
+    <string name="button_regist_doing">正在注册</string>
+    <string name="button_regist">注册</string>
 
 
 </resources>

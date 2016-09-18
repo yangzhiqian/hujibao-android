@@ -24,6 +24,13 @@ public class BaseAppCompatActivity extends AppCompatActivity {
         startActivity(intent);
         overridePendingTransition(R.anim.activit3dtoleft_in, R.anim.activit3dtoleft_out);
     }
+
+    protected void toAntherAvitvityForResult(Class clazz,int requestCode) {
+        Intent intent = new Intent();
+        intent.setClass(this, clazz);
+        startActivityForResult(intent,requestCode);
+        overridePendingTransition(R.anim.activit3dtoleft_in, R.anim.activit3dtoleft_out);
+    }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(KeyEvent.KEYCODE_BACK == keyCode){
