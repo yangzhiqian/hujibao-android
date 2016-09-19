@@ -23,8 +23,8 @@
     <dimen name="text_size_small">16sp</dimen>
     <dimen name="text_size_minimum">14sp</dimen>
     <dimen name="text_size_smallest">12sp</dimen>
-    <dimen name="phone_lost_protector_title_item">13sp</dimen>
-    <dimen name="phone_lost_protector_note_item">10sp</dimen>
+    <dimen name="phone_lost_protector_sets_name_size">13sp</dimen>
+    <dimen name="phone_lost_protector_sets_note_size">10sp</dimen>
     <dimen name="title">25sp</dimen>
 
 

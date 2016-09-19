@@ -6,4 +6,34 @@
         <item>@color/indicator_3</item>
         <item>@color/indicator_4</item>
     </array>
+
+
+    <!--参考http://blog.csdn.net/jdsjlzx/article/details/46650659-->
+    <string-array name="phone_lost_protector_sets_iconids">
+        <item>@drawable/message</item>
+        <item>@drawable/delete</item>
+        <item>@drawable/lock</item>
+        <item>@drawable/ring</item>
+        <item>@drawable/pwd</item>
+        <item>@drawable/location</item>
+    </string-array>
+
+
+    <string-array name="phone_lost_protector_sets_names">
+        <item>换卡短信通知</item>
+        <item>远程删除手机数据(app需要设备管理权限)</item>
+        <item>远程锁定手机(app需要设备管理者权限)</item>
+        <item>响铃警报</item>
+        <item>远程改密(app需要设备管理者权限)</item>
+        <item>位置追踪</item>
+    </string-array>
+
+    <string-array name="phone_lost_protector_sets_notes">
+        <item>手机更换sim卡后安全号码能收到一条短信通知</item>
+        <item>安全号码可发送指定短信内容到该手机用于格式化手机</item>
+        <item>安全号码可发送指定短信用于锁定该手机</item>
+        <item>安全号码发送指定短信用于手机响铃</item>
+        <item>安全号码发送指定短信用于修改手机密码</item>
+        <item>安全号码发送指定短信用户获取手机位置</item>
+    </string-array>
 </resources>

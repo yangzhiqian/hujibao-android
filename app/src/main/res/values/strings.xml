@@ -39,18 +39,7 @@
     <string name="phone_lost_protector_title_current_state">当前状态</string>
     <string name="phone_lost_protector_title_current_state_open">开启(点击轮盘关闭)</string>
     <string name="phone_lost_protector_title_current_state_close">关闭(点击轮盘关闭)</string>
-    <string name="phone_lost_protector_title_SIM_changed">换卡短信通知</string>
-    <string name="phone_lost_protector_title_SIM_changed_note">手机更换sim卡后安全号码回家收到一条短信通知</string>
-    <string name="phone_lost_protector_title_item_delete">远程删除手机数据(app需要设备管理权限)</string>
-    <string name="phone_lost_protector_note_item_delete">安全号码可发送指定短信内容到该手机用于格式化手机</string>
-    <string name="phone_lost_protector_title_lock">远程锁定手机(app需要设备管理者权限)</string>
-    <string name="phone_lost_protector_note_lock">安全号码可发送指定短信用于锁定该手机</string>
-    <string name="phone_lost_protector_title_ring">响铃警报</string>
-    <string name="phone_lost_protector_note_ring">安全号码发送指定短信用于手机响铃</string>
-    <string name="phone_lost_protector_title_lock_pwd">远程改密(app需要设备管理者权限)</string>
-    <string name="phone_lost_protector_note_lock_pwd">安全号码发送指定短信用于修改手机密码</string>
-    <string name="phone_lost_protector_title_location">位置追踪</string>
-    <string name="phone_lost_protector_note_location">安全号码发送指定短信用户获取手机位置</string>
+    <string name="phone_lost_protector_sets_note">设置说明</string>
     <string name="toast_no_sim">当前未插入SMS卡</string>
     <string name="dialog_title_set_protect_number">设置保护号码</string>
     <string name="dialog_message_toprotector">是否设置号码%s为保护号码？</string>
@@ -296,6 +285,8 @@
     <string name="toast_succeed_log_in">登陆成功</string>
     <string name="button_regist_doing">正在注册</string>
     <string name="button_regist">注册</string>
+    <string name="phone_lost_protector_sets_name">设置名称</string>
+    <string name="Toast_activity_device_admin_succeed">激活成功</string>
 
 
 </resources>

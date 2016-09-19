@@ -25,8 +25,8 @@
     <color name="phone_lost_protector_title_current_set">#ff2233cc</color>
     <color name="phone_lost_protector_title_current_close">#ffff0000</color>
     <color name="phone_lost_protector_title_current_open">#ff00ff00</color>
-    <color name="phone_lost_protector_title_item">#ff111111</color>
-    <color name="phone_lost_protector_note_item">#77111111</color>
+    <color name="phone_lost_protector_sets_name_color">#ff111111</color>
+    <color name="phone_lost_protector_sets_note_color">#77111111</color>
     <color name="state_ok">#00ff00</color>
     <color name="state_not_ok">#ff0000</color>
 

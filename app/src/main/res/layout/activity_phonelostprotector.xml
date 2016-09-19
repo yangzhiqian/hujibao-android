@@ -3,9 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <include layout="@layout/content_toolbar" />
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="200dip"
         android:background="#eeeeeeee"
         android:gravity="center">
@@ -24,396 +25,55 @@
             android:layout_marginTop="10dip"
             android:background="@drawable/swapline" />
     </RelativeLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#eeeeeeee"
         android:gravity="center"
-        android:padding="5dp"
-        android:scrollbars="vertical">
+        android:padding="10dp">
 
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:text="@string/phone_lost_protector_title_current_state"
+            android:textSize="@dimen/text_size_small" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/phone_lost_protector_title_current_state"
-                android:textSize="@dimen/text_size_small" />
-
-            <TextView
-                android:id="@+id/tv_protectstate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/phone_lost_protector_title_current_state_close"
-                android:textColor="@color/phone_lost_protector_title_current_close"
-                android:textSize="@dimen/text_size_small" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_protectstate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/phone_lost_protector_title_current_state_close"
+            android:textColor="@color/phone_lost_protector_title_current_close"
+            android:textSize="@dimen/text_size_small" />
     </LinearLayout>
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#eeeeeeee">
 
-        <ScrollView
-            android:layout_width="fill_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#eeeeeeee">
+            android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dip"
+                android:layout_marginLeft="15dip"
+                android:layout_marginTop="5dip"
+                android:text="@string/phone_lost_protector_title_current_set"
+                android:textColor="@color/phone_lost_protector_title_current_set"
+                android:textSize="@dimen/text_size_normal" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_sets"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#eeeeeeee"
-                android:orientation="vertical"
-                android:padding="5dip"
-                android:scrollbars="vertical">
+                android:padding="10dp">
+            </android.support.v7.widget.RecyclerView>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dip"
-                    android:layout_marginLeft="5dip"
-                    android:layout_marginTop="10dip"
-                    android:text="@string/phone_lost_protector_title_current_set"
-                    android:textColor="@color/phone_lost_protector_title_current_set"
-                    android:textSize="@dimen/text_size_normal" />
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="40dip"
-                            android:layout_height="40dip"
-                            android:padding="5dp"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/message" />
-
-                        <View
-                            android:layout_width="2dip"
-                            android:layout_height="40dip"
-                            android:layout_marginLeft="5dip"
-                            android:background="#DBDBDB" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical"
-                            android:paddingLeft="10dip">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/phone_lost_protector_title_SIM_changed"
-                                android:textColor="@color/phone_lost_protector_title_item"
-                                android:textSize="@dimen/phone_lost_protector_title_item" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/phone_lost_protector_title_SIM_changed_note"
-                                android:textColor="@color/phone_lost_protector_note_item"
-                                android:textSize="@dimen/phone_lost_protector_note_item" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <CheckBox
-                        android:id="@+id/cb_message"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="10dip" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dip"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="40dip"
-                            android:layout_height="40dip"
-                            android:padding="5dp"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/delete" />
-
-                        <View
-                            android:layout_width="2dip"
-                            android:layout_height="40dip"
-                            android:layout_marginLeft="5dip"
-                            android:background="#DBDBDB" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical"
-                            android:paddingLeft="10dip">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/phone_lost_protector_title_item_delete"
-                                android:textColor="@color/phone_lost_protector_title_item"
-                                android:textSize="@dimen/phone_lost_protector_title_item" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/phone_lost_protector_note_item_delete"
-                                android:textColor="@color/phone_lost_protector_note_item"
-                                android:textSize="@dimen/phone_lost_protector_note_item" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <CheckBox
-                        android:id="@+id/cb_delete"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="10dip" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dip"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="40dip"
-                            android:layout_height="40dip"
-                            android:padding="5dp"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/lock" />
-
-                        <View
-                            android:layout_width="2dip"
-                            android:layout_height="40dip"
-                            android:layout_marginLeft="5dip"
-                            android:background="#DBDBDB" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical"
-                            android:paddingLeft="10dip">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/phone_lost_protector_title_lock"
-                                android:textColor="@color/phone_lost_protector_title_item"
-                                android:textSize="@dimen/phone_lost_protector_title_item" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/phone_lost_protector_note_lock"
-                                android:textColor="@color/phone_lost_protector_note_item"
-                                android:textSize="@dimen/phone_lost_protector_note_item" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <CheckBox
-                        android:id="@+id/cb_lock"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="10dip" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dip"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="40dip"
-                            android:layout_height="40dip"
-                            android:padding="5dp"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/ring" />
-
-                        <View
-                            android:layout_width="2dip"
-                            android:layout_height="40dip"
-                            android:layout_marginLeft="5dip"
-                            android:background="#DBDBDB" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical"
-                            android:paddingLeft="10dip">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/phone_lost_protector_title_ring"
-                                android:textColor="@color/phone_lost_protector_title_item"
-                                android:textSize="@dimen/phone_lost_protector_title_item" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/phone_lost_protector_note_ring"
-                                android:textColor="@color/phone_lost_protector_note_item"
-                                android:textSize="@dimen/phone_lost_protector_note_item" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <CheckBox
-                        android:id="@+id/cb_ring"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="10dip" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dip"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="40dip"
-                            android:layout_height="40dip"
-                            android:padding="5dp"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/pwd" />
-
-                        <View
-                            android:layout_width="2dip"
-                            android:layout_height="40dip"
-                            android:layout_marginLeft="5dip"
-                            android:background="#DBDBDB" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical"
-                            android:paddingLeft="10dip">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/phone_lost_protector_title_lock_pwd"
-                                android:textColor="@color/phone_lost_protector_title_item"
-                                android:textSize="@dimen/phone_lost_protector_title_item" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/phone_lost_protector_note_lock_pwd"
-                                android:textColor="@color/phone_lost_protector_note_item"
-                                android:textSize="@dimen/phone_lost_protector_note_item" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <CheckBox
-                        android:id="@+id/cb_pwd"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="10dip" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dip"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="40dip"
-                            android:layout_height="40dip"
-                            android:padding="5dp"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/location" />
-
-                        <View
-                            android:layout_width="2dip"
-                            android:layout_height="40dip"
-                            android:layout_marginLeft="5dip"
-                            android:background="#DBDBDB" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical"
-                            android:paddingLeft="10dip">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/phone_lost_protector_title_location"
-                                android:textColor="@color/phone_lost_protector_title_item"
-                                android:textSize="@dimen/phone_lost_protector_title_item" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/phone_lost_protector_note_location"
-                                android:textColor="@color/phone_lost_protector_note_item"
-                                android:textSize="@dimen/phone_lost_protector_note_item" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <CheckBox
-                        android:id="@+id/cb_location"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="10dip" />
-                </RelativeLayout>
-            </LinearLayout>
-        </ScrollView>
+        </LinearLayout>
 
 
         <SlidingDrawer

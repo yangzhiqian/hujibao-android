@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_launcher"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"/>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="2dip"
+        android:layout_height="35dip"
+        android:background="#DBDBDB"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/iv_icon"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dip"
+        android:layout_toRightOf="@id/divider"
+        android:layout_centerVertical="true">
+
+        <TextView
+            android:id="@+id/tv_sets_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/phone_lost_protector_sets_name"
+            android:textColor="@color/phone_lost_protector_sets_name_color"
+            android:textSize="@dimen/phone_lost_protector_sets_name_size" />
+
+        <TextView
+            android:id="@+id/tv_sets_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/phone_lost_protector_sets_note"
+            android:textColor="@color/phone_lost_protector_sets_note_color"
+            android:textSize="@dimen/phone_lost_protector_sets_note_size" />
+    </LinearLayout>
+    <CheckBox
+        android:id="@+id/cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dip" />
+</RelativeLayout>
