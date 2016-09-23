@@ -78,7 +78,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/calibration"
+        android:id="@+id/ll_calibration"
         style="@style/item"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -121,7 +121,7 @@
     <View style="@style/divideline_horizontal" />
 
     <LinearLayout
-        android:id="@+id/flows"
+        android:id="@+id/ll_flows"
         style="@style/item"
         android:gravity="center_vertical"
         android:orientation="horizontal"

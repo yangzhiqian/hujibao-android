@@ -2,103 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dip"
-        android:background="#eeffee"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingLeft="20dip"
-        android:paddingRight="20dip">
-        <LinearLayout 
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center"
-            >
-            <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/application"
-            android:textSize="@dimen/text_size_normal"
-            android:textColor="#111111"/>
-        </LinearLayout>
-        
-        <LinearLayout 
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center"
-            >
-            <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/upload"
-            android:textSize="@dimen/text_size_normal"
-            android:textColor="#111111"/>
-            <ImageView 
-                android:id="@+id/iv_upload"
-                android:layout_width="10dip"
-                android:layout_height="20dip"
-                android:src="@drawable/desc"
-                android:visibility="gone"/>
-            
-        </LinearLayout>
-        
-        <LinearLayout 
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center"
-            >
-            <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/download"
-            android:textSize="@dimen/text_size_normal"
-            android:textColor="#111111"/>
-            <ImageView 
-                android:id="@+id/iv_download"
-                android:layout_width="10dip"
-                android:layout_height="20dip"
-                android:visibility="gone"
-                android:src="@drawable/desc"/>
-            
-        </LinearLayout>
-        
-        <LinearLayout 
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center"
-            >
-            <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/total"
-            android:textSize="@dimen/text_size_normal"
-            android:textColor="#111111"/>
-            <ImageView 
-                android:id="@+id/iv_total"
-                android:layout_width="10dip"
-                android:layout_height="20dip"
-                android:visibility="gone"
-                android:src="@drawable/desc"/>
-        </LinearLayout>
-    </LinearLayout>
+   <include layout="@layout/item_listview_appflows"></include>
     
     <ListView 
         android:id="@+id/lv_flowsapp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ffffff"
-        android:paddingLeft="20dip"
-        android:paddingRight="20dip"></ListView>
+        android:layout_height="match_parent"></ListView>
 
 </LinearLayout>

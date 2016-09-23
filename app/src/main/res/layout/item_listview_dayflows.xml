@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="50dip"
+    android:layout_height="wrap_content"
+	android:padding="5dp"
     android:background="#ffffff"
     android:gravity="center_vertical">
     
@@ -10,18 +11,18 @@
 	    android:layout_width="wrap_content" 
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentLeft="true"
-	    android:layout_marginLeft="40dip"
-	    android:text="date"
-	    android:textSize="@dimen/text_size_middle"
-	    android:textColor="#111111"/>
+	    android:layout_marginLeft="10dip"
+	    android:text="@string/date"
+	    android:textSize="@dimen/text_size_normal"
+	    android:textColor="@color/black"/>
 	
 	<TextView 
 	    android:id="@+id/tv_flows"
 	    android:layout_width="wrap_content" 
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentRight="true"
-	    android:layout_marginRight="40dip"
-	    android:text="flows"
-	    android:textSize="@dimen/text_size_middle"
+	    android:layout_marginRight="10dip"
+	    android:text="@string/flows_used"
+	    android:textSize="@dimen/text_size_normal"
 	    android:textColor="#dd3333"/>
 </RelativeLayout>

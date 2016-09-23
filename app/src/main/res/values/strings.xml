@@ -192,7 +192,7 @@
     <string name="flows_protector_flows_calibration_note">准确掌握流量的使用情况</string>
     <string name="flows_protector_flows_detail">流量详单</string>
     <string name="flows_protector_flows_detail_note">看看你的流量都去哪里了</string>
-    <string name="flows_protector_detail_gprs_flows">gprs流量</string>
+    <string name="flows_protector_detail_gprs_flows">gprs</string>
     <string name="flows_protector_detail_day_flows">日统计</string>
     <string name="flows_protector_detail_app_flows">App统计</string>
     <string name="flows_protector_detail_gprs_app_flows"><![CDATA[wifi&gprs]]></string>
@@ -287,6 +287,8 @@
     <string name="button_regist">注册</string>
     <string name="phone_lost_protector_sets_name">设置名称</string>
     <string name="Toast_activity_device_admin_succeed">激活成功</string>
+    <string name="error_input_can_not_empty">输入不能为空</string>
+    <string name="toast_user_cancled">您取消了的选择</string>
 
 
 </resources>

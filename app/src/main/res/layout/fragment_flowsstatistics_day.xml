@@ -2,37 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:background="#ffffff"
     android:orientation="vertical" >
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dip"
-        android:background="#eeffee"
-        android:gravity="center_vertical"
-        android:paddingLeft="40dip"
-        android:paddingRight="40dip">
-        
-        <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="@string/date"
-            android:textSize="@dimen/text_size_normal"
-            android:textColor="#111111"/>
-        
-         <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="@string/flows_used"
-            android:textSize="@dimen/text_size_normal"
-            android:textColor="#111111"/>
-    </RelativeLayout>
-    
+    <include layout="@layout/item_listview_dayflows"></include>
     <ListView 
         android:id="@+id/lv_flowsday"
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:background="#ffffff"></ListView>
-
+        android:layout_height="match_parent"></ListView>
 </LinearLayout>

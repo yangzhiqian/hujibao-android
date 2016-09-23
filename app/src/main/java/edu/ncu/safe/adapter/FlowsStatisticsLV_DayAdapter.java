@@ -1,14 +1,15 @@
 package edu.ncu.safe.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.ncu.safe.R;
 import edu.ncu.safe.domain.FlowsStatisticsDayItemInfo;
 import edu.ncu.safe.util.FlowsFormartUtil;
@@ -18,9 +19,12 @@ public class FlowsStatisticsLV_DayAdapter extends BaseAdapter {
 
 	private List<FlowsStatisticsDayItemInfo> infos = new ArrayList<FlowsStatisticsDayItemInfo>();
 	private Context context;
-	
-	public FlowsStatisticsLV_DayAdapter(List<FlowsStatisticsDayItemInfo> infos,
-			Context context) {
+
+	public FlowsStatisticsLV_DayAdapter(Context context) {
+		this(context,new ArrayList<FlowsStatisticsDayItemInfo>());
+	}
+
+	public FlowsStatisticsLV_DayAdapter(Context context,List<FlowsStatisticsDayItemInfo> infos) {
 		super();
 		this.infos = infos;
 		this.context = context;

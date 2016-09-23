@@ -2,8 +2,8 @@ package edu.ncu.safe.ui.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +22,6 @@ import edu.ncu.safe.domain.FlowsStatisticsAppItemInfo;
 import edu.ncu.safe.engine.LoadFlowsDataFromTrafficStats;
 
 public class FlowsAppLVFragment extends Fragment {
-	String tag = "FlowsAppLVFragment";
 	private ListView lv_app;
 	private FlowsStatisticsLV_AppAdapter adapter;
 	private List<FlowsStatisticsAppItemInfo> dbInfos;
@@ -34,8 +33,7 @@ public class FlowsAppLVFragment extends Fragment {
 
 	Handler myHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
-			List<FlowsStatisticsAppItemInfo> infos = loadNewestFlowsData();
-			adapter.setInfos(infos);
+			adapter.setInfos((List<FlowsStatisticsAppItemInfo>) msg.obj);
 			adapter.notifyDataSetChanged();
 		};
 	};
@@ -52,16 +50,18 @@ public class FlowsAppLVFragment extends Fragment {
 		preTrafficInfos = trafficStats.getAppFlowsData();
 		dbInfos = database.queryFromAppFlowsDB();
 		adapter = new FlowsStatisticsLV_AppAdapter(dbInfos, this.getActivity());
-		timer = new Timer();
-
 		lv_app.setAdapter(adapter);
-		timer.scheduleAtFixedRate(new MyTimerTask(), 0, 1000);
+
+		timer = new Timer();
+		//3秒钟刷新一次
+		timer.scheduleAtFixedRate(new MyTimerTask(), 0, 3000);
 		return view;
 	}
 
 	@Override
 	public void onDestroy() {
-		timer.cancel();
+		if(timer!=null)
+	    	timer.cancel();
 		super.onDestroy();
 	}
 
@@ -114,13 +114,13 @@ public class FlowsAppLVFragment extends Fragment {
 		return trafficInfos;
 	}
 
-	int index = 0;
-
 	class MyTimerTask extends TimerTask {
 		@Override
 		public void run() {
-			myHandler.sendEmptyMessage(0);
-			Log.i(tag, "message:" + index++);
+			Message message = Message.obtain();
+			message.what = 0;
+			message.obj = loadNewestFlowsData();
+			myHandler.sendMessage(message);
 		}
 	}
 }

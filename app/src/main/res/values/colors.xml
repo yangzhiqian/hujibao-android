@@ -51,7 +51,8 @@
     <color name="indicator_2">#64A4A4</color>
     <color name="indicator_3">#66D7B9</color>
     <color name="indicator_4">#FDBC7D</color>
-
+    <color name="selectColor">#777777</color>
+    <color name="indicatorColor">#ff0000</color>
 
 
 </resources>

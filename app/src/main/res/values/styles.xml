@@ -43,7 +43,7 @@
     <style name="item">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">70dip</item>
-        <item name="android:background">#ccffffff</item>
+        <item name="android:background">@drawable/ll_pressandrelease_selector</item>
     </style>
 
     <style name="divideline_horizontal">

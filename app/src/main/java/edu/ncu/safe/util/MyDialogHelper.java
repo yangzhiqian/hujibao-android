@@ -1,10 +1,15 @@
 package edu.ncu.safe.util;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -189,13 +194,115 @@ public class MyDialogHelper {
         myDialog.show();
     }
 
+    /**
+     * 显示单一行的输入文本框
+     * @param context      上下文，只能用activity的context，否则会闪退
+     * @param title         输入框的标题
+     * @param hint          默认提示文本
+     * @param inputType    指定输入文本的类型  获取方式  InputType.TYPE_CLASS_XXXXX
+     * @param callBack     检测成功后的回调
+     */
+    public static void showSingleInputDialog(@NonNull final Context context,String title, String hint,int inputType,final InputCallBack callBack){
+        showSingleInputDialog(context,title,hint,inputType,new InputChecker(),callBack);
+    }
+    /**
+     * 显示单一行的输入文本框
+     * @param context      上下文，只能用activity的context，否则会闪退
+     * @param title         输入框的标题
+     * @param hint          默认提示文本
+     * @param checker      用于检测输入输入
+     * @param callBack     检测成功后的回调
+     */
+    public static void showSingleInputDialog(@NonNull final Context context,String title, String hint,@NonNull final InputChecker checker,final InputCallBack callBack){
+        showSingleInputDialog(context,title,hint, InputType.TYPE_CLASS_TEXT,checker,callBack);
+    }
+
+    /**
+     * 显示单一行的输入文本框
+     * @param context      上下文，只能用activity的context，否则会闪退
+     * @param title         输入框的标题
+     * @param hint          默认提示文本
+     * @param inputType    指定输入文本的类型  获取方式  InputType.TYPE_CLASS_XXXXX
+     * @param checker      用于检测输入输入
+     * @param callBack     检测成功后的回调
+     */
+    public static void showSingleInputDialog(@NonNull final Context context,String title, String hint,int inputType,@NonNull final InputChecker checker,final InputCallBack callBack){
+        final MyDialog myDialog = new MyDialog(context);
+        myDialog.setTitle(title==null?"请输入":title);
+        final EditText editText = new EditText(context);
+        ViewGroup.LayoutParams vlp = new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        editText.setHint(hint==null?"":hint);
+        editText.setLayoutParams(vlp);
+        editText.setSingleLine();
+        editText.setInputType(inputType);
+
+        myDialog.setMessageView(editText);
+        myDialog.setPositiveListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = editText.getText().toString().trim();
+                if(TextUtils.isEmpty(text)){
+                    editText.setError(context.getString(R.string.error_input_can_not_empty));
+                    return ;
+                }
+                if(checker.checkInputFormatLegal(text)){
+                    callBack.inputSucceed(text);
+                    myDialog.dismiss();
+                    return;
+                }else{
+                    editText.setError(context.getString(R.string.error_pwd_format));
+                    return;
+                }
+            }
+        });
+        myDialog.show();
+    }
+
+
+    static int select = 0;
+    /**
+     * 显示单选对话框
+     * @param context     上下文
+     * @param title       对话框标题
+     * @param itemsRes    条目在xml中的id
+     * @param callBack    选择取消时的回调
+     */
+    public static void showSingleChoiceDialog(final Context context,final String title,final int itemsRes,@NonNull final ChoiceCallBack callBack){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title);
+        builder.setSingleChoiceItems(itemsRes, select,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        select = which;
+                    }
+                });
+        builder.setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        callBack.onChoiceSucceed(select);
+                    }
+                });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                callBack.onCancled(select);
+            }
+        });
+        builder.setCancelable(false);
+        builder.create().show();
+    }
+
 
     public static class InputChecker{
         public boolean checkPWDCorrect(String inputPWD){
             return false;
         }
         public boolean checkInputFormatLegal(String input){
-            if(input.trim().length()>=3){
+            if(input.trim().length()>=1){
                 return true;
             }else{
                 return false;
@@ -206,5 +313,10 @@ public class MyDialogHelper {
     public static interface InputCallBack{
         void inputSucceed(String input);
         void inputError(String error);
+    }
+
+    public static interface ChoiceCallBack{
+        void onChoiceSucceed(int... choices);
+        void onCancled(int... beforCancledChoices);
     }
 }

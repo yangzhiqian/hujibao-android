@@ -13,6 +13,7 @@
 
         <lecho.lib.hellocharts.view.LineChartView
             android:id="@+id/chart"
+            android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         
@@ -26,78 +27,42 @@
         android:gravity="center_horizontal"
         android:orientation="vertical" >
 
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="40dip"
-            android:background="#eeffee"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <LinearLayout
-                android:id="@+id/ll_lefttip"
+            android:layout_height="wrap_content"
+            android:background="#eeffee">
+            <TextView
+                android:id="@+id/tv_gprs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/flows_protector_detail_gprs_flows"
+                android:textColor="#dd3333"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/flows_protector_detail_gprs_flows"
-                    android:textColor="#dd3333"
-                    android:textSize="@dimen/text_size_small" />
-            </LinearLayout>
-
-            <LinearLayout
+                android:textSize="@dimen/text_size_small" />
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tl_flowsstatistics"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="wrap_content"
-                android:layout_height="40dip"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:gravity="clip_vertical"
-                android:orientation="horizontal"
-                android:paddingTop="10dip" >
+                app:tabIndicatorColor="@color/indicatorColor"
+                app:tabGravity="center"
+                app:tabSelectedTextColor="@color/indicatorColor"
+                app:tabTextColor="@color/selectColor" />
 
-                <TextView
-                    android:id="@+id/tv_dayflowsstatistics"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="@string/flows_protector_detail_day_flows"
-                    android:textColor="#000000"
-                    android:textSize="@dimen/text_size_normal" />
-
-                <View
-                    android:layout_width="0.1dip"
-                    android:layout_height="20dip"
-                    android:layout_marginLeft="5dip"
-                    android:layout_marginRight="5dip"
-                    android:background="#000000" />
-
-                <TextView
-                    android:id="@+id/tv_appflowsstatistics"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="@string/flows_protector_detail_app_flows"
-                    android:textColor="#777777"
-                    android:textSize="@dimen/text_size_normal" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_righttip"
+            <TextView
+                android:id="@+id/tv_gprswifi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:orientation="horizontal"
-                android:visibility="invisible" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/flows_protector_detail_gprs_app_flows"
-                    android:textColor="#33dd33"
-                    android:textSize="@dimen/text_size_small" />
-            </LinearLayout>
+                android:text="@string/flows_protector_detail_gprs_app_flows"
+                android:textColor="#33dd33"
+                android:textSize="@dimen/text_size_small" />
         </RelativeLayout>
+
 
         <android.support.v4.view.ViewPager
             android:id="@+id/vp_flowsstatistics"

@@ -1,14 +1,10 @@
 package edu.ncu.safe.ui;
 
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.animation.AlphaAnimation;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,130 +22,116 @@ import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
 import lecho.lib.hellocharts.view.LineChartView;
 
-public class FlowsStatisticsActivity extends MyAppCompatActivity implements
-		OnClickListener {
-	private TextView tv_flowsDayStatistics;
-	private TextView tv_flowsAppStatistics;
-	private ViewPager vp_flowsStatistics;
-	private LinearLayout ll_rightTip;
-	private LinearLayout ll_leftTip;
+public class FlowsStatisticsActivity extends MyAppCompatActivity  {
+    private LineChartView chartView;
+    private TabLayout tl_flowsstatistics;
+    private ViewPager vp_flowsStatistics;
+    private FlowsStatisticVPAdapter adapter;
+    private TextView tv_gprs;
+    private TextView tv_gprswifi;
 
-	private LineChartView chartView;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_flowsstatistics);
+        initToolBar(getResources().getString(R.string.title_flows_statistic));
+        initViews();
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_flowsstatistics);
-		initToolBar(getResources().getString(R.string.title_flows_statistic));
-		tv_flowsDayStatistics = (TextView) this
-				.findViewById(R.id.tv_dayflowsstatistics);
-		tv_flowsAppStatistics = (TextView) this
-				.findViewById(R.id.tv_appflowsstatistics);
-		vp_flowsStatistics = (ViewPager) this
-				.findViewById(R.id.vp_flowsstatistics);
-		ll_rightTip = (LinearLayout) this.findViewById(R.id.ll_righttip);
-		ll_leftTip = (LinearLayout) this.findViewById(R.id.ll_lefttip);
-		chartView = (LineChartView) this.findViewById(R.id.chart);
+        //初始化vp内容
+        adapter = new FlowsStatisticVPAdapter(getSupportFragmentManager());
+        vp_flowsStatistics.setAdapter(adapter);
 
-		tv_flowsDayStatistics.setOnClickListener(this);
-		tv_flowsAppStatistics.setOnClickListener(this);
+        tl_flowsstatistics.setupWithViewPager(vp_flowsStatistics);
+        tl_flowsstatistics.setTabsFromPagerAdapter(adapter);
+        //初始化tablelayout
+        tl_flowsstatistics.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tl_flowsstatistics.getTabAt(0).setText(getString(R.string.flows_protector_detail_day_flows));
+        tl_flowsstatistics.getTabAt(1).setText(getString(R.string.flows_protector_detail_app_flows));
 
-		vp_flowsStatistics.setOnPageChangeListener(new MyPageChangeListener());
-		vp_flowsStatistics.setAdapter(new FlowsStatisticVPAdapter(
-				getSupportFragmentManager()));
+        vp_flowsStatistics.addOnPageChangeListener(new MyPageChangeListener());
 
-		initChars();
-	}
+    }
 
-	private void initChars() {
-		List<PointValue> mPointValues = new ArrayList<PointValue>();
-		List<AxisValue> mAxisValues = new ArrayList<AxisValue>();
+    private void initViews() {
+        chartView = (LineChartView) this.findViewById(R.id.chart);
+        tl_flowsstatistics = (TabLayout) findViewById(R.id.tl_flowsstatistics);
+        vp_flowsStatistics = (ViewPager) this
+                .findViewById(R.id.vp_flowsstatistics);
+        tv_gprs = (TextView) findViewById(R.id.tv_gprs);
+        tv_gprswifi = (TextView) findViewById(R.id.tv_gprswifi);
 
-		FlowsDatabase db = new FlowsDatabase(this);
-		float[] flows = db.queryCurrentMonthByDayFlows();
+    }
 
-		for (int i = 1; i < flows.length + 1; i++) {
-			mPointValues.add(new PointValue(i, flows[i - 1]));
-			mAxisValues.add(new AxisValue(i).setLabel(i + "日"));
-		}
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initChars();
+    }
 
-		Line line = new Line(mPointValues).setColor(Color.BLUE).setCubic(true);
-		List<Line> lines = new ArrayList<Line>();
-		lines.add(line);
-		LineChartData data = new LineChartData();
-		data.setLines(lines);
-		
-		Axis axisX = new Axis();
-		axisX.setHasTiltedLabels(true);
-		axisX.setTextColor(Color.BLUE);
-		axisX.setMaxLabelChars(10);
-		axisX.setValues(mAxisValues);
-		data.setAxisXBottom(axisX);
+    /**
+     * 加载图标的数据并显示
+     */
+    private void initChars() {
+        LineChartData data = new LineChartData();//图标的总数据
+        List<PointValue> mPointValues = new ArrayList<PointValue>();//点值
+        List<AxisValue> mAxisValues = new ArrayList<AxisValue>();//坐标值
 
-		Axis axisY = new Axis();
-		axisY.setTextColor(Color.RED);
-		axisY.setHasTiltedLabels(true);
-		axisY.setName("本月使用流量（MB）");
-		axisY.setMaxLabelChars(2);
-		data.setAxisYLeft(axisY);
+        //加载流量数据
+        FlowsDatabase db = new FlowsDatabase(this);
+        float[] flows = db.queryCurrentMonthByDayFlows();
+        for (int i = 1; i < flows.length + 1; i++) {
+            mPointValues.add(new PointValue(i, flows[i - 1]));
+            mAxisValues.add(new AxisValue(i).setLabel(i + "日"));
+        }
 
-		chartView.setInteractive(true);
-		chartView.setZoomType(ZoomType.HORIZONTAL);
-		chartView.setContainerScrollEnabled(true,
-				ContainerScrollType.HORIZONTAL);
-		chartView.setLineChartData(data);
-		chartView.setVisibility(View.VISIBLE);
-		
-	}
+        /**
+         * 设置线条数据
+         */
+        Line line = new Line(mPointValues).setColor(Color.YELLOW).setCubic(true);
+        List<Line> lines = new ArrayList<Line>();
+        lines.add(line);
+        data.setLines(lines);
 
-	@Override
-	public void onClick(View v) {
+        //x轴
+        Axis axisX = new Axis();
+        axisX.setHasTiltedLabels(false);
+        axisX.setTextColor(Color.YELLOW);
+        axisX.setMaxLabelChars(4);
+        axisX.setValues(mAxisValues);
+        data.setAxisXBottom(axisX);
+        //y轴
+        Axis axisY = new Axis();
+        axisY.setTextColor(Color.YELLOW);
+        axisY.setHasTiltedLabels(true);
+        axisY.setName("本月使用流量（MB）");
+        axisY.setMaxLabelChars(3);
+        data.setAxisYLeft(axisY);
 
-		switch (v.getId()) {
+        chartView.setInteractive(true);
+        chartView.setZoomType(ZoomType.HORIZONTAL);
+        chartView.setContainerScrollEnabled(true,
+                ContainerScrollType.HORIZONTAL);
+        chartView.setLineChartData(data);
+    }
 
-		case R.id.tv_dayflowsstatistics:
-			vp_flowsStatistics.setCurrentItem(0);
-			break;
-		case R.id.tv_appflowsstatistics:
-			vp_flowsStatistics.setCurrentItem(1);
-			break;
-		}
-	}
+    class MyPageChangeListener implements OnPageChangeListener {
+        @Override
+        public void onPageScrollStateChanged(int arg0) {
+        }
 
-	class MyPageChangeListener implements OnPageChangeListener {
-		@Override
-		public void onPageScrollStateChanged(int arg0) {
-		}
+        @Override
+        public void onPageScrolled(int arg0, float arg1, int arg2) {
+            if(arg1==0 && arg2==0){
+                tv_gprs.setAlpha(arg0==0?1:0);
+                tv_gprswifi.setAlpha(arg0);
+            }else{
+                tv_gprs.setAlpha(1-arg1);
+                tv_gprswifi.setAlpha(arg1);
+            }
+        }
 
-		@Override
-		public void onPageScrolled(int arg0, float arg1, int arg2) {
-		}
-
-		@Override
-		public void onPageSelected(int item) {
-			AlphaAnimation disappear = new AlphaAnimation(1.0f, 0.0f);
-			AlphaAnimation appear = new AlphaAnimation(0.0f, 1.0f);
-			disappear.setDuration(1000);
-			appear.setDuration(1000);
-
-			if (item == 0) {
-				ll_rightTip.setVisibility(View.INVISIBLE);
-				ll_rightTip.startAnimation(disappear);
-
-				ll_leftTip.setVisibility(View.VISIBLE);
-				ll_leftTip.startAnimation(appear);
-			} else {
-				ll_rightTip.setVisibility(View.VISIBLE);
-				ll_rightTip.startAnimation(appear);
-
-				ll_leftTip.setVisibility(View.INVISIBLE);
-				ll_leftTip.startAnimation(disappear);
-			}
-
-			ColorStateList dayColor = tv_flowsDayStatistics.getTextColors();
-			ColorStateList appColor = tv_flowsAppStatistics.getTextColors();
-			tv_flowsDayStatistics.setTextColor(appColor);
-			tv_flowsAppStatistics.setTextColor(dayColor);
-		}
-	}
+        @Override
+        public void onPageSelected(int item) {
+        }
+    }
 }
