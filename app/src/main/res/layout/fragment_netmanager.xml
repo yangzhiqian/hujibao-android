@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:my="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#eeeeee"
@@ -9,105 +10,99 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_margin="5dip"
-        android:layout_marginTop="5dip">
-        <LinearLayout
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="25dip"
-                android:layout_height="25dip"
-                android:src="@drawable/yes"
-                android:scaleType="fitXY"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tip_allow_net"
-                android:textColor="#000000"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="25dip"
-                android:layout_height="25dip"
-                android:src="@drawable/no"
-                android:scaleType="fitXY"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tip_forbit_net"
-                android:textColor="#000000"/>
-        </LinearLayout>
+        android:padding="5dp">
 
+        <edu.ncu.safe.customerview.ImageTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            my:img="@drawable/yes"
+            my:img_height="25dip"
+            my:img_width="25dip"
+            my:text="@string/tip_allow_net"
+            my:textColor="@color/black" />
+
+        <edu.ncu.safe.customerview.ImageTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            my:img="@drawable/no"
+            my:img_height="25dip"
+            my:img_width="25dip"
+            my:text="@string/tip_forbit_net"
+            my:textColor="@color/black" />
     </LinearLayout>
-    
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="0.1dip"
-        android:scaleType="fitXY"
-        android:src="@drawable/divider"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="5dip"
-        android:gravity="center_vertical">
+        android:padding="5dip">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_manager_number_of_net_apps"
-            android:textColor="#000000"
-            android:textSize="@dimen/text_size_short"/>
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_short" />
+
         <TextView
             android:id="@+id/tv_netnumbers"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="0"
-            android:textColor="#6cbd45"
-            android:textSize="@dimen/text_size_big"/>
+            android:textColor="@color/theme"
+            android:textSize="@dimen/text_size_big" />
+
         <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="GPRS" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GPRS" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dip"
             android:layout_marginRight="5dip"
-            android:text="WIFI"
-            />
+            android:text="WIFI" />
     </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ListView
             android:id="@+id/lv_netmanager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#ffffff"
-            android:layout_marginTop="10dip"
-            android:divider="@drawable/divider"
-            android:dividerHeight="1dip"
-            android:padding="5dip">
-        </ListView>
-        <LinearLayout
-            android:id="@+id/ll_empty"
+            android:divider="#cccccc"
+            android:dividerHeight="0.1dip"
+            android:padding="5dip"></ListView>
+
+        <edu.ncu.safe.customerview.MyProgressBar
+            android:id="@+id/mpb_loading"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            my:progressStyle="loop"
+            my:hasTitle="true"
+            my:title="@string/toast_loading"
+            my:titleSize="8sp"
+            my:arcWidth="6dp"
+            my:loopSpeed="500"
+            my:usedBeginColor="#ffff0000"
+            my:usedEndColor="#66ffffff"
+            my:hasPercent="false"/>
+
+        <TextView
+            android:id="@+id/tv_empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
-            <edu.ncu.safe.customerview.MyLoadBar
-                android:id="@+id/lb_loadingbar"
-                android:layout_width="50dip"
-                android:layout_height="50dip" />
-        </LinearLayout>
+            android:text="未搜索到联网应用"
+            android:visibility="invisible"
+            android:layout_centerInParent="true"/>
     </RelativeLayout>
 </LinearLayout>

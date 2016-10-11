@@ -297,6 +297,14 @@ public class MyDialogHelper {
     }
 
 
+    public static void showNomalTipDialog(final Context context,final String title,final String tipMessage){
+        MyDialog dialog = new MyDialog(context);
+        dialog.setTitle(title);
+        dialog.setMessage(tipMessage);
+        dialog.show();
+    }
+
+
     public static class InputChecker{
         public boolean checkPWDCorrect(String inputPWD){
             return false;

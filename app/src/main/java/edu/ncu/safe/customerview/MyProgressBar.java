@@ -38,12 +38,22 @@ public class MyProgressBar extends View {
     private int height;
     private int beginX = 0;
     private int beginY = 0;
-    private Paint paint;
     private RectF rect;
     private RectF loopRect;
     private boolean shouldSetRect = true;
     private float titleHeight = 0;
 
+    private Paint progressBkPaint;
+    private Paint progressPgPaint;
+    private Paint percentPaint;
+    private Paint titlePaint;
+
+    //进度样式的shader
+    LinearGradient circleVerGradient;
+    LinearGradient rectHorGradient;
+    LinearGradient rectVerGradient;
+    SweepGradient arcGradient;
+    SweepGradient loopGradient;
 
     private boolean hasTitle = false;//时候有标题
     private String title = "title";   //标题的文本
@@ -144,8 +154,42 @@ public class MyProgressBar extends View {
             }
         }
         a.recycle();
+        init();
     }
 
+    private void init(){
+        //设置背景进度画笔
+        progressBkPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        progressBkPaint.setColor(unuseColor);
+        //设置进度画笔
+        progressPgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        if(progressStyle==PROGRESS_STYLE_LOOP){
+            progressPgPaint.setStyle(Paint.Style.STROKE);
+            progressPgPaint.setStrokeWidth(arcWidth);
+            BlurMaskFilter maskFilter = new BlurMaskFilter(arcWidth / 3, BlurMaskFilter.Blur.INNER);
+            progressPgPaint.setMaskFilter(maskFilter);
+            progressPgPaint.setStrokeCap(Paint.Cap.ROUND);
+        }
+
+        //设置百分比
+        percentPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        PorterDuffXfermode xfermode = new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER);
+        percentPaint.setXfermode(xfermode);
+        percentPaint.setTextSize(percentTextSize);
+        percentPaint.setColor(percentTextColor);
+        //设置标题
+        titlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        titlePaint.setTextSize(titleTextSize);
+        titlePaint.setColor(titleTextColor);
+    }
+
+    private void initShader(){
+        circleVerGradient = new LinearGradient(beginX + rect.width() / 2, beginY + rect.height(), beginX + rect.width() / 2, beginY, beginColor, endColor, Shader.TileMode.CLAMP);
+        arcGradient = new SweepGradient(beginX + rect.width() / 2, beginY + rect.height() / 2, beginColor, endColor);//Shader.TileMode.CLAMP
+        loopGradient = new SweepGradient(beginX + rect.width() / 2, beginY + rect.height() / 2, endColor, beginColor);//Shader.TileMode.CLAMP
+        rectHorGradient = new LinearGradient(beginX, beginY + rect.height() / 2, beginX + rect.width(), beginY + rect.height() / 2, beginColor, endColor, Shader.TileMode.CLAMP);
+        rectVerGradient = new LinearGradient(beginX + rect.width() / 2, beginY + rect.height(), beginX + rect.width() / 2, beginY, beginColor, endColor, Shader.TileMode.CLAMP);
+    }
     @Override
     protected void onSizeChanged(int w, int h, int ow, int oh) {
         super.onSizeChanged(w, h, ow, oh);
@@ -158,12 +202,12 @@ public class MyProgressBar extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-
-        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         //是否需要重新计算rect和起始坐标
         if (shouldSetRect) {
             setRect();
+            initShader();
         }
+        //画进度条
         switch (progressStyle) {
             case PROGRESS_STYLE_CIRCULAR_VERTICAL:
                 drawStyleVertical(canvas);
@@ -198,10 +242,11 @@ public class MyProgressBar extends View {
         }
     }
 
+    /**
+     * 根据有无标题设置要画的区域，设置rect
+     */
     private void setRect() {
-        paint.setTextSize(titleTextSize);
-        paint.setColor(titleTextColor);
-        Paint.FontMetrics fontMetrics = paint.getFontMetrics();
+        Paint.FontMetrics fontMetrics = titlePaint.getFontMetrics();
         titleHeight = fontMetrics.bottom - fontMetrics.top + titleMarginTop;
         if (!hasTitle) {
             titleHeight = 0;
@@ -210,7 +255,6 @@ public class MyProgressBar extends View {
             beginX = 0;
             beginY = 0;
             rect = new RectF(beginX, beginY, width, height - titleHeight);
-            paint.reset();
             shouldSetRect = false;
             return;
         }
@@ -229,94 +273,72 @@ public class MyProgressBar extends View {
             //减去因为弧线的厚度而产生的宽度
             loopRect = new RectF(rect.left + arcWidth / 2, rect.top + arcWidth / 2, rect.right - arcWidth / 2, rect.bottom - arcWidth / 2);
         }
-        paint.reset();
         shouldSetRect = false;
     }
 
     private void drawStyleRectangleHorizontal(Canvas canvas) {
-        paint.setColor(unuseColor);
-        canvas.drawRect(rect, paint);
+        //画背景
+        canvas.drawRect(rect, progressBkPaint);
         //画进度
-        LinearGradient linearGradient = new LinearGradient(beginX, beginY + rect.height() / 2, beginX + rect.width(), beginY + rect.height() / 2, beginColor, endColor, Shader.TileMode.CLAMP);
-        paint.setShader(linearGradient);
-        canvas.drawRect(beginX, beginY, beginX + rect.width() * percent / 100, beginY + rect.height(), paint);
+        progressPgPaint.setShader(rectHorGradient);
+        canvas.drawRect(beginX, beginY, beginX + rect.width() * percent / 100, beginY + rect.height(), progressPgPaint);
     }
 
     private void drawStyleRectangleVertical(Canvas canvas) {
-        paint.setColor(unuseColor);
-        canvas.drawRect(rect, paint);
+        //画背景
+        canvas.drawRect(rect, progressBkPaint);
         //画进度
-        LinearGradient linearGradient = new LinearGradient(beginX + rect.width() / 2, beginY + rect.height(), beginX + rect.width() / 2, beginY, beginColor, endColor, Shader.TileMode.CLAMP);
-        paint.setShader(linearGradient);
-        canvas.drawRect(beginX, beginY + rect.height() - rect.height() * percent / 100, beginX + rect.width(), beginY + rect.height(), paint);
+        progressPgPaint.setShader(rectVerGradient);
+        canvas.drawRect(beginX, beginY + rect.height() - rect.height() * percent / 100, beginX + rect.width(), beginY + rect.height(), progressPgPaint);
     }
 
     private void drawStyleVertical(Canvas canvas) {
         //画背景圆
-        paint.setColor(unuseColor);
-        canvas.drawCircle(beginX + rect.width() / 2, beginY + rect.height() / 2, rect.width() / 2, paint);
+        canvas.drawCircle(beginX + rect.width() / 2, beginY + rect.height() / 2, rect.width() / 2, progressBkPaint);
         //画进度
-        LinearGradient linearGradient = new LinearGradient(beginX + rect.width() / 2, beginY + rect.height(), beginX + rect.width() / 2, beginY, beginColor, endColor, Shader.TileMode.CLAMP);
-        paint.setShader(linearGradient);
+        progressPgPaint.setShader(circleVerGradient);
         float degree = MyMathUtil.toAngle(0, 360, percent, 10);
-        canvas.drawArc(rect, 90 - degree / 2, degree, false, paint);
+        canvas.drawArc(rect, 90 - degree / 2, degree, false, progressPgPaint);
     }
 
     private void drawStyleArc(Canvas canvas) {
         //画背景圆
-        paint.setColor(unuseColor);
-        canvas.drawCircle(beginX + rect.width() / 2, beginY + rect.height() / 2, rect.width() / 2, paint);
+        canvas.drawCircle(beginX + rect.width() / 2, beginY + rect.height() / 2, rect.width() / 2, progressBkPaint);
         //画进度
-        SweepGradient sweepGradient = new SweepGradient(beginX + rect.width() / 2, beginY + rect.height() / 2, beginColor, endColor);//Shader.TileMode.CLAMP
         Matrix matrix = new Matrix();
         matrix.setRotate(-90, beginX + rect.width() / 2, beginY + rect.height() / 2);
-        sweepGradient.setLocalMatrix(matrix);
-        paint.setShader(sweepGradient);
-        canvas.drawArc(rect, -90, (float) (percent * 3.6), true, paint);
+        arcGradient.setLocalMatrix(matrix);
+        progressPgPaint.setShader(arcGradient);
+        canvas.drawArc(rect, -90, (float) (percent * 3.6), true, progressPgPaint);
     }
 
     private void drawStyleLoop(Canvas canvas) {
-
-        paint.reset();
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(arcWidth);
-        SweepGradient sweepGradient = new SweepGradient(beginX + rect.width() / 2, beginY + rect.height() / 2, endColor, beginColor);//Shader.TileMode.CLAMP
         Matrix matrix = new Matrix();
         float dAngle = times * 360.0f / totalTimes;
         matrix.setRotate(dAngle, beginX + rect.width() / 2, beginY + rect.height() / 2);
-        sweepGradient.setLocalMatrix(matrix);
-        paint.setShader(sweepGradient);
-        BlurMaskFilter maskFilter = new BlurMaskFilter(arcWidth / 3, BlurMaskFilter.Blur.INNER);
-        paint.setMaskFilter(maskFilter);
-        paint.setStrokeCap(Paint.Cap.ROUND);
-        canvas.drawArc(loopRect, 180 + dAngle - arcLength / 2, arcLength, false, paint);
+        loopGradient.setLocalMatrix(matrix);
+        progressPgPaint.setShader(loopGradient);
+        canvas.drawArc(loopRect, 180 + dAngle - arcLength / 2, arcLength, false, progressPgPaint);
         times = (times + 1) % totalTimes;
     }
 
     private void drawPercent(Canvas canvas) {
         //写上百分比
-        paint.reset();
-        PorterDuffXfermode xfermode = new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER);
-        paint.setXfermode(xfermode);
-        paint.setTextSize(percentTextSize);
-        paint.setColor(percentTextColor);
-        Paint.FontMetrics fontMetrics = paint.getFontMetrics();
+        Paint.FontMetrics fontMetrics = percentPaint.getFontMetrics();
         String p = (percent - (int) percent - 0.5f) > 0 ? (int) (percent + 1) + "%" : (int) percent + "%";
-        float w = paint.measureText(p);
+        float w = percentPaint.measureText(p);
         float x = beginX + rect.width() / 2 - w / 2;
         float y = beginY + rect.height() / 2 + (fontMetrics.leading - (fontMetrics.top + fontMetrics.bottom) / 2);
-        canvas.drawText(p, x, y, paint);
+        canvas.drawText(p, x, y, percentPaint);
     }
 
     private void drawTitle(Canvas canvas) {
         //写上标题
-        paint.setTextSize(titleTextSize);
-        paint.setColor(titleTextColor);
-        float titleWidth = paint.measureText(title);
-        Paint.FontMetrics fontMetrics = paint.getFontMetrics();
+        float titleWidth = titlePaint.measureText(title);
+        Paint.FontMetrics fontMetrics = titlePaint.getFontMetrics();
         float x = beginX + rect.width() / 2 - titleWidth / 2;
         float y = beginY + rect.height() - fontMetrics.top + titleMarginTop;
-        canvas.drawText(title, x, y, paint);
+        canvas.drawText(title, x, y, titlePaint);
     }
 
 
@@ -334,6 +356,7 @@ public class MyProgressBar extends View {
 
     public void setTitleTextSize(float titleTextSize) {
         this.titleTextSize = titleTextSize;
+        titlePaint.setTextSize(titleTextSize);
         shouldSetRect = true;
         invalidate();
     }
@@ -357,6 +380,7 @@ public class MyProgressBar extends View {
 
     public void setTitleTextColor(int titleTextColor) {
         this.titleTextColor = titleTextColor;
+        titlePaint.setColor(titleTextColor);
         invalidate();
 
     }
@@ -367,6 +391,7 @@ public class MyProgressBar extends View {
 
     public void setPercentTextSize(float percentTextSize) {
         this.percentTextSize = percentTextSize;
+        percentPaint.setTextSize(percentTextSize);
         invalidate();
     }
 
@@ -376,6 +401,7 @@ public class MyProgressBar extends View {
 
     public void setPercentTextColor(int percentTextColor) {
         this.percentTextColor = percentTextColor;
+        percentPaint.setColor(percentTextColor);
         invalidate();
     }
 
@@ -385,6 +411,7 @@ public class MyProgressBar extends View {
 
     public void setTitle(String title) {
         this.title = title;
+        shouldSetRect = true;
         invalidate();
     }
 
@@ -394,6 +421,7 @@ public class MyProgressBar extends View {
 
     public void setUnuseColor(int unuseColor) {
         this.unuseColor = unuseColor;
+        progressBkPaint.setColor(unuseColor);
         invalidate();
     }
 
@@ -403,6 +431,7 @@ public class MyProgressBar extends View {
 
     public void setBeginColor(int beginColor) {
         this.beginColor = beginColor;
+        initShader();
         invalidate();
     }
 
@@ -412,6 +441,7 @@ public class MyProgressBar extends View {
 
     public void setEndColor(int endColor) {
         this.endColor = endColor;
+        initShader();
         invalidate();
     }
 
@@ -420,6 +450,9 @@ public class MyProgressBar extends View {
     }
 
     public void setHasTitle(boolean hasTitle) {
+        if(this.hasPercent==hasTitle){
+            return;
+        }
         this.hasTitle = hasTitle;
         shouldSetRect = true;
         invalidate();
@@ -430,6 +463,9 @@ public class MyProgressBar extends View {
     }
 
     public void setHasPercent(boolean hasPercent) {
+        if(this.hasPercent==hasPercent){
+            return;
+        }
         this.hasPercent = hasPercent;
         invalidate();
     }
@@ -440,6 +476,8 @@ public class MyProgressBar extends View {
 
     public void setProgressStyle(int progressStyle) {
         this.progressStyle = progressStyle;
+        init();
+        shouldSetRect = true;
         invalidate();
     }
 
@@ -449,6 +487,15 @@ public class MyProgressBar extends View {
 
     public void setArcWidth(float arcWidth) {
         this.arcWidth = arcWidth;
+        if(progressStyle==PROGRESS_STYLE_LOOP){
+            progressPgPaint.setStyle(Paint.Style.STROKE);
+            progressPgPaint.setStrokeWidth(arcWidth);
+            BlurMaskFilter maskFilter = new BlurMaskFilter(arcWidth / 3, BlurMaskFilter.Blur.INNER);
+            progressPgPaint.setMaskFilter(maskFilter);
+            progressPgPaint.setStrokeCap(Paint.Cap.ROUND);
+        }else{
+            return;
+        }
         invalidate();
     }
 

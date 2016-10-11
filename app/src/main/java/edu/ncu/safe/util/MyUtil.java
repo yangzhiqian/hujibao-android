@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
 import java.io.File;
@@ -78,6 +79,29 @@ public class MyUtil {
         intent.setAction(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.fromFile(file),
                 "application/vnd.android.package-archive");
+        context.startActivity(intent);
+    }
+
+    /**
+     * 卸载程序
+     * @param context     启动卸载程序的上下文
+     * @param packName    要卸载程序的包名
+     */
+    public static void unInstall(Context context,String packName){
+        Uri uri = Uri.parse("package:" + packName);
+        Intent intent = new Intent(Intent.ACTION_DELETE, uri);
+        context.startActivity(intent);
+    }
+
+    /**
+     * 跳转到系统设置的应用管理界面
+     * @param context     启动设置程序的上下文
+     * @param packName    要显示程序的包名
+     */
+    public static void openAppSettingActivity(Context context,String packName){
+        String uristr = "package:" + packName;
+        Uri packageURI = Uri.parse(uristr);
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,packageURI);
         context.startActivity(intent);
     }
 }

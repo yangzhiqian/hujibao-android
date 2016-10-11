@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:my="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#eeeeee"
@@ -22,107 +23,58 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="0"
-            android:textColor="#6cbd45"
+            android:textColor="@color/theme"
             android:textSize="25sp"/>
-        <LinearLayout
-            android:id="@+id/ll_uninstall"
+        <edu.ncu.safe.customerview.ImageTextView
+            android:id="@+id/itv_uninstall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/button_click_selector"
-            android:gravity="center_vertical"
-            android:layout_marginRight="10dip"
-            android:padding="5dip"
-            android:orientation="horizontal" >
+            android:padding="5dp"
+            android:clickable="true"
+            my:has_img="true"
+            my:text_size="16sp"
+            my:img_width="20dp"
+            my:img_height="20dp"
+            my:text="@string/app_manager_uninstall"
+            my:img="@drawable/delete_white"
+            my:textColor="@color/textcolor_theme"></edu.ncu.safe.customerview.ImageTextView>
 
-            <ImageView
-                android:layout_width="20dip"
-                android:layout_height="20dip"
-                android:src="@drawable/delete_white"
-                android:scaleType="fitXY"/>
-
-            <TextView
-                android:id="@+id/tv_YES"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/app_manager_uninstall"
-                android:textColor="@color/textcolor_theme"
-                android:textSize="@dimen/text_size_short" />
-        </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="5dip">
-        <LinearLayout
+        android:padding="5dip">
+        <edu.ncu.safe.customerview.ImageTextView
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="25dip"
-                android:layout_height="25dip"
-                android:src="@drawable/perm_privacy"
-                android:scaleType="fitXY"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/app_manager_privacy"
-                android:textColor="#000000"/>
-        </LinearLayout>
-        <LinearLayout
+            android:gravity="center"
+            my:text="@string/app_manager_privacy"
+            my:img="@drawable/perm_privacy"></edu.ncu.safe.customerview.ImageTextView>
+        <edu.ncu.safe.customerview.ImageTextView
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="25dip"
-                android:layout_height="25dip"
-                android:src="@drawable/perm_cost"
-                android:scaleType="fitXY"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/app_manager_fee"
-                android:textColor="#000000"/>
-        </LinearLayout>
-        <LinearLayout
+            android:gravity="center"
+            my:text="@string/app_manager_fee"
+            my:img="@drawable/perm_cost"></edu.ncu.safe.customerview.ImageTextView>
+        <edu.ncu.safe.customerview.ImageTextView
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="25dip"
-                android:layout_height="25dip"
-                android:src="@drawable/perm_location"
-                android:scaleType="fitXY"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/app_manager_location"
-                android:textColor="#000000"/>
-        </LinearLayout>
-        <LinearLayout
+            android:gravity="center"
+            my:text="@string/app_manager_location"
+            my:img="@drawable/perm_location"></edu.ncu.safe.customerview.ImageTextView>
+        <edu.ncu.safe.customerview.ImageTextView
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="25dip"
-                android:layout_height="25dip"
-                android:src="@drawable/perm_wifi"
-                android:scaleType="fitXY"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/app_manager_net"
-                android:textColor="#000000"/>
-        </LinearLayout>
-
+            android:gravity="center"
+            my:text="@string/app_manager_net"
+            my:img="@drawable/perm_wifi"></edu.ncu.safe.customerview.ImageTextView>
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -131,22 +83,25 @@
             android:id="@+id/lv_appmanager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:padding="5dp"
             android:background="#ffffff"
-            android:layout_marginTop="10dip"
-            android:divider="@drawable/divider"
-            android:dividerHeight="1dip"
-            android:padding="5dip">
+            android:divider="#cccccc"
+            android:dividerHeight="0.1dip">
         </ListView>
-        <LinearLayout
-            android:id="@+id/ll_empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
-            <edu.ncu.safe.customerview.MyLoadBar
-                android:id="@+id/lb_loadingbar"
-                android:layout_width="50dip"
-                android:layout_height="50dip" />
-        </LinearLayout>
+        <edu.ncu.safe.customerview.MyProgressBar
+            android:id="@+id/mpb_loading"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            my:progressStyle="loop"
+            my:hasTitle="true"
+            my:title="@string/toast_loading"
+            my:titleSize="8sp"
+            my:arcWidth="6dp"
+            my:loopSpeed="500"
+            my:usedBeginColor="#ffff0000"
+            my:usedEndColor="#66ffffff"
+            my:hasPercent="false"/>
     </RelativeLayout>
-
 </LinearLayout>

@@ -11,56 +11,102 @@
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1"></android.support.v4.view.ViewPager>
+    <View style="@style/divideline_horizontal" />
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:background="#f9f9f9">
-        <LinearLayout
-            android:id="@+id/ll_appmanager"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="2dip"
-            android:background="#ffffff"
-            android:orientation="vertical">
-            <ImageView
-                android:id="@+id/iv_appmanager"
-                android:layout_width="30dip"
-                android:layout_height="30dip"
-                android:src="@drawable/appmanager"
-                android:scaleType="fitXY"/>
-            <TextView
-                android:id="@+id/tv_appmanager"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/app_manager_app_manager"
-                android:textColor="#09bb07"/>
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_netmanager"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="2dip"
-            android:background="#eeeeee"
-            android:orientation="vertical">
-            <ImageView
-                android:id="@+id/iv_netmanager"
-                android:layout_width="30dip"
-                android:layout_height="30dip"
-                android:src="@drawable/netmanagementgray"
-                android:scaleType="fitXY"/>
-            <TextView
-                android:id="@+id/tv_netmanager"
-                android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <!--底层灰色-->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/app_manager_net_manager"
-                android:textColor="#adadad"/>
-        </LinearLayout>
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="30dip"
+                    android:layout_height="30dip"
+                    android:src="@drawable/appmanagergray"
+                    android:scaleType="fitXY"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_manager_app_manager"
+                    android:textColor="#adadad"/>
+            </LinearLayout>
+            <!--上层绿色-->
+            <LinearLayout
+                android:id="@+id/ll_appmanager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="30dip"
+                    android:layout_height="30dip"
+                    android:src="@drawable/appmanager"
+                    android:scaleType="fitXY"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_manager_app_manager"
+                    android:textColor="#09bb07"/>
+            </LinearLayout>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <!--底层灰色-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="30dip"
+                    android:layout_height="30dip"
+                    android:src="@drawable/netmanagementgray"
+                    android:scaleType="fitXY"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_manager_net_manager"
+                    android:textColor="#adadad"/>
+            </LinearLayout>
+            <!--上层绿色-->
+            <LinearLayout
+                android:id="@+id/ll_netmanager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="30dip"
+                    android:layout_height="30dip"
+                    android:src="@drawable/netmanagement"
+                    android:scaleType="fitXY"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_manager_net_manager"
+                    android:textColor="#09bb07"/>
+            </LinearLayout>
+        </FrameLayout>
+
+
+
+
+
+
     </LinearLayout>
 </LinearLayout>
