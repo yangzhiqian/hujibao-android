@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -36,7 +37,7 @@ import edu.ncu.safe.util.MyUtil;
 /**
  * Created by Mr_Yang on 2016/5/19.
  */
-public class AppManagerFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class AppManagerFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener, AppInfoLoadingTaskListener {
     private TextView tv_appNumbers;
     private ImageTextView itv_uninstall;
     private ListView lv_appManager;
@@ -60,8 +61,8 @@ public class AppManagerFragment extends Fragment implements View.OnClickListener
 
         adapter = new AppManagerLVAdapter(getContext());
         lv_appManager.setAdapter(adapter);
-        addAppDeleteReceiver();
-        loadData();
+        addAppDeleteReceiver();//注册监听应用被卸载的消息
+        loadData();//用异步任务加载应用信息
         return view;
     }
 
@@ -79,15 +80,16 @@ public class AppManagerFragment extends Fragment implements View.OnClickListener
             task=null;
         }
         getActivity().unregisterReceiver(receiver);
+
     }
 
     //加载数据
-    private synchronized void loadData(){
-        if(task!=null){
+    private  void loadData() {
+        if (task != null) {
             //当前正在加载中
             return;
-        }else{
-            task = new LoadTask(getContext());
+        } else {
+            task = new LoadTask(getActivity().getApplicationContext(),this);
             task.execute();
         }
     }
@@ -113,22 +115,27 @@ public class AppManagerFragment extends Fragment implements View.OnClickListener
      * 从要卸载的集合中卸载，如果为空，则停止卸载
      */
     private void beginUninstall() {
-        if(pkns.size() == 0){
+        if (pkns.size() == 0) {
             return;
         }
         Map.Entry<String, String> entry = pkns.get(0);
         readyToUninstall(entry.getKey(), entry.getValue());
     }
 
+    /**
+     * 显示对话框提示是否确定卸载
+     * @param appName
+     * @param packName
+     */
     private void readyToUninstall(String appName, final String packName) {
         final MyDialog dialog = new MyDialog(getContext());
         dialog.setTitle(getResources().getString(R.string.dialog_title_normal_tip));
         dialog.setCancelable(false);
-        dialog.setMessage(String.format(getResources().getString(R.string.dialog_message_sure_to_uninstall),appName));
+        dialog.setMessage(String.format(getResources().getString(R.string.dialog_message_sure_to_uninstall), appName));
         dialog.setPositiveListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyUtil.unInstall(getContext(),packName);
+                MyUtil.unInstall(getContext(), packName);
                 dialog.dismiss();
             }
         });
@@ -149,51 +156,26 @@ public class AppManagerFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        MyUtil.openAppSettingActivity(getContext(),adapter.getInfos().get(position).getPackName());
+        MyUtil.openAppSettingActivity(getContext(), adapter.getInfos().get(position).getPackName());
     }
 
-    class LoadTask extends AsyncTask<Void,Void,List<UserAppBaseInfo>>{
-        private LoadAppInfos loadAppInfos;
-        public LoadTask(Context context){
-            this.loadAppInfos = new LoadAppInfos(context);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mpbLoading.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected List<UserAppBaseInfo> doInBackground(Void... params) {
-            List<UserAppBaseInfo> res = loadAppInfos.getUserAppBaseInfo();
-            Collections.sort(res, new Comparator<UserAppBaseInfo>() {
-                @Override
-                public int compare(UserAppBaseInfo info1, UserAppBaseInfo info2) {
-                    if (info1.getRunMemory() > info2.getRunMemory()) {
-                        return -1;
-                    }
-                    if (info1.getRunMemory() == info2.getRunMemory()) {
-                        return 0;
-                    }
-                    return 1;
-                }
-            });
-            return res;
-        }
-
-        @Override
-        protected void onPostExecute(List<UserAppBaseInfo> userAppBaseInfos) {
-            super.onPostExecute(userAppBaseInfos);
-            mpbLoading.setVisibility(View.GONE);
-            listener.dataChange(userAppBaseInfos,null);//通知activity已经加载了应用信息
-            tv_appNumbers.setText(userAppBaseInfos.size()+"");
-            adapter.setInfos(userAppBaseInfos);
-            adapter.notifyDataSetChanged();
-            task=null;
-        }
+    @Override
+    public void onStartLoading() {
+        mpbLoading.setVisibility(View.VISIBLE);
     }
-    class UninstallReceiver extends BroadcastReceiver{
+
+    @Override
+    public void onResultLoaded(List<UserAppBaseInfo> userAppBaseInfos) {
+        mpbLoading.setVisibility(View.GONE);
+        listener.dataChange(userAppBaseInfos, null);//通知activity已经加载了应用信息
+        tv_appNumbers.setText(userAppBaseInfos.size() + "");
+        adapter.setInfos(userAppBaseInfos);
+        adapter.notifyDataSetChanged();
+        task = null;
+    }
+
+
+    class UninstallReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             PackageManager pm = context.getPackageManager();
@@ -206,21 +188,70 @@ public class AppManagerFragment extends Fragment implements View.OnClickListener
             } else if (TextUtils.equals(intent.getAction(), Intent.ACTION_PACKAGE_REMOVED)) {
                 //卸载成功
                 String packageName = intent.getData().getSchemeSpecificPart();
-                List<UserAppBaseInfo> infos = adapter.getInfos();
-                infos.remove(packageName);//移除该数据
-                adapter.setInfos(infos);
-                adapter.notifyDataSetChanged();//更新界面
-                listener.dataChange(null,packageName);//通知activity有程序被卸载
+                adapter.removeAndFlash(packageName);
+                listener.dataChange(null, packageName);//通知activity有程序被卸载
                 pkns.remove(0);//从卸载表中移除该项
-                makeToast(String.format(getResources().getString(R.string.toast_succeed_to_uninstall),packageName));
+                makeToast(String.format(getResources().getString(R.string.toast_succeed_to_uninstall), packageName));
                 beginUninstall();//继续尝试卸载
             }
         }
     }
-    public interface OnDataChangeListener{
-        public void dataChange(List<UserAppBaseInfo> infos,String packName);
+    public interface OnDataChangeListener {
+        public void dataChange(List<UserAppBaseInfo> infos, String packName);
     }
-    private void makeToast(String message){
-        Toast.makeText(getActivity(),message, Toast.LENGTH_SHORT).show();
+    private void makeToast(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 }
+
+
+class LoadTask extends AsyncTask<Void, Void, List<UserAppBaseInfo>> {
+    private LoadAppInfos loadAppInfos;
+    private WeakReference<AppInfoLoadingTaskListener> callBack;
+
+    public LoadTask(Context context, AppInfoLoadingTaskListener callBack) {
+        this.loadAppInfos = new LoadAppInfos(context);
+        this.callBack = new WeakReference<AppInfoLoadingTaskListener>(callBack);
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        if (callBack.get() != null) {
+            callBack.get().onStartLoading();
+        }
+    }
+
+    @Override
+    protected List<UserAppBaseInfo> doInBackground(Void... params) {
+        List<UserAppBaseInfo> res = loadAppInfos.getUserAppBaseInfo();
+        Collections.sort(res, new Comparator<UserAppBaseInfo>() {
+            @Override
+            public int compare(UserAppBaseInfo info1, UserAppBaseInfo info2) {
+                if (info1.getRunMemory() > info2.getRunMemory()) {
+                    return -1;
+                }
+                if (info1.getRunMemory() == info2.getRunMemory()) {
+                    return 0;
+                }
+                return 1;
+            }
+        });
+        return res;
+    }
+
+    @Override
+    protected void onPostExecute(List<UserAppBaseInfo> userAppBaseInfos) {
+        super.onPostExecute(userAppBaseInfos);
+        if (callBack.get() != null) {
+            callBack.get().onResultLoaded(userAppBaseInfos);
+        }
+    }
+}
+
+interface AppInfoLoadingTaskListener {
+    void onStartLoading();
+    void onResultLoaded(List<UserAppBaseInfo> userAppBaseInfos);
+}
+
+
