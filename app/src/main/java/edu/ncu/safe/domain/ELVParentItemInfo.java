@@ -24,8 +24,8 @@ public class ELVParentItemInfo {
     public void setSize(){
         size = 0;
         for(ChildItemData item:childs){
-            if(item.isItemChecked())
-                size+=item.getItemSize();
+            if(item.isChecked())
+                size+=item.getCacheSize();
         }
     }
     public long getSize() {

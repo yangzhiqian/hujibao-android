@@ -9,6 +9,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Debug;
 
 import java.util.ArrayList;
@@ -17,8 +18,9 @@ import java.util.List;
 import edu.ncu.safe.domain.UserAppBaseInfo;
 import edu.ncu.safe.domain.UserAppInfo;
 import edu.ncu.safe.domain.UserAppSimpleInfo;
+import edu.ncu.safe.external.runningappinfo.ProcessManager;
 
-public class LoadAppInfos {
+public class AppInfosLoader {
     public static final String[][] PERMISSIONS = {
             {"android.permission.READ_PHONE_STATE","com.android.browser.permission.READ_HISTORY_BOOKMARKS","com.android.email.permission.READ_ATTACHMENT","android.permission.READ_SMS","android.permission.RECEIVE_SMS"},//隐私
             {"android.permission.CALL_PHONE","android.permission.SEND_SMS"},//费用
@@ -28,7 +30,7 @@ public class LoadAppInfos {
 
     private Context context;
 
-    public LoadAppInfos(Context context) {
+    public AppInfosLoader(Context context) {
         this.context = context;
     }
 
@@ -78,7 +80,7 @@ public class LoadAppInfos {
         List<UserAppBaseInfo> appBaseInfos = new ArrayList<UserAppBaseInfo>();
         List<UserAppInfo> infos = getUserAppInfos();
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = manager.getRunningAppProcesses();
+        List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = Build.VERSION.SDK_INT>=21? ProcessManager.getRunningAppProcessInfo(context): manager.getRunningAppProcesses();
         for(UserAppInfo info:infos){
             UserAppBaseInfo baseInfo = new UserAppBaseInfo();
             baseInfo.setUid(info.getUid());

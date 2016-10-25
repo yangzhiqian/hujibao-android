@@ -9,11 +9,11 @@
 //import edu.ncu.safe.db.dao.CommunicationDatabase;
 //import edu.ncu.safe.domain.UserAppInfo;
 //import edu.ncu.safe.domain.InterceptionInfo;
-//import edu.ncu.safe.engine.LoadAppInfos;
+//import edu.ncu.safe.engine.AppInfosLoader;
 //
 //public class UserAppInfoTest extends AndroidTestCase{
 //	public void test() throws NameNotFoundException{
-//		LoadAppInfos infos = new LoadAppInfos(getContext());
+//		AppInfosLoader infos = new AppInfosLoader(getContext());
 //		infos.getAllAppInfos();
 //	}
 //
@@ -27,7 +27,7 @@
 //	}
 //
 //	public void testUserInfo() throws NameNotFoundException {
-//		LoadAppInfos loadAppInfos = new LoadAppInfos(getContext());
+//		AppInfosLoader loadAppInfos = new AppInfosLoader(getContext());
 //		List<UserAppInfo> infos = loadAppInfos.getAllAppInfos();
 //		for (UserAppInfo info:infos){
 //			List<UserAppInfo.PermissionInfo> pis = info.getPermissionInfos();

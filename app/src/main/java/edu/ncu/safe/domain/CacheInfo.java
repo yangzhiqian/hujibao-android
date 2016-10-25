@@ -1,54 +1,51 @@
 package edu.ncu.safe.domain;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 
 import edu.ncu.safe.myinterface.ChildItemData;
+import edu.ncu.safe.util.BitmapUtil;
 
-public class CacheInfo extends ChildItemData {
-
-    private long mCacheSize;
-    private String mPackageName, mApplicationName;
-    private Drawable mIcon;
-
-    public CacheInfo(String packageName, String applicationName, Drawable icon, long cacheSize) {
-        mCacheSize = cacheSize;
-        mPackageName = packageName;
-        mApplicationName = applicationName;
-        mIcon = icon;
+public class CacheInfo extends ChildItemData implements Parcelable{
+    private String packageName;
+    public CacheInfo(Parcel in) {
+        super(in);
+        this.packageName = in.readString();
     }
-
-    public Drawable getApplicationIcon() {
-        return mIcon;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest,flags);
+        dest.writeString(packageName);
     }
+    public static final Creator<CacheInfo> CREATOR = new Creator<CacheInfo>() {
+        @Override
+        public CacheInfo createFromParcel(Parcel in) {
+            return new CacheInfo(in);
+        }
 
-    public String getApplicationName() {
-        return mApplicationName;
-    }
+        @Override
+        public CacheInfo[] newArray(int size) {
+            return new CacheInfo[size];
+        }
+    };
 
-    public long getCacheSize() {
-        return mCacheSize;
+
+    public CacheInfo(String packageName, Drawable icon, String applicationName, String note, long cacheSize) {
+        super(BitmapUtil.drawableToBitmap(icon),applicationName,note,cacheSize,true);
+        this.packageName = packageName;
     }
 
     public String getPackageName() {
-        return mPackageName;
+        return packageName;
     }
 
-    @Override
-    public Drawable getItemIcon() {
-        return mIcon;
-    }
-
-    @Override
-    public String getItemName() {
-        return mApplicationName;
-    }
-
-    @Override
-    public String getItemNote() {
-        return "note";
-    }
-    @Override
-    public long getItemSize() {
-        return mCacheSize;
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 }

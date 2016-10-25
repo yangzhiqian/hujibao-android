@@ -5,7 +5,7 @@ android {
         buildToolsVersion "23.0.1"
 
         defaultConfig {
-            applicationId "safe.yang.ncu.edu.androidsafe"
+            applicationId "edu.ncu.yang.androidsafe"
             minSdkVersion 16
             targetSdkVersion 23
             versionCode 1

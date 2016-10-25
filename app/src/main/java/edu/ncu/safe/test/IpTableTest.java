@@ -10,7 +10,7 @@ import edu.ncu.safe.util.MyMathUtil;
  */
 public class IpTableTest extends AndroidTestCase{
     public void test(){
-//        List<UserAppSimpleInfo> infos = new LoadAppInfos(getContext()).getUserAppSimpleInfos();
+//        List<UserAppSimpleInfo> infos = new AppInfosLoader(getContext()).getUserAppSimpleInfos();
 //        List<Integer> uids = new ArrayList<Integer>();
 //        for(UserAppSimpleInfo info:infos){
 //            uids.add(info.getUid());

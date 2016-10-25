@@ -23,8 +23,8 @@ public class LoadFlowsDataFromTrafficStats {
 	public List<FlowsStatisticsAppItemInfo> getAppFlowsData(){
 		List<FlowsStatisticsAppItemInfo> infos = new ArrayList<FlowsStatisticsAppItemInfo>();
 		TrafficStats traffic = new TrafficStats();
-		LoadAppInfos loadAppInfos = new LoadAppInfos(context);
-		List<UserAppSimpleInfo> userAppSimpleInfos = loadAppInfos.getUserAppSimpleInfos();
+		AppInfosLoader appInfosLoader = new AppInfosLoader(context);
+		List<UserAppSimpleInfo> userAppSimpleInfos = appInfosLoader.getUserAppSimpleInfos();
 		for(UserAppSimpleInfo userAppSimpleInfo : userAppSimpleInfos){
 			long totalUpdate = traffic.getUidTxBytes(userAppSimpleInfo.getUid());
 			long totalDownload = traffic.getUidRxBytes(userAppSimpleInfo.getUid());

@@ -1,59 +1,56 @@
 package edu.ncu.safe.domain;
 
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import edu.ncu.safe.myinterface.ChildItemData;
+import edu.ncu.safe.util.BitmapUtil;
 
 /**
  * Created by Mr_Yang on 2016/5/27.
  */
-public class RunningApplicationInfo extends ChildItemData {
-    public static final int PROCESS_TYPE_PRPCESS = 0;
+public class RunningApplicationInfo extends ChildItemData implements Parcelable{
+    public static final int PROCESS_TYPE_PROCESS = 0;
     public static final int PROCESS_TYPE_SERVICE = 1;
-    private String processName;//packName
-    private String appName;
-    private Drawable icon;
     private int pid;
     private int uid;
-    private int memory;
-    private int type = PROCESS_TYPE_PRPCESS;
+    private String processName;//packName
 
-    public RunningApplicationInfo() {
-    }
-
-    public RunningApplicationInfo(String processName, String appName, Drawable icon, int pid, int uid,int memory,int type) {
-        this.processName = processName;
-        this.appName = appName;
-        this.icon = icon;
+    public RunningApplicationInfo(int pid, int uid,String processName,  Drawable icon,String appName,int type,long cacheSize) {
+        super(BitmapUtil.drawableToBitmap(icon),appName,getNoteByType(type),cacheSize,true);
         this.pid = pid;
-        this.uid = uid;
-        this.memory = memory;
-        this.type = type;
-    }
-
-    public String getProcessName() {
-        return processName;
-    }
-
-    public void setProcessName(String processName) {
+        this.uid = uid ;
         this.processName = processName;
     }
 
-    public String getAppName() {
-        return appName;
+    public RunningApplicationInfo(Parcel in) {
+        super(in);
+        this.pid = in.readInt();
+        this.uid = in.readInt();
+        this.processName = in.readString();
     }
 
-    public void setAppName(String appName) {
-        this.appName = appName;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest,flags);
+        dest.writeInt(pid);
+        dest.writeInt(uid);
+        dest.writeString(processName);
     }
+    public static final Creator<RunningApplicationInfo> CREATOR = new Creator<RunningApplicationInfo>() {
+        @Override
+        public RunningApplicationInfo createFromParcel(Parcel in) {
+            return new RunningApplicationInfo(in);
+        }
 
-    public Drawable getIcon() {
-        return icon;
-    }
+        @Override
+        public RunningApplicationInfo[] newArray(int size) {
+            return new RunningApplicationInfo[size];
+        }
+    };
 
-    public void setIcon(Drawable icon) {
-        this.icon = icon;
-    }
+
 
     public int getPid() {
         return pid;
@@ -71,46 +68,22 @@ public class RunningApplicationInfo extends ChildItemData {
         this.uid = uid;
     }
 
-    public int getMemory() {
-        return memory;
+    public String getProcessName() {
+        return processName;
     }
 
-    public void setMemory(int memory) {
-        this.memory = memory;
+    public void setProcessName(String processName) {
+        this.processName = processName;
     }
 
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    @Override
-    public Drawable getItemIcon() {
-        return icon;
-    }
-
-    @Override
-    public String getItemName() {
-        return appName;
-    }
-
-    @Override
-    public String getItemNote() {
+    private static String getNoteByType(int type){
         switch (type){
-            case PROCESS_TYPE_PRPCESS:
+            case PROCESS_TYPE_PROCESS:
                 return "后台进程";
             case PROCESS_TYPE_SERVICE:
                 return "后台服务";
         }
-        return "位置进程";
-    }
-
-    @Override
-    public long getItemSize() {
-        return memory;
+        return "未知进程";
     }
 
 }

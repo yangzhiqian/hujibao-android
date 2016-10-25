@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- AppRubbishManageService中扫描垃圾的字符-->
+    <string name="Action_Service_AppExternalRubbishScannStart">edu.ncu.yang.safe.service.appexternalrubbishscannstart</string>
+    <string name="Action_Service_AppExternalRubbishScannCancel">edu.ncu.yang.safe.service.appexternalrubbishscanncancel</string>
+    <string name="Action_Broadcast_AppExternalRubbishScannBegin">edu.ncu.yang.safe.broadcast.appexternalrubbishscannbegin</string>
+    <string name="Action_Broadcast_AppExternalRubbishScannInDoing">edu.ncu.yang.safe.broadcast.appexternalrubbishscannindoing</string>
+    <string name="Action_Broadcast_AppExternalRubbishScannProgressUpdated">edu.ncu.yang.safe.broadcast.appexternalrubbishscannprogressupdated</string>
+    <string name="Action_Broadcast_AppExternalRubbishScannProgressEnd">edu.ncu.yang.safe.broadcast.appexternalrubbishprogressscannend</string>
+    <string name="Action_Broadcast_AppExternalRubbishScannEnd">edu.ncu.yang.safe.broadcast.appexternalrubbishscannend</string>
+    <!-- AppRubbishManageService中清理垃圾的字符-->
+    <string name="Action_Service_AppExternalRubbishCleanStart">edu.ncu.yang.safe.service.appexternalrubbishcleanstart</string>
+    <string name="Action_Broadcast_AppExternalRubbishCleanBegin">edu.ncu.yang.safe.broadcast.appexternalrubbishcleanbegin</string>
+    <string name="Action_Broadcast_AppExternalRubbishCleanInDoing">edu.ncu.yang.safe.broadcast.appexternalrubbishcleanindong</string>
+    <string name="Action_Broadcast_AppExternalRubbishCleanAwait">edu.ncu.yang.safe.broadcast.appexternalrubbishcleanawait</string>
+    <string name="Action_Broadcast_AppExternalRubbishCleanEnd">edu.ncu.yang.safe.broadcast.appexternalrubbishcleanend</string>
+    <!-- InnerMemoryAppRubbishManageService中扫描垃圾的字符-->
+    <string name="Action_Service_InnerMemoryRubbishScannStart">edu.ncu.yang.safe.service.innermemoryrubbishscannstart</string>
+    <string name="Action_Service_InnerMemoryRubbishScannCancel">edu.ncu.yang.safe.service.innermemoryrubbishscanncancel</string>
+    <string name="Action_Broadcast_InnerMemoryRubbishScannBegin">edu.ncu.yang.safe.broadcast.innermemoryrubbishscannbegin</string>
+    <string name="Action_Broadcast_InnerMemoryRubbishScannInDoing">edu.ncu.yang.safe.broadcast.innermemoryrubbishscannindoing</string>
+    <string name="Action_Broadcast_InnerMemoryRubbishScannProgressUpdated">edu.ncu.yang.safe.broadcast.innermemoryrubbishscannprogressupdated</string>
+    <string name="Action_Broadcast_InnerMemoryRubbishScannProgressEnd">edu.ncu.yang.safe.broadcast.innermemoryrubbishprogressscannend</string>
+    <string name="Action_Broadcast_InnerMemoryRubbishScannEnd">edu.ncu.yang.safe.broadcast.innermemoryrubbishscannend</string>
+    <!-- AppRubbishManageService中清理垃圾的字符-->
+    <string name="Action_Service_InnerMemoryRubbishCleanStart">edu.ncu.yang.safe.service.innermemoryrubbishcleanstart</string>
+    <string name="Action_Broadcast_InnerMemoryRubbishCleanBegin">edu.ncu.yang.safe.broadcast.innermemoryrubbishcleanbegin</string>
+    <string name="Action_Broadcast_InnerMemoryRubbishCleanInDoing">edu.ncu.yang.safe.broadcast.innermemoryrubbishcleanindong</string>
+    <string name="Action_Broadcast_InnerMemoryRubbishCleanProgressUpdated">edu.ncu.yang.safe.broadcast.innermemoryrubbishcleanprogressupdated</string>
+    <string name="Action_Broadcast_InnerMemoryRubbishCleanProgressEnd">edu.ncu.yang.safe.broadcast.innermemoryrubbishcleanprogressend</string>
+    <string name="Action_Broadcast_InnerMemoryRubbishCleanEnd">edu.ncu.yang.safe.broadcast.innermemoryrubbishcleanend</string>
+
+</resources>

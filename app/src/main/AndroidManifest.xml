@@ -34,8 +34,7 @@
 
         <activity
             android:name=".ui.WelcomeActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTask">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -69,25 +68,33 @@
             </intent-filter>
         </service>
         <service
-            android:name=".service.FlowsRecordService"
-            android:enabled="true"
-            android:process="system">
+            android:name=".service.FlowsRecordService">
             <intent-filter>
                 <action android:name="edu.ncu.yang.myservice.flows.recorder" />
             </intent-filter>
         </service>
         <service
-            android:name=".service.FLoatDesktopWindow"
-            android:enabled="true"
-            android:process="system">
+            android:name=".service.FLoatDesktopWindow">
             <intent-filter android:priority="1000">
                 <action android:name="edu.ncu.yang.myservice.float.window.show" />
                 <action android:name="edu.ncu.yang.myservice.float.window.update" />
                 <action android:name="edu.ncu.yang.myservice.float.window.dismiss" />
             </intent-filter>
         </service>
-        <service android:name=".service.AppRubbishCleanService" />
-        <service android:name=".service.InnerMemoryCleanService" />
+        <service android:name=".service.AppRubbishManageService">
+            <intent-filter android:priority="1000">
+                <action android:name="@string/Action_Service_AppExternalRubbishScannStart" />
+                <action android:name="@string/Action_Service_AppExternalRubbishScannCancel" />
+                <action android:name="@string/Action_Service_AppExternalRubbishCleanStart" />
+            </intent-filter>
+        </service>
+        <service android:name=".service.InnerMemoryManageService">
+            <intent-filter android:priority="1000">
+                <action android:name="@string/Action_Service_InnerMemoryRubbishScannStart" />
+                <action android:name="@string/Action_Service_InnerMemoryRubbishScannCancel" />
+                <action android:name="@string/Action_Service_InnerMemoryRubbishCleanStart" />
+            </intent-filter>
+        </service>
 
         <receiver android:name=".receiver.RelifeReceiver">
             <intent-filter>

@@ -30,7 +30,7 @@ import edu.ncu.safe.customerview.ImageTextView;
 import edu.ncu.safe.customerview.MyDialog;
 import edu.ncu.safe.customerview.MyProgressBar;
 import edu.ncu.safe.domain.UserAppBaseInfo;
-import edu.ncu.safe.engine.LoadAppInfos;
+import edu.ncu.safe.engine.AppInfosLoader;
 import edu.ncu.safe.util.MyDialogHelper;
 import edu.ncu.safe.util.MyUtil;
 
@@ -206,11 +206,11 @@ public class AppManagerFragment extends Fragment implements View.OnClickListener
 
 
 class LoadTask extends AsyncTask<Void, Void, List<UserAppBaseInfo>> {
-    private LoadAppInfos loadAppInfos;
+    private AppInfosLoader appInfosLoader;
     private WeakReference<AppInfoLoadingTaskListener> callBack;
 
     public LoadTask(Context context, AppInfoLoadingTaskListener callBack) {
-        this.loadAppInfos = new LoadAppInfos(context);
+        this.appInfosLoader = new AppInfosLoader(context);
         this.callBack = new WeakReference<AppInfoLoadingTaskListener>(callBack);
     }
 
@@ -224,7 +224,7 @@ class LoadTask extends AsyncTask<Void, Void, List<UserAppBaseInfo>> {
 
     @Override
     protected List<UserAppBaseInfo> doInBackground(Void... params) {
-        List<UserAppBaseInfo> res = loadAppInfos.getUserAppBaseInfo();
+        List<UserAppBaseInfo> res = appInfosLoader.getUserAppBaseInfo();
         Collections.sort(res, new Comparator<UserAppBaseInfo>() {
             @Override
             public int compare(UserAppBaseInfo info1, UserAppBaseInfo info2) {

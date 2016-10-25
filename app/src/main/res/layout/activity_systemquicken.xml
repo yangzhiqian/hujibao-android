@@ -3,48 +3,41 @@
     xmlns:my="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical">
 
-    <include layout="@layout/content_toolbar"/>
+    <include layout="@layout/content_toolbar" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="0dip"
         android:layout_weight="1"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="0dip"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+        <edu.ncu.safe.customerview.MyProgressBar
+            android:id="@+id/mpb_innermemory"
+            android:layout_width="200dip"
+            android:layout_height="match_parent"
+            my:hasTitle="true"
+            my:percentSize="40dip"
+            my:progressStyle="arc"
+            my:title="总内存:?G"
+            my:titleSize="16sp"
+            my:usedBeginColor="#00ff00"
+            my:usedEndColor="#ff0000" />
 
-            <edu.ncu.safe.customerview.MyProgressBar
-                android:id="@+id/mpb_innermemory"
-                android:layout_width="200dip"
-                android:layout_height="match_parent"
-                my:hasTitle="true"
-                my:percentSize="40dip"
-                my:progressStyle="arc"
-                my:title="总内存:?G"
-                my:usedBeginColor="#00ff00"
-                my:usedEndColor="#ff0000" />
-
-
-            <edu.ncu.safe.customerview.MyProgressBar
-                android:id="@+id/mpb_outermemory"
-                android:layout_width="120dip"
-                android:layout_height="100dip"
-                android:layout_marginTop="50dip"
-                my:percentSize="25dip"
-                my:progressStyle="circular_vertical"
-                my:hasTitle="true"
-                my:title="内部存储:?G"
-                my:titleSize="14sp"
-                my:usedBeginColor="#00ff00"
-                my:usedEndColor="#ff0000" />
-        </LinearLayout>
+        <edu.ncu.safe.customerview.MyProgressBar
+            android:id="@+id/mpb_outermemory"
+            android:layout_width="120dip"
+            android:layout_height="120dip"
+            my:hasTitle="true"
+            my:percentSize="25dip"
+            my:progressStyle="circular_vertical"
+            my:title="内部存储:?G"
+            my:titleSize="12sp"
+            my:usedBeginColor="#00ff00"
+            my:usedEndColor="#ff0000" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -62,7 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="2"
-        android:background="#f5f5f5"
+        android:background="#ccf5f5f5"
         android:gravity="center"
         android:padding="10dip">
 
@@ -70,33 +63,34 @@
             android:id="@+id/elv_sweepResult"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:childDivider="@drawable/divider"
             android:divider="#00000000"
             android:dividerHeight="1dp"
-            android:childDivider="@drawable/divider"
-            android:groupIndicator="@null"
-            android:layout_centerInParent="true">
-        </ExpandableListView>
+            android:groupIndicator="@null"></ExpandableListView>
+
         <LinearLayout
-            android:id="@+id/ll_emptyview"
+            android:id="@+id/ll_sweep"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
+
             <edu.ncu.safe.customerview.MyProgressBar
                 android:id="@+id/mpb_sweep"
                 android:layout_width="match_parent"
                 android:layout_height="80dip"
                 my:arcWidth="8dip"
-                my:loopSpeed="500"
-                my:hasTitle="true"
-                my:titleSize="16dip"
-                my:titleColor="#00ff00"
-                my:title="正在扫描"
                 my:hasPercent="true"
-                my:percentSize="15dip"
+                my:hasTitle="true"
+                my:loopSpeed="1000"
                 my:percentColor="#444444"
+                my:percentSize="15dip"
                 my:progressStyle="loop"
+                my:title="正在扫描"
+                my:titleColor="#00ff00"
+                my:titleSize="16dip"
                 my:usedBeginColor="#ff0000"
                 my:usedEndColor="#ffffff" />
 
@@ -107,33 +101,24 @@
                 android:text="扫描内容"
                 android:textSize="@dimen/text_size_small" />
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_clean"
+        <edu.ncu.safe.customerview.ImageTextView
+            android:id="@+id/itv_clean"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/cleanbutton_selector"
+            android:gravity="center"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
+            android:padding="5dip"
             android:visibility="gone"
-            android:background="@drawable/cleanbutton_selector"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="5dip">
-
-            <ImageView
-                android:id="@+id/iv_clean"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/clean" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/button_clean"
-                android:textSize="@dimen/text_size_normal" />
-        </LinearLayout>
+            my:img="@drawable/clean"
+            my:img_height="30dp"
+            my:img_width="30dp"
+            my:text="@string/button_clean"
+            my:text_size="@dimen/text_size_normal"
+            />
 
     </RelativeLayout>
 

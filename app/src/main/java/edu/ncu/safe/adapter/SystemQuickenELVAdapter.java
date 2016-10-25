@@ -129,11 +129,11 @@ public class SystemQuickenELVAdapter extends BaseExpandableListAdapter implement
 
 
         holder.cb_childCheck.setOnCheckedChangeListener(null);
-        holder.iv_icon.setImageDrawable(infos.get(groupPosition).getChilds().get(childPosition).getItemIcon());
-        holder.tv_childName.setText(infos.get(groupPosition).getChilds().get(childPosition).getItemName());
-        holder.tv_childNote.setText(infos.get(groupPosition).getChilds().get(childPosition).getItemNote());
-        holder.tv_childSize.setText(FlowsFormartUtil.toFlowsFormart(infos.get(groupPosition).getChilds().get(childPosition).getItemSize()));
-        holder.cb_childCheck.setChecked(infos.get(groupPosition).getChilds().get(childPosition).isItemChecked());
+        holder.iv_icon.setImageBitmap(infos.get(groupPosition).getChilds().get(childPosition).getIcon());
+        holder.tv_childName.setText(infos.get(groupPosition).getChilds().get(childPosition).getTitle());
+        holder.tv_childNote.setText(infos.get(groupPosition).getChilds().get(childPosition).getNote());
+        holder.tv_childSize.setText(FlowsFormartUtil.toFlowsFormart(infos.get(groupPosition).getChilds().get(childPosition).getCacheSize()));
+        holder.cb_childCheck.setChecked(infos.get(groupPosition).getChilds().get(childPosition).isChecked());
 
         holder.cb_childCheck.setTag(R.id.tag_group, groupPosition);
         holder.cb_childCheck.setTag(R.id.tag_child,childPosition);
@@ -167,19 +167,19 @@ public class SystemQuickenELVAdapter extends BaseExpandableListAdapter implement
             //点击的是父checkbox
             List<? extends ChildItemData> childs = infos.get(group).getChilds();
             for(ChildItemData data:childs){
-                data.setItemChecked(isChecked);
+                data.setChecked(isChecked);
             }
             infos.get(group).setIsChecked(isChecked);
             infos.get(group).setSize();
         }else{
             //只点击了子条目的checkbox
-            infos.get(group).getChilds().get(child).setItemChecked(isChecked);
+            infos.get(group).getChilds().get(child).setChecked(isChecked);
             infos.get(group).setSize();
 
             List<? extends ChildItemData> childs = infos.get(group).getChilds();
             boolean hasItemChecked = false;
             for(ChildItemData data:childs){
-                if(data.isItemChecked()){
+                if(data.isChecked()){
                     hasItemChecked = true;
                 }
             }
@@ -194,11 +194,11 @@ public class SystemQuickenELVAdapter extends BaseExpandableListAdapter implement
         }
     }
 
-    public List<String> getCheckAppProcessNames(){
-        List<String> res = new ArrayList<String>();
+    public ArrayList<String> getCheckAppProcessNames(){
+        ArrayList<String> res = new ArrayList<String>();
 
-        for(ChildItemData childItemData:infos.get(0).getChilds()){
-            if(childItemData.isItemChecked()){
+        for(ChildItemData childItemData:infos.get(1).getChilds()){
+            if(childItemData.isChecked()){
                 res.add(((RunningApplicationInfo)childItemData).getProcessName());
             }
         }
@@ -208,8 +208,8 @@ public class SystemQuickenELVAdapter extends BaseExpandableListAdapter implement
     public List<String> getCheckRubbishNames(){
         List<String> res = new ArrayList<String>();
 
-        for(ChildItemData childItemData:infos.get(1).getChilds()){
-            if(childItemData.isItemChecked()){
+        for(ChildItemData childItemData:infos.get(0).getChilds()){
+            if(childItemData.isChecked()){
                 res.add(((CacheInfo)childItemData).getPackageName());
             }
         }

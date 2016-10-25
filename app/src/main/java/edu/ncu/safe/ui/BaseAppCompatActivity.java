@@ -15,7 +15,7 @@ import edu.ncu.safe.R;
 public class BaseAppCompatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.getWindow().getDecorView().setBackgroundColor(Color.parseColor("#0000ff"));
+        this.getWindow().getDecorView().setBackgroundResource(R.drawable.background);
     }
 
     protected void toAntherAvitvity(Class clazz) {

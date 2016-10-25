@@ -1,11 +1,14 @@
 package edu.ncu.safe.util;
 
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Environment;
+import android.os.StatFs;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
@@ -103,5 +106,70 @@ public class MyUtil {
         Uri packageURI = Uri.parse(uristr);
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,packageURI);
         context.startActivity(intent);
+    }
+
+    /**
+     * 获取系统总的内存空间大小（字节B为单位）
+     * @param context   上下文
+     * @return    内存大小
+     */
+    public static long getPhoneTotalInnerMemory(Context context){
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+        manager.getMemoryInfo(memoryInfo);
+        return  memoryInfo.totalMem;
+    }
+
+    /**
+     * 获取系统可用的内存空间大小（字节B为单位）
+     * @param context   上下文
+     * @return    内存大小
+     */
+    public static long getPhoneAvailableInnerMemory(Context context){
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+        manager.getMemoryInfo(memoryInfo);
+        return  memoryInfo.availMem;
+    }
+
+    /**
+     * 获取系统使用了的的内存空间大小（字节B为单位）
+     * @param context   上下文
+     * @return    内存大小
+     */
+    public static long getPhoneUsedInnerMemory(Context context){
+        return getPhoneTotalInnerMemory(context)- getPhoneAvailableInnerMemory(context);
+    }
+
+    /**
+     * 返回rom总内存大小
+     * @return
+     */
+    public static long getPhoneTotalExternalMemory(){
+        File path = Environment.getDataDirectory();
+        StatFs stat = new StatFs(path.getPath());
+        long blockSize = stat.getBlockSize();
+        long totalBlocks = stat.getBlockCount();
+        return blockSize*totalBlocks;
+    }
+
+    /**返回rom可用内存大小
+     *
+     * @return
+     */
+    public static long getPhoneAvailableExternalMemory(){
+        File path = Environment.getDataDirectory();
+        StatFs stat = new StatFs(path.getPath());
+        long blockSize = stat.getBlockSize();
+        long availableBlocks = stat.getAvailableBlocks();
+        return blockSize*availableBlocks;
+    }
+
+    /**返回rom已经使用内存大小
+     *
+     * @return
+     */
+    public static long getPhoneUsedExternalMemory(){
+        return getPhoneTotalExternalMemory()-getPhoneAvailableExternalMemory();
     }
 }
