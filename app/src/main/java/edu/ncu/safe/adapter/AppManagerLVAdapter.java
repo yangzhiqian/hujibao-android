@@ -51,11 +51,6 @@ public class AppManagerLVAdapter extends BaseAdapter implements CompoundButton.O
         ViewHolder holder = null;
         if(view==null){
             holder = new ViewHolder();
-
-
-
-
-
             view = View.inflate(context, R.layout.item_listview_appmanager,null);
             holder.iv_icon = (ImageView) view.findViewById(R.id.iv_icon);
             holder.tv_appName = (TextView) view.findViewById(R.id.tv_appname);
@@ -75,7 +70,7 @@ public class AppManagerLVAdapter extends BaseAdapter implements CompoundButton.O
 
         holder.iv_icon.setImageDrawable(infos.get(position).getIcon());
         holder.tv_appName.setText(infos.get(position).getAppName()+"");
-        holder.tv_memory.setText(String.format("%5.2f", infos.get(position).getRunMemory() / 1024.0));
+        holder.tv_memory.setText(String.format("%5.2f", infos.get(position).getRunMemory() / (1024f*1024)));
 
         holder.iv_privacy.setVisibility(infos.get(position).isPrivacy()?View.VISIBLE:View.GONE);
         holder.iv_cost.setVisibility(infos.get(position).isCost()?View.VISIBLE:View.GONE);

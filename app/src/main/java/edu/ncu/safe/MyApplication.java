@@ -2,6 +2,7 @@ package edu.ncu.safe;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.view.SurfaceView;
 
 /**
  * Created by Mr_Yang on 2016/7/13.

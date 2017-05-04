@@ -38,7 +38,9 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="5dip">
+        android:paddingTop="5dip"
+        android:paddingLeft="5dp"
+        android:paddingRight="10dp">
 
         <TextView
             android:layout_width="wrap_content"

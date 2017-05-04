@@ -11,10 +11,10 @@ import java.util.List;
 
 import edu.ncu.safe.domain.SmsInfo;
 
-public class SmsService {
+public class PhoneSmsOperator {
 	private Context context;
-	public SmsService(Context context){
-		this.context = context;
+	public PhoneSmsOperator(Context context){
+		this.context = context.getApplicationContext();
 	}
 	/**
 	 * 从信息表中获取所有的信息

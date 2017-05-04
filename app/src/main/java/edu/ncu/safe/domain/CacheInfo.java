@@ -1,13 +1,8 @@
 package edu.ncu.safe.domain;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.io.Serializable;
 
 import edu.ncu.safe.myinterface.ChildItemData;
 import edu.ncu.safe.util.BitmapUtil;

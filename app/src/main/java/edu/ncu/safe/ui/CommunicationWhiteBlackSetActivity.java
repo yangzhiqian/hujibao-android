@@ -1,78 +1,39 @@
 package edu.ncu.safe.ui;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.RelativeLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.ncu.safe.R;
-import edu.ncu.safe.adapter.CommunicationWhiteBlackSetVPAdatpter;
+import edu.ncu.safe.adapter.SimpleFragmentPagerAdapter;
+import edu.ncu.safe.ui.fragment.CommunicationBlackListFragment;
+import edu.ncu.safe.ui.fragment.CommunicationWhiteListFragment;
 
-public class CommunicationWhiteBlackSetActivity extends MyAppCompatActivity implements OnClickListener{
-	private RelativeLayout rl_msg;
-	private RelativeLayout rl_phone;
-	private ViewPager vp_protectRecorder;
-	
-	private Drawable bg_selected;
-	private Drawable bg_unselected;
-	private Toolbar toolbar;
+public class CommunicationWhiteBlackSetActivity extends MyAppCompatActivity {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_communicationwhiteblackset);
-		initToolBar(getResources().getString(R.string.title_communication_protector_white_black_number_set));
-		rl_msg = (RelativeLayout) this.findViewById(R.id.rl_msg);
-		rl_phone = (RelativeLayout) this.findViewById(R.id.rl_phone);
-		vp_protectRecorder = (ViewPager) this.findViewById(R.id.vp_protectrecorder);
-		
-		rl_msg.setOnClickListener(this);
-		rl_phone.setOnClickListener(this);
-		
-		vp_protectRecorder.setAdapter(new CommunicationWhiteBlackSetVPAdatpter(getSupportFragmentManager()));
-		vp_protectRecorder.setOnPageChangeListener(new MyOnPagerChangeListener());
-		
-		
-		bg_selected = rl_msg.getBackground();
-		bg_unselected = rl_phone.getBackground();
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_communicationwhiteblackset);
+        initToolBar(getResources().getString(R.string.title_communication_protector_white_black_number_set));
+        TabLayout tab = (TabLayout) findViewById(R.id.tab_communication);
+        ViewPager vpWhiteBlackList = (ViewPager) this.findViewById(R.id.vp_communication);
 
-	@Override
-	public void onClick(View v) {
-		switch(v.getId()){
-		case R.id.rl_msg:
-			vp_protectRecorder.setCurrentItem(0);
-			break;
-		case R.id.rl_phone:
-			vp_protectRecorder.setCurrentItem(1);
-			break;
-		}
-	}
-	
-	class MyOnPagerChangeListener implements OnPageChangeListener{
-		@Override
-		public void onPageScrollStateChanged(int arg0) {
-		}
-		@Override
-		public void onPageScrolled(int arg0, float arg1, int arg2) {
-		}
-		@Override
-		public void onPageSelected(int arg0) {
-			if(arg0 == 0){
-				//msg
-				rl_msg.setBackgroundDrawable(bg_selected);
-				rl_phone.setBackgroundDrawable(bg_unselected);
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(new CommunicationWhiteListFragment());
+        fragments.add(new CommunicationBlackListFragment());
+        vpWhiteBlackList.setAdapter(new SimpleFragmentPagerAdapter(
+                this,
+                getSupportFragmentManager(),
+                fragments,
+                new String[]{"白名单", "黑名单"},
+                new int[]{R.drawable.whitelist, R.drawable.blacklist}));
 
-			}
-			else {
-				//phone
-				rl_msg.setBackgroundDrawable(bg_unselected);
-				rl_phone.setBackgroundDrawable(bg_selected);
-			}
-		}
-	}
+        tab.setupWithViewPager(vpWhiteBlackList);
+        tab.setTabMode(TabLayout.MODE_FIXED);
+    }
 }

@@ -12,8 +12,8 @@ import edu.ncu.safe.R;
 public class MyAppCompatActivity extends BaseAppCompatActivity {
     protected Toolbar toolbar;
 
-    protected void initToolBar(String title) {
-        ((TextView)findViewById(R.id.tv_title)).setText(title);
+    protected void initToolBar(CharSequence title) {
+        setToolBarTitle(title);
         toolbar = (Toolbar) findViewById(R.id.id_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);// 隐藏标题
@@ -27,5 +27,11 @@ public class MyAppCompatActivity extends BaseAppCompatActivity {
                         R.anim.activit3dtoright_out);
             }
         });
+    }
+    protected  void setToolBarTitle(CharSequence title){
+        ((TextView)findViewById(R.id.tv_title)).setText(title);
+    }
+    protected CharSequence getToolBarTitle(){
+        return ((TextView)findViewById(R.id.tv_title)).getText();
     }
 }

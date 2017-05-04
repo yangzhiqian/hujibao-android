@@ -23,7 +23,7 @@ import java.io.OutputStream;
 import edu.ncu.safe.R;
 import edu.ncu.safe.customerview.MyProgressBar;
 import edu.ncu.safe.constant.Constant;
-import edu.ncu.safe.engine.DataLoader;
+import edu.ncu.safe.engine.NetDataOperator;
 import edu.ncu.safe.external.ACache;
 
 /**
@@ -52,22 +52,21 @@ public class BitmapUtil {
         return BitmapFactory.decodeStream(is, null, opt);
     }
 
+    /**
+     * 根据大小计算图片缩放比例
+     * @param options     调用
+     * @param reqWidth
+     * @param reqHeight
+     * @return
+     */
     private static int calculateInSampleSize(
             BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
         final int height = options.outHeight;
         final int width = options.outWidth;
         int inSampleSize = 1;
-
         if (height > reqHeight || width > reqWidth) {
-
-            // Calculate ratios of height and width to requested height and width
             final int heightRatio = Math.round((float) height / (float) reqHeight);
             final int widthRatio = Math.round((float) width / (float) reqWidth);
-
-            // Choose the smallest ratio as inSampleSize value, this will guarantee
-            // a final image with both dimensions larger than or equal to the
-            // requested height and width.
             inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
         }
         return inSampleSize;
@@ -80,83 +79,25 @@ public class BitmapUtil {
      * @param path      图片路径全名
      * @param maxWidth  压缩后的指定的最大的宽度，当ImageView 宽过大时起作用，<=0表示不启用限制
      * @param maxHeight 压缩后的指定的最大的高度，当ImageView 高过大时起作用，<=0表示不启用限制
-     * @param view      要显示的地方，用于测量宽高
      * @return 返回获取的image对象，null代表加载失败
      */
-    public static Bitmap loadLoaclImageToImageView(String path, int maxWidth, int maxHeight, ImageView view) {
+    public static Bitmap loadLoaclImage(String path, int maxWidth, int maxHeight) {
+        File f = new File(path);
+        if (!f.exists()) {
+            return null;
+        }
         final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, options);
-        // Calculate inSampleSize
-        view.measure(0, 0);
-        int width = view.getMeasuredWidth();
-        int height = view.getMeasuredHeight();
-
-        if (width > maxWidth && maxWidth > 0) {
-            width = maxWidth;
+        if(maxHeight!=0&&maxWidth!=0) {
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(path, options);
+            // 计算缩放比例
+            options.inSampleSize = calculateInSampleSize(options, maxWidth, maxHeight);
+            //编码图片
+            options.inJustDecodeBounds = false;
         }
-        if (height > maxHeight && maxHeight > 0) {
-            height = maxHeight;
-        }
-        options.inSampleSize = calculateInSampleSize(options, width, height);
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-
         return BitmapFactory.decodeFile(path, options);
     }
 
-    /**
-     * 加载（内存缓存->文件缓存->网络）图片
-     *
-     * @param context  上下文
-     * @param fileName 文件名或文件路径，如果下载的图片来自本地，则表示文件全路径，如果文件来自网络，则表示文件名
-     * @param type     图片类型   0代表小图标，1代表预览图片（400x600,由服务器决定,2代表原图）
-     * @param view     如果用于加载到imageview上显示，可指定该参数，异步加载完成后会自动显示，可以为null
-     * @param mpb      加载进度
-     */
-    public static void loadImageToImageView(final Context context, final String fileName, final int type, final ImageView view, final MyProgressBar mpb) {
-        //实例化加载工具
-        DataLoader loader = new DataLoader(context);
-        //实例化监听器，监听器运行的线程为主线程
-        loader.setOnImageObtainedListener(new DataLoader.OnImageObtainedListener() {
-            @Override
-            public void onFailure(String error) {
-                if (mpb != null) {
-                    mpb.setVisibility(View.GONE);
-                }
-                Toast.makeText(context, "加载图片失败！", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onResponse(final Bitmap bmp) {
-                try {
-                    //缓存
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            //比较耗时，放到子线程完成
-                            ACache.get(context).put(Constant.getImageCacheFileName(fileName, type), bmp, Constant.ACACHE_LIFETIME);//缓存七天
-                        }
-                    }.start();
-                    if (view != null) {
-                        view.setImageBitmap(bmp);
-                    }
-                    if (mpb != null) {
-                        mpb.setVisibility(View.GONE);
-                    }
-                } catch (Exception e) {
-                    if (view != null) {
-                        view.setImageResource(R.drawable.appicon);
-                    }
-                    if (mpb != null) {
-                        mpb.setVisibility(View.GONE);
-                    }
-                }
-            }
-        });
-        String url = context.getResources().getString(R.string.loadimg);
-        loader.loadImg(url, fileName, type, mpb);
-    }
 
     public static Bitmap getRequireBitmap(String url, int reqWidth, int reqHeight) {
         // First decode with inJustDecodeBounds=true to check dimensions

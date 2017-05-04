@@ -8,6 +8,8 @@ public class FlowsStatisticsDayItemInfo {
 	public FlowsStatisticsDayItemInfo(int date, long update, long download) {
 		super();
 		this.date = date;
+		update = update>0?update:0;
+		download = download>0?download:0;
 		this.update = update;
 		this.download = download;
 	}

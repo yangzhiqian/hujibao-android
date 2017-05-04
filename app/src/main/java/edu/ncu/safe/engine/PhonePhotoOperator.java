@@ -14,9 +14,9 @@ import edu.ncu.safe.domain.ImageInfo;
 /**
  * Created by Mr_Yang on 2016/7/1.
  */
-public class LoadLocalImageInfo {
+public class PhonePhotoOperator {
     private Context context;
-    public LoadLocalImageInfo(Context context){
+    public PhonePhotoOperator(Context context){
         this.context= context;
     }
     public List<ImageInfo> getLocalImageInfos(){

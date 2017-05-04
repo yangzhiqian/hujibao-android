@@ -210,7 +210,7 @@ class LoadTask extends AsyncTask<Void, Void, List<UserAppBaseInfo>> {
     private WeakReference<AppInfoLoadingTaskListener> callBack;
 
     public LoadTask(Context context, AppInfoLoadingTaskListener callBack) {
-        this.appInfosLoader = new AppInfosLoader(context);
+        this.appInfosLoader = AppInfosLoader.getInstance(context);
         this.callBack = new WeakReference<AppInfoLoadingTaskListener>(callBack);
     }
 

@@ -11,6 +11,8 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.view.Display;
+import android.view.WindowManager;
 
 import java.io.File;
 import java.util.regex.Matcher;
@@ -171,5 +173,16 @@ public class MyUtil {
      */
     public static long getPhoneUsedExternalMemory(){
         return getPhoneTotalExternalMemory()-getPhoneAvailableExternalMemory();
+    }
+
+    public static int getPhoneWidthPx(Context context){
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display defaultDisplay = windowManager.getDefaultDisplay();
+        return defaultDisplay.getWidth();
+    }
+    public static int getPhoneHeightPx(Context context){
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display defaultDisplay = windowManager.getDefaultDisplay();
+        return defaultDisplay.getHeight();
     }
 }

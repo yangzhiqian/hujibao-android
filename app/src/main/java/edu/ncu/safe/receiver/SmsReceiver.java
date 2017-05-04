@@ -19,7 +19,7 @@ import edu.ncu.safe.MyApplication;
 import edu.ncu.safe.R;
 import edu.ncu.safe.db.dao.CommunicationDatabase;
 import edu.ncu.safe.domain.InterceptionInfo;
-import edu.ncu.safe.engine.ContactsService;
+import edu.ncu.safe.engine.PhoneContactsOperator;
 import edu.ncu.safe.engine.InterceptionJudger;
 import edu.ncu.safe.engine.LocationFinder;
 import edu.ncu.safe.ui.PhoneLostProtectActivity;
@@ -56,7 +56,7 @@ public class SmsReceiver extends BroadcastReceiver {
 		String address = message.getOriginatingAddress();//短信号码
 		String body = message.getMessageBody();//短信内容
 		long time = System.currentTimeMillis();//当前时间
-		String name = new ContactsService(context).getContactName(address);
+		String name = new PhoneContactsOperator(context).getContactName(address);
 		int type = db.queryNumberType(address);//号码类型
 
 		if(address.startsWith("+86")){

@@ -9,7 +9,7 @@ import edu.ncu.safe.engine.AppInfosLoader;
  */
 public class AppInfoTest extends AndroidTestCase{
     public void test(){
-        AppInfosLoader appInfosLoader = new AppInfosLoader(getContext());
+        AppInfosLoader appInfosLoader = AppInfosLoader.getInstance(getContext());
         appInfosLoader.getUserAppBaseInfo();
     }
 }

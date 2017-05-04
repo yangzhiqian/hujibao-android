@@ -44,7 +44,7 @@ public class DataStorer {
     public static final int TYPE_MESSAGE = 1;
     public static final int TYPE_CONTACT = 2;
 
-    private static final String TAG = "DataLoader";
+    private static final String TAG = "NetDataOperator";
     private static final int TYPE_DATA_ERROR = 0;
     private static final int TYPE_DATA_SUCCEED = 1;
     private static final int TYPE_IMG_ERROR = 2;
@@ -197,7 +197,6 @@ public class DataStorer {
             for (ITarget iTarget : datas) {
                 smsInfos.add((MessageAdapter) iTarget);
             }
-            Log.e("TAG", new Gson().toJson(smsInfos));
             JSONArray array = new JSONArray( new Gson().toJson(smsInfos));
             object.accumulate("data",array);
 

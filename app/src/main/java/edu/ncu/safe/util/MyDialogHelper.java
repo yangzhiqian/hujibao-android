@@ -20,7 +20,7 @@ import edu.ncu.safe.MyApplication;
 import edu.ncu.safe.R;
 import edu.ncu.safe.adapter.ContactsDialogAdapter;
 import edu.ncu.safe.customerview.MyDialog;
-import edu.ncu.safe.engine.ContactsService;
+import edu.ncu.safe.engine.PhoneContactsOperator;
 
 /**
  * Created by Mr_Yang on 2016/9/17.
@@ -179,7 +179,7 @@ public class MyDialogHelper {
         myDialog.setMessageView(view);
         ListView lv = (ListView) view.findViewById(R.id.lv_contacts);
         final ContactsDialogAdapter adapter = new ContactsDialogAdapter(
-                new ContactsService(context).getContactsInfos(), context);
+                new PhoneContactsOperator(context).getContactsInfos(), context);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

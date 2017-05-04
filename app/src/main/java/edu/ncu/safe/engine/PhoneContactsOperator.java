@@ -1,8 +1,11 @@
 package edu.ncu.safe.engine;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.ContactsContract;
 
 import java.util.ArrayList;
@@ -10,11 +13,11 @@ import java.util.List;
 
 import edu.ncu.safe.domain.ContactsInfo;
 
-public class ContactsService {
+public class PhoneContactsOperator {
     private Context context;
 
-    public ContactsService(Context context) {
-        this.context = context;
+    public PhoneContactsOperator(Context context) {
+        this.context = context.getApplicationContext();
     }
 
     public List<ContactsInfo> getContactsInfos() {
@@ -65,5 +68,25 @@ public class ContactsService {
         }
         cursor.close();
         return null;
+    }
+    public void recoveryOneContact(ContactsInfo info){
+        ContentValues values = new ContentValues();
+        //首先向RawContacts.CONTENT_URI执行一个空值插入，目的是获取系统返回的rawContactId
+        Uri rawContactUri = context.getContentResolver().insert(ContactsContract.RawContacts.CONTENT_URI, values);
+        long rawContactId = ContentUris.parseId(rawContactUri);
+
+        //往data表插入姓名数据
+        values.clear();
+        values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
+        values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE);//内容类型
+        values.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, info.getName());
+        context.getContentResolver().insert(android.provider.ContactsContract.Data.CONTENT_URI, values);
+        //插入电话号码
+        values.clear();
+        values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
+        values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
+        values.put(ContactsContract.CommonDataKinds.Phone.NUMBER, info.getPhoneNumber());
+        values.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE);
+        context.getContentResolver().insert(android.provider.ContactsContract.Data.CONTENT_URI, values);
     }
 }

@@ -2,6 +2,16 @@ package edu.ncu.safe.domain;
 
 import android.graphics.drawable.Drawable;
 
+/**
+ * 简单版的用户app信息</br>
+ * <p>实体信息如下：
+ * <ol>
+ *     <li>uid:用户软件user id</li>
+ *     <li>icon :Drawable，用户软件的图标</></li>
+ *     <li>packName:用户软件的包名</li>
+ *     <li>appName: 用户软件的简易名称</li>
+ * </ol>
+ */
 public class UserAppSimpleInfo {
 	private int uid;
 	private Drawable icon;

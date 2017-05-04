@@ -81,5 +81,12 @@
         <item name="colorPrimaryDark">#00796B</item>
         <item name="colorAccent">#FD87A9</item>
     </style>
-    
+
+
+    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
+    </style>
+    <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
 </resources>

@@ -2,6 +2,8 @@ package edu.ncu.safe.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -10,13 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ncu.safe.R;
-import edu.ncu.safe.adapter.AppManagerPVAdapter;
 import edu.ncu.safe.domain.UserAppBaseInfo;
 import edu.ncu.safe.ui.fragment.AppManagerFragment;
 import edu.ncu.safe.ui.fragment.NetManagerFragment;
 
 /**
- * Created by Mr_Yang on 2016/5/19.
+ * Created by Mr_Yang on 2016/5/19.<br/>
+ * 软件管理的activity<br/>
+ * 使用一个viewpager围护两个fragment<br/>
+ *
  */
 public class AppManagerAcitvity extends MyAppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener,AppManagerFragment.OnDataChangeListener {
     private ViewPager vp_appManager;
@@ -79,5 +83,23 @@ public class AppManagerAcitvity extends MyAppCompatActivity implements View.OnCl
     @Override
     public void dataChange(List<UserAppBaseInfo> infos, String packName) {
         ((NetManagerFragment)fragments.get(1)).onDataChanged(infos,packName);
+    }
+
+    private class AppManagerPVAdapter  extends FragmentPagerAdapter {
+        private List<Fragment> fragments;
+        AppManagerPVAdapter(FragmentManager fm, List<Fragment> fragments) {
+            super(fm);
+            this.fragments = fragments;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return fragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragments.size();
+        }
     }
 }

@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/menu_local"
-        android:title="@string/menu_local"
-        android:icon="@drawable/local"
+    <item android:id="@+id/menu_photo"
+        android:title="@string/menu_photo"
         app:showAsAction="never"/>
-    <item android:id="@+id/menu_net"
-        android:title="@string/menu_net"
-        android:icon="@drawable/cloud"
+    <item android:id="@+id/menu_sms"
+        android:title="@string/menu_sms"
         app:showAsAction="never"/>
-    <!--<item android:id="@+id/menu_backup"-->
-        <!--android:title="@string/menu_backup"-->
-        <!--android:icon="@drawable/backup"-->
-        <!--app:showAsAction="never"/>-->
-    <item android:id="@+id/menu_recovery"
-        android:title="@string/menu_recovery"
-        android:icon="@drawable/recovery"
+    <item android:id="@+id/menu_contact"
+        android:title="@string/menu_contacts"
         app:showAsAction="never"/>
 </menu>

@@ -6,11 +6,6 @@ import java.util.List;
 
 public class UserAppInfo extends UserAppSimpleInfo{
 	private List<PermissionInfo> permissionInfos ;
-
-	public UserAppInfo(List<PermissionInfo> permissionInfos) {
-		this.permissionInfos = permissionInfos;
-	}
-
 	public UserAppInfo(int uid, Drawable icon, String packName, String appName, List<PermissionInfo> permissionInfos) {
 		super(uid, icon, packName, appName);
 		this.permissionInfos = permissionInfos;
@@ -19,7 +14,14 @@ public class UserAppInfo extends UserAppSimpleInfo{
 	public List<PermissionInfo> getPermissionInfos() {
 		return permissionInfos;
 	}
+	public void setPermissionInfos(List<PermissionInfo> permissionInfos) {
+		this.permissionInfos = permissionInfos;
+	}
 
+	/**
+	 * 获取app的权限名称
+	 * @return
+     */
 	public String[] getArrayPermission(){
 		String[] perms = new String[permissionInfos.size()];
 		for(int i=0;i<perms.length;i++){
@@ -28,9 +30,6 @@ public class UserAppInfo extends UserAppSimpleInfo{
 		return perms;
 	}
 
-	public void setPermissionInfos(List<PermissionInfo> permissionInfos) {
-		this.permissionInfos = permissionInfos;
-	}
 
 	public static class PermissionInfo{
 		private String permissionName;

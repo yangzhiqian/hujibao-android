@@ -55,30 +55,30 @@
     </LinearLayout>
     <ImageView
         android:id="@+id/iv_privacy"
-        android:layout_width="25dip"
-        android:layout_height="25dip"
+        android:layout_width="18dip"
+        android:layout_height="18dip"
         android:visibility="gone"
         android:src="@drawable/perm_privacy"
         android:scaleType="fitXY"/>
     <ImageView
         android:id="@+id/iv_cost"
-        android:layout_width="25dip"
-        android:layout_height="25dip"
+        android:layout_width="18dip"
+        android:layout_height="18dip"
         android:visibility="gone"
         android:src="@drawable/perm_cost"
         android:scaleType="fitXY"/>
     <ImageView
         android:id="@+id/iv_location"
-        android:layout_width="25dip"
-        android:layout_height="25dip"
+        android:layout_width="18dip"
+        android:layout_height="18dip"
         android:visibility="gone"
         android:src="@drawable/perm_location"
         android:scaleType="fitXY"/>
     <ImageView
         android:id="@+id/iv_wifi"
-        android:layout_width="25dip"
+        android:layout_width="18dip"
+        android:layout_height="18dip"
         android:visibility="gone"
-        android:layout_height="25dip"
         android:src="@drawable/perm_wifi"
         android:scaleType="fitXY"/>
     <CheckBox

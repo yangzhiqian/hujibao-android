@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 
 import edu.ncu.safe.db.dao.CommunicationDatabase;
 import edu.ncu.safe.domain.InterceptionInfo;
-import edu.ncu.safe.engine.ContactsService;
+import edu.ncu.safe.engine.PhoneContactsOperator;
 import edu.ncu.safe.engine.InterceptionJudger;
 
 /**
@@ -58,7 +58,7 @@ public class CallReceiver extends BroadcastReceiver {
             //需要被拦截
             //记录拦截信息
             CommunicationDatabase db = new CommunicationDatabase(context);
-            ContactsService contacts = new ContactsService(context);
+            PhoneContactsOperator contacts = new PhoneContactsOperator(context);
 
             String name = contacts.getContactName(number);
             int type = db.queryNumberType(number);

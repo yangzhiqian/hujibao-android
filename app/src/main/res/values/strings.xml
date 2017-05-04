@@ -66,10 +66,9 @@
     <string name="title_app_manager">软件管理</string>
     <string name="title_system_quick">系统加速</string>
     <string name="title_data_backup">数据备份</string>
-    <string name="menu_local">本地</string>
-    <string name="menu_net">网络</string>
-    <string name="menu_backup">未备份</string>
-    <string name="menu_recovery">未还原</string>
+    <string name="menu_photo">照片</string>
+    <string name="menu_sms">短信</string>
+    <string name="menu_contacts">联系人</string>
     <string name="title_protocol">App说明</string>
     <string name="button_enter_app">进入程序</string>
     <string name="main_fragment_note_phone_lost_in_protecting">手机保护中</string>
@@ -261,17 +260,8 @@
     <string name="baiduphonenumberownerplaceurl">http://apis.baidu.com/chazhao/mobilesearch/phonesearch</string>
     <string name="baiduphonenumberownerplacekey">3d2e9cc7c8ed9cf0d2a9f18ae053cc2d</string>
 
-    <string name="login">http://123.206.202.242:8080/androidsafe/LoginServlet</string>
-    <string name="regist">http://123.206.202.242:8080/androidsafe/RegistServlet</string>
-    <string name="logout">http://123.206.202.242:8080/androidsafe/LogoutServlet</string>
-    <string name="loadicon">http://123.206.202.242:8080/androidsafe/DownloadIconServlet</string>
-    <string name="loadbackup">http://123.206.202.242:8080/androidsafe/LoadBackupServlet</string>
-    <string name="loadimg">http://123.206.202.242:8080/androidsafe/DownloadImageServlet</string>
-    <string name="storeimg">http://123.206.202.242:8080/androidsafe/StoreImgServlet</string>
-    <string name="storebackup">http://123.206.202.242:8080/androidsafe/UploadBackupServlet</string>
-    <string name="deletebackup">http://123.206.202.242:8080/androidsafe/DeleteBackupServlet</string>
-    <string name="protocol">http://123.206.202.242:8080/androidsafe/protocol.xml</string>
-    <string name="version">http://123.206.202.242:8080/androidsafe/versioninfo.xml</string>
+
+
     <string name="dialog_title_update_note">发现新版本:%s</string>
     <string name="button_update_now">立即更新</string>
     <string name="button_update_later">稍后升级</string>

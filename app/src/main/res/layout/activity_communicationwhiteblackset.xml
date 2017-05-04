@@ -5,74 +5,25 @@
     android:orientation="vertical" >
 
    <include layout="@layout/content_toolbar"/>
-<LinearLayout
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0dip"
         android:layout_weight="3"
         android:background="#ffffff"
         android:gravity="center_horizontal"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="30dip"
-            android:background="#EEEEEE"
-            android:orientation="horizontal" >
-
-            <RelativeLayout
-                android:id="@+id/rl_msg"
-                android:layout_width="0dip"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:background="#eeeeee" 
-                android:gravity="center">
-                <ImageView
-                    android:id="@+id/iv_msg"
-                    android:layout_width="20dip"
-                    android:layout_height="20dip"
-                    android:src="@drawable/whitelist"
-                    android:scaleType="fitXY"/>
-                <TextView 
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_communication_protector_white_list"
-                    android:textSize="@dimen/text_size_short"
-                    android:layout_toRightOf="@id/iv_msg"
-                    android:textColor="#000000"/>
-                
-            </RelativeLayout>
-
-            <RelativeLayout
-
-                android:id="@+id/rl_phone"
-                android:layout_width="0dip"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:background="#d2d2d2" 
-                android:gravity="center">
-
-                <ImageView
-                    android:id="@+id/iv_msg2"
-                    android:layout_width="20dip"
-                    android:layout_height="20dip"
-                    android:src="@drawable/blacklist"
-                    android:scaleType="fitXY"/>
-                <TextView 
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_communication_protector_black_list"
-                    android:textSize="@dimen/text_size_short"
-                    android:layout_toRightOf="@id/iv_msg2"
-                    android:textColor="#000000"/>
-                
-            </RelativeLayout>
-        </LinearLayout>
+        <!--style="@style/MyCustomTabLayout"-->
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_communication"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <android.support.v4.view.ViewPager
-            android:id="@+id/vp_protectrecorder"
+            android:id="@+id/vp_communication"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#eeeeee" >
-        </android.support.v4.view.ViewPager>
+            android:background="#eeeeee" />
     </LinearLayout>
 </LinearLayout>

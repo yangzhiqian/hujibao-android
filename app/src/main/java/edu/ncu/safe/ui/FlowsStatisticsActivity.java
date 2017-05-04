@@ -3,6 +3,7 @@ package edu.ncu.safe.ui;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.widget.TextView;
@@ -11,8 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ncu.safe.R;
-import edu.ncu.safe.adapter.FlowsStatisticVPAdapter;
+import edu.ncu.safe.adapter.SimpleFragmentPagerAdapter;
 import edu.ncu.safe.db.dao.FlowsDatabase;
+import edu.ncu.safe.ui.fragment.FlowsAppLVFragment;
+import edu.ncu.safe.ui.fragment.FlowsDayLVFragment;
 import lecho.lib.hellocharts.gesture.ContainerScrollType;
 import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.model.Axis;
@@ -26,7 +29,7 @@ public class FlowsStatisticsActivity extends MyAppCompatActivity  {
     private LineChartView chartView;
     private TabLayout tl_flowsstatistics;
     private ViewPager vp_flowsStatistics;
-    private FlowsStatisticVPAdapter adapter;
+    private SimpleFragmentPagerAdapter adapter;
     private TextView tv_gprs;
     private TextView tv_gprswifi;
 
@@ -38,15 +41,18 @@ public class FlowsStatisticsActivity extends MyAppCompatActivity  {
         initViews();
 
         //初始化vp内容
-        adapter = new FlowsStatisticVPAdapter(getSupportFragmentManager());
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(new FlowsDayLVFragment());
+        fragments.add(new FlowsAppLVFragment());
+        adapter = new SimpleFragmentPagerAdapter(
+                this,
+                getSupportFragmentManager(),
+                fragments,
+                new String[]{getString(R.string.flows_protector_detail_day_flows),getString(R.string.flows_protector_detail_app_flows)});
         vp_flowsStatistics.setAdapter(adapter);
 
         tl_flowsstatistics.setupWithViewPager(vp_flowsStatistics);
-        tl_flowsstatistics.setTabsFromPagerAdapter(adapter);
-        //初始化tablelayout
-        tl_flowsstatistics.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tl_flowsstatistics.getTabAt(0).setText(getString(R.string.flows_protector_detail_day_flows));
-        tl_flowsstatistics.getTabAt(1).setText(getString(R.string.flows_protector_detail_app_flows));
+        tl_flowsstatistics.setTabMode(TabLayout.MODE_FIXED);
 
         vp_flowsStatistics.addOnPageChangeListener(new MyPageChangeListener());
 

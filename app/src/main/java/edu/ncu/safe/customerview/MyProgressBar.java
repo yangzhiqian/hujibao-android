@@ -366,10 +366,16 @@ public class MyProgressBar extends View {
     }
 
     public void setPercentSlow(float percent) {
+        if(percent<0||percent>100){
+            return ;
+        }
         toPercent(percent);
     }
 
     public void setPercentimmediately(float percent) {
+        if(percent<0||percent>100){
+            return ;
+        }
         this.percent = percent;
         invalidate();
     }

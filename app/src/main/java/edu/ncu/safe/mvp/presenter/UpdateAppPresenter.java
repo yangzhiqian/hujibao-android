@@ -1,115 +1,74 @@
 package edu.ncu.safe.mvp.presenter;
 
-import android.app.ProgressDialog;
-import android.content.ComponentName;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
-import android.view.View;
-import android.widget.Toast;
+import android.content.IntentFilter;
 
-import java.io.File;
-
-import edu.ncu.safe.R;
-import edu.ncu.safe.customerview.MyDialog;
-import edu.ncu.safe.domain.VersionInfo;
 import edu.ncu.safe.mvp.view.UpdateMvpView;
 import edu.ncu.safe.service.UpdateAppService;
-import edu.ncu.safe.util.MyUtil;
 
 /**
- * Created by Mr_Yang on 2016/9/16.
+ * Created by Mr_Yang on 2016/9/16.<br/>
+ * 软件更新的presenter
  */
-public class UpdateAppPresenter implements UpdateAppService.UpdateListener {
+public class UpdateAppPresenter {
     private UpdateMvpView view;
-    private UpdateAppService service;
     private Context context;
-    private ProgressDialog progressDialog;
 
-    private ServiceConnection connection = new ServiceConnection() {
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
-        public void onServiceConnected(ComponentName name, IBinder bind) {
-            service = ((UpdateAppService.MyBind) bind).getInstance();
-            service.setUpdateListener(UpdateAppPresenter.this);
-            service.update();
-        }
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            switch (action){
+                case UpdateAppService.ACTION_CHECKVERSION_FAILURE:
+                    view.checkFailure();
+                    break;
+                case UpdateAppService.ACTION_CHECKVERSION_SAME:
+                    view.checkSame();
+                    break;
+                case UpdateAppService.ACTION_CHECKVERSION_NEWVERSION:
+                    view.checkNewVersion((UpdateAppService.VersionBean) intent.getSerializableExtra("VersionBean"));
+                    break;
 
+                case UpdateAppService.ACTION_LOADAPK_FAILURE:
+                    view.loadFailure();
+                    break;
+                case UpdateAppService.ACTION_LOADAPK_PROGRESS:
+                    view.loadProgress(intent.getIntExtra("progress",0),intent.getIntExtra("totalLength",0));
+                    break;
+                case UpdateAppService.ACTION_LOADAPK_SUCCEED:
+                    view.loadSucceed(intent.getStringExtra("path"));
+                    break;
+            }
         }
     };
-
-    public UpdateAppPresenter(UpdateMvpView view) {
+    public UpdateAppPresenter(UpdateMvpView view,Context context) {
         this.view = view;
-        context = (Context)view;
+        this.context = context;
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(UpdateAppService.ACTION_CHECKVERSION_FAILURE);
+        filter.addAction(UpdateAppService.ACTION_CHECKVERSION_SAME);
+        filter.addAction(UpdateAppService.ACTION_CHECKVERSION_NEWVERSION);
+        filter.addAction(UpdateAppService.ACTION_LOADAPK_FAILURE);
+        filter.addAction(UpdateAppService.ACTION_LOADAPK_PROGRESS);
+        filter.addAction(UpdateAppService.ACTION_LOADAPK_SUCCEED);
+        this.context.registerReceiver(receiver,filter);
     }
 
-    public void start(){
+    public void startCheck(){
         // 检查是否有新版本信息，有则弹出升级对话框
-        Intent intent = new Intent();
-        intent.setClass(context, UpdateAppService.class);
-        intent.setAction(context.getResources().getString(R.string.action_update));
-        context.bindService(intent,connection,context.BIND_AUTO_CREATE);
+        UpdateAppService.startCheck(context);
+    }
+
+    public void startLoad(UpdateAppService.VersionBean newVersion){
+        UpdateAppService.startLoadApk(context,newVersion);
     }
 
     /**
      * 用于注销服务
      */
     public void destory(){
-        context.unbindService(connection);
-    }
-
-    @Override
-    public void onNewVersionLoaded(VersionInfo newVersionInfo) {
-        showUpdateDialog(newVersionInfo.getVerion(),newVersionInfo.getDescription(),newVersionInfo.getDownloadUrl());
-    }
-
-    //该方法在子线程中执行
-    @Override
-    public void onDownloadProgressChange(long loaded, long total) {
-        progressDialog.setMax((int)total);
-        progressDialog.setProgress((int)loaded);
-    }
-
-    @Override
-    public void onNewApkDownloaded(File file) {
-        MyUtil.install(context,file);
-    }
-
-    @Override
-    public void onDownloadFailed(String message) {
-        progressDialog.dismiss();
-        Toast.makeText(context.getApplicationContext(),message,Toast.LENGTH_SHORT).show();
-    }
-
-
-    /**
-     * 用户用户选择是否更新
-     * @param version          新的版本号
-     * @param description      新版本描述信息
-     * @param url              新版本下载地址
-     */
-    private void showUpdateDialog(final String version, final String description, final String url) {
-        final MyDialog myDialog = new MyDialog(context);
-        myDialog.setTitle(String.format(context.getResources().getString(R.string.dialog_title_update_note), version));
-        myDialog.setMessage(description);
-        myDialog.setYESText(context.getResources().getString(R.string.button_update_now));
-        myDialog.setNOText(context.getResources().getString(R.string.button_update_later));
-        myDialog.setPositiveListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myDialog.dismiss();
-                progressDialog = new ProgressDialog(context);
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                progressDialog.setTitle(String.format(context.getResources().getString(R.string.progress_dialog_title), version));
-                progressDialog.setCancelable(false);
-                progressDialog.show();
-
-                //下载apk
-                service.downloadNewApk(url);
-            }
-        });
-        myDialog.show();
+        context.unregisterReceiver(receiver);
     }
 }
