@@ -58,15 +58,17 @@ public class CommunicationProtectorActivity extends MyAppCompatActivity implemen
                 break;
             case R.id.ll_blackwhitelist:
                 toAntherAvitvity(CommunicationWhiteBlackSetActivity.class);
+                popupWindow.dismiss();
                 break;
             case R.id.ll_interceptionsetting:
                 toAntherAvitvity(CommunicationInterceptionSet.class);
+                popupWindow.dismiss();
                 break;
             case R.id.ll_phonenumberplace:
                 toAntherAvitvity(CommunicationNumberQuery.class);
+                popupWindow.dismiss();
                 break;
         }
-        popupWindow.dismiss();
     }
 
     private void showPopup() {

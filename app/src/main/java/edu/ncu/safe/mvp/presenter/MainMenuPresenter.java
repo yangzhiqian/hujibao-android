@@ -43,7 +43,7 @@ public class MainMenuPresenter {
 
     public void init() {
 
-        view.onItemsGet(getMainMenuInfo());initUser();
+        view.onItemsGet(getMainMenuInfo());
     }
     public void reflesh() {
         initUser();
