@@ -16,9 +16,6 @@ import android.graphics.SweepGradient;
 import android.util.AttributeSet;
 import android.view.View;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 import edu.ncu.safe.R;
 import edu.ncu.safe.util.MyMathUtil;
 
@@ -61,6 +58,7 @@ public class MyProgressBar extends View {
     private int titleTextColor = Color.parseColor("#6cbd45");//标题的颜色
     private boolean hasPercent = true;  //是否显示百分比
     private float percent = 0;        //百分比的值
+    private float sweepPercent = percent;//显示的百分比
     private float percentTextSize = 30;//百分比显示的字体大小
     private int percentTextColor = Color.WHITE;  //百分比的颜色
     private int unuseColor = Color.parseColor("#66d2d2d2");   //背景圆圈的颜色
@@ -77,10 +75,10 @@ public class MyProgressBar extends View {
     private int times = 0;//loop次数
     private int totalTimes = loopSpeed / FLASHTIME;
 
-    private float toPercent = 0;
-    private ToPercentRunnable toPercentRunnable;
-    float d;
+
+    private ToPercentThread toPercentThread;
     long sleepTime = (long) (loopSpeed * PERPERCENT / 100);
+
 
     public MyProgressBar(Context context) {
         super(context);
@@ -157,13 +155,13 @@ public class MyProgressBar extends View {
         init();
     }
 
-    private void init(){
+    private void init() {
         //设置背景进度画笔
         progressBkPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         progressBkPaint.setColor(unuseColor);
         //设置进度画笔
         progressPgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        if(progressStyle==PROGRESS_STYLE_LOOP){
+        if (progressStyle == PROGRESS_STYLE_LOOP) {
             progressPgPaint.setStyle(Paint.Style.STROKE);
             progressPgPaint.setStrokeWidth(arcWidth);
             BlurMaskFilter maskFilter = new BlurMaskFilter(arcWidth / 3, BlurMaskFilter.Blur.INNER);
@@ -183,13 +181,14 @@ public class MyProgressBar extends View {
         titlePaint.setColor(titleTextColor);
     }
 
-    private void initShader(){
+    private void initShader() {
         circleVerGradient = new LinearGradient(beginX + rect.width() / 2, beginY + rect.height(), beginX + rect.width() / 2, beginY, beginColor, endColor, Shader.TileMode.CLAMP);
         arcGradient = new SweepGradient(beginX + rect.width() / 2, beginY + rect.height() / 2, beginColor, endColor);//Shader.TileMode.CLAMP
         loopGradient = new SweepGradient(beginX + rect.width() / 2, beginY + rect.height() / 2, endColor, beginColor);//Shader.TileMode.CLAMP
         rectHorGradient = new LinearGradient(beginX, beginY + rect.height() / 2, beginX + rect.width(), beginY + rect.height() / 2, beginColor, endColor, Shader.TileMode.CLAMP);
         rectVerGradient = new LinearGradient(beginX + rect.width() / 2, beginY + rect.height(), beginX + rect.width() / 2, beginY, beginColor, endColor, Shader.TileMode.CLAMP);
     }
+
     @Override
     protected void onSizeChanged(int w, int h, int ow, int oh) {
         super.onSizeChanged(w, h, ow, oh);
@@ -197,8 +196,6 @@ public class MyProgressBar extends View {
         height = h;
         shouldSetRect = true;
     }
-
-    private Lock lock;
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -235,7 +232,7 @@ public class MyProgressBar extends View {
         }
 
         if (isSweeping) {
-            percent = (float) ((percent + FLASHTIME * 100.0 / loopSpeed) % 100);
+            sweepPercent = (float) ((sweepPercent + FLASHTIME * 100.0 / loopSpeed) % 100);
         }
         if (isSweeping || progressStyle == PROGRESS_STYLE_LOOP) {
             postInvalidateDelayed(FLASHTIME);
@@ -276,31 +273,43 @@ public class MyProgressBar extends View {
         shouldSetRect = false;
     }
 
+    /**
+     * 画水平的矩形进度
+     */
     private void drawStyleRectangleHorizontal(Canvas canvas) {
         //画背景
         canvas.drawRect(rect, progressBkPaint);
         //画进度
         progressPgPaint.setShader(rectHorGradient);
-        canvas.drawRect(beginX, beginY, beginX + rect.width() * percent / 100, beginY + rect.height(), progressPgPaint);
+        canvas.drawRect(beginX, beginY, beginX + rect.width() * sweepPercent / 100, beginY + rect.height(), progressPgPaint);
     }
 
+    /**
+     * 画垂直的矩形进度
+     */
     private void drawStyleRectangleVertical(Canvas canvas) {
         //画背景
         canvas.drawRect(rect, progressBkPaint);
         //画进度
         progressPgPaint.setShader(rectVerGradient);
-        canvas.drawRect(beginX, beginY + rect.height() - rect.height() * percent / 100, beginX + rect.width(), beginY + rect.height(), progressPgPaint);
+        canvas.drawRect(beginX, beginY + rect.height() - rect.height() * sweepPercent / 100, beginX + rect.width(), beginY + rect.height(), progressPgPaint);
     }
 
+    /**
+     * 画垂直的圆进度
+     */
     private void drawStyleVertical(Canvas canvas) {
         //画背景圆
         canvas.drawCircle(beginX + rect.width() / 2, beginY + rect.height() / 2, rect.width() / 2, progressBkPaint);
         //画进度
         progressPgPaint.setShader(circleVerGradient);
-        float degree = MyMathUtil.toAngle(0, 360, percent, 10);
+        float degree = MyMathUtil.toAngle(0, 360, sweepPercent, 10);
         canvas.drawArc(rect, 90 - degree / 2, degree, false, progressPgPaint);
     }
 
+    /**
+     * 画扇形的圆进度
+     */
     private void drawStyleArc(Canvas canvas) {
         //画背景圆
         canvas.drawCircle(beginX + rect.width() / 2, beginY + rect.height() / 2, rect.width() / 2, progressBkPaint);
@@ -309,9 +318,12 @@ public class MyProgressBar extends View {
         matrix.setRotate(-90, beginX + rect.width() / 2, beginY + rect.height() / 2);
         arcGradient.setLocalMatrix(matrix);
         progressPgPaint.setShader(arcGradient);
-        canvas.drawArc(rect, -90, (float) (percent * 3.6), true, progressPgPaint);
+        canvas.drawArc(rect, -90, (float) (sweepPercent * 3.6), true, progressPgPaint);
     }
 
+    /**
+     * 画空心圆进度
+     */
     private void drawStyleLoop(Canvas canvas) {
         Matrix matrix = new Matrix();
         float dAngle = times * 360.0f / totalTimes;
@@ -322,16 +334,22 @@ public class MyProgressBar extends View {
         times = (times + 1) % totalTimes;
     }
 
+    /**
+     * 画百分比的文字
+     */
     private void drawPercent(Canvas canvas) {
         //写上百分比
         Paint.FontMetrics fontMetrics = percentPaint.getFontMetrics();
-        String p = (percent - (int) percent - 0.5f) > 0 ? (int) (percent + 1) + "%" : (int) percent + "%";
+        String p = (sweepPercent - (int) sweepPercent - 0.5f) > 0 ? (int) (sweepPercent + 1) + "%" : (int) sweepPercent + "%";
         float w = percentPaint.measureText(p);
         float x = beginX + rect.width() / 2 - w / 2;
         float y = beginY + rect.height() / 2 + (fontMetrics.leading - (fontMetrics.top + fontMetrics.bottom) / 2);
         canvas.drawText(p, x, y, percentPaint);
     }
 
+    /**
+     * 画标题
+     */
     private void drawTitle(Canvas canvas) {
         //写上标题
         float titleWidth = titlePaint.measureText(title);
@@ -342,18 +360,46 @@ public class MyProgressBar extends View {
     }
 
 
-    private void toPercent(float toNewPercent) {
-        if (isSweeping) {
-            isSweeping = false;
-            percent = 0;
+    /**
+     * 改变百分比
+     */
+    private synchronized void toPercent() {
+        if(isSweeping){
+            //无限循环动画，无效
+            return;
         }
-        new Thread(new ToPercentRunnable(toNewPercent)).start();
+        if (Math.abs(sweepPercent - percent) < 0.01f) {
+            //直接设置的或者已经到了准确的位置
+            sweepPercent = percent;
+            //刷新
+            invalidate();
+            //如果线程还存在，则关闭线程
+            if (toPercentThread != null) {
+                toPercentThread.interrupt();
+                toPercentThread = null;
+            }
+            return;
+        }
+        //需要滑动,开启线程
+        if (toPercentThread == null) {
+            toPercentThread = new ToPercentThread();
+            toPercentThread.start();
+        }else{
+            //已经在开启了
+            toPercentThread.resetDis();
+        }
     }
 
+    /**
+     * 获取标题的字体大小，sp
+     */
     public float getTitleTextSize() {
         return titleTextSize;
     }
 
+    /**
+     * 设置标题字体的大小，sp
+     */
     public void setTitleTextSize(float titleTextSize) {
         this.titleTextSize = titleTextSize;
         titlePaint.setTextSize(titleTextSize);
@@ -361,29 +407,54 @@ public class MyProgressBar extends View {
         invalidate();
     }
 
+    /**
+     * 获取进度，是设置的准确的进度，如果调用了{@link #setPercentSlow(float)}，显示的可能和当前放回的不相等。
+     */
     public float getPercent() {
         return percent;
     }
 
+    /**
+     * 有进度变化的设置进度,如果设置循环动画，该方法无效
+     *
+     * @param percent [0-100]
+     */
     public void setPercentSlow(float percent) {
-        if(percent<0||percent>100){
-            return ;
-        }
-        toPercent(percent);
-    }
-
-    public void setPercentimmediately(float percent) {
-        if(percent<0||percent>100){
-            return ;
+        if (percent < 0 || percent > 100 || isSweeping) {
+            return;
         }
         this.percent = percent;
-        invalidate();
+        toPercent();
     }
 
+    /**
+     * 立即设置进度,如果设置循环动画，该方法无效
+     *
+     * @param percent [0-100]
+     */
+    public void setPercentimmediately(float percent) {
+        if (percent < 0 || percent > 100|| isSweeping) {
+            return;
+        }
+        this.percent = percent;
+        this.sweepPercent = this.percent;
+        toPercent();
+    }
+
+    /**
+     * 获取标题文字的颜色<br/>
+     *
+     * @see Color#parseColor(String)
+     */
     public int getTitleTextColor() {
         return titleTextColor;
     }
 
+    /**
+     * 设置标题文字的颜色<br/>
+     *
+     * @see Color#parseColor(String)
+     */
     public void setTitleTextColor(int titleTextColor) {
         this.titleTextColor = titleTextColor;
         titlePaint.setColor(titleTextColor);
@@ -391,30 +462,56 @@ public class MyProgressBar extends View {
 
     }
 
+    /**
+     * 获取百分比文字的大小 sp
+     */
     public float getPercentTextSize() {
         return percentTextSize;
     }
 
+    /**
+     * 设置百分比文字的大小 sp
+     *
+     * @param percentTextSize
+     */
     public void setPercentTextSize(float percentTextSize) {
         this.percentTextSize = percentTextSize;
         percentPaint.setTextSize(percentTextSize);
         invalidate();
     }
 
+    /**
+     * 获取百分比文字的颜色<br/>
+     *
+     * @see Color#parseColor(String)
+     */
     public int getPercentTextColor() {
         return percentTextColor;
     }
 
+    /**
+     * 设置百分比文字的颜色<br/>
+     *
+     * @see Color#parseColor(String)
+     */
     public void setPercentTextColor(int percentTextColor) {
         this.percentTextColor = percentTextColor;
         percentPaint.setColor(percentTextColor);
         invalidate();
     }
 
+    /**
+     * 获取标题的文字内容
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * 设置标题的文字内容
+     *
+     * @param title
+     */
     public void setTitle(String title) {
         this.title = title;
         shouldSetRect = true;
@@ -456,7 +553,7 @@ public class MyProgressBar extends View {
     }
 
     public void setHasTitle(boolean hasTitle) {
-        if(this.hasPercent==hasTitle){
+        if (this.hasPercent == hasTitle) {
             return;
         }
         this.hasTitle = hasTitle;
@@ -469,7 +566,7 @@ public class MyProgressBar extends View {
     }
 
     public void setHasPercent(boolean hasPercent) {
-        if(this.hasPercent==hasPercent){
+        if (this.hasPercent == hasPercent) {
             return;
         }
         this.hasPercent = hasPercent;
@@ -491,6 +588,11 @@ public class MyProgressBar extends View {
         return arcWidth;
     }
 
+    /**
+     * 设置环形进度条的宽度，只有style为{@link #PROGRESS_STYLE_LOOP}时有效
+     *
+     * @param arcWidth
+     */
     public void setArcWidth(float arcWidth) {
         this.arcWidth = arcWidth;
         if(progressStyle==PROGRESS_STYLE_LOOP){
@@ -499,7 +601,7 @@ public class MyProgressBar extends View {
             BlurMaskFilter maskFilter = new BlurMaskFilter(arcWidth / 3, BlurMaskFilter.Blur.INNER);
             progressPgPaint.setMaskFilter(maskFilter);
             progressPgPaint.setStrokeCap(Paint.Cap.ROUND);
-        }else{
+        } else {
             return;
         }
         invalidate();
@@ -535,36 +637,39 @@ public class MyProgressBar extends View {
         invalidate();
     }
 
-    class ToPercentRunnable implements Runnable {
-        private float toNewPercent = 0;
+    public boolean isSweeping() {
+        return isSweeping;
+    }
 
-        public ToPercentRunnable(float toNewPercent) {
-            this.toNewPercent = toNewPercent;
-        }
+    public void setSweeping(boolean sweeping) {
+        isSweeping = sweeping;
+    }
 
+
+    private class ToPercentThread extends Thread{
+        private float dis;
         @Override
         public void run() {
-            if (lock == null) {
-                lock = new ReentrantLock();
-            }
-            if (lock.tryLock()) {
-                toPercent = toNewPercent;
-                d = toPercent > percent ? PERPERCENT : -1 * PERPERCENT;
-                while (Math.abs(toPercent - percent) > PERPERCENT) {
-                    try {
-                        Thread.sleep(sleepTime);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    percent += d;
-                    postInvalidate();
+            resetDis();
+            while (Math.abs(sweepPercent - percent) > PERPERCENT) {
+                try {
+                    Thread.sleep(sleepTime);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-                lock.unlock();
-            } else {
-                percent = toPercent;
-                toPercent = toNewPercent;
-                d = toPercent > percent ? PERPERCENT : -1 * PERPERCENT;
+                sweepPercent += dis;
+                postInvalidate();
             }
+            synchronized (MyProgressBar.this){
+                toPercentThread = null;
+            }
+        }
+
+        /**
+         * 重新设置dis再进行变换
+         */
+        void resetDis(){
+            dis = percent > sweepPercent ? PERPERCENT : -1 * PERPERCENT;
         }
     }
 }
