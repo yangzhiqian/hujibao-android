@@ -14,7 +14,7 @@ import edu.ncu.safe.engine.BackUpDataOperator;
 import edu.ncu.safe.engine.NetDataOperator.BACKUP_TYPE;
 import edu.ncu.safe.engine.PhoneSmsCloudOperator;
 import edu.ncu.safe.engine.PhoneSmsOperator;
-import edu.ncu.safe.myadapter.BackupBaseFragment;
+import edu.ncu.safe.base.fragment.BackupBaseFragment;
 import edu.ncu.safe.util.ContactUtil;
 
 /**

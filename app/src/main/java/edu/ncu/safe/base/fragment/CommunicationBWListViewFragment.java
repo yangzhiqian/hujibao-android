@@ -1,4 +1,4 @@
-package edu.ncu.safe.myadapter;
+package edu.ncu.safe.base.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,7 +25,7 @@ import edu.ncu.safe.db.dao.CommunicationDatabase;
 import edu.ncu.safe.domain.WhiteBlackNumberInfo;
 import edu.ncu.safe.util.MyUtil;
 
-public abstract class MyLIstViewFragment extends Fragment implements OnClickListener{
+public abstract class CommunicationBWListViewFragment extends Fragment implements OnClickListener{
 	protected int phoneActivtId = R.drawable.phonered;
 	protected int phoneInactivtId = R.drawable.phonegintercepteray;
 	protected int messageAcitvityID = R.drawable.messagered;

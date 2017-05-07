@@ -1,15 +1,27 @@
 package edu.ncu.safe.ui;
 
-import android.os.Bundle;
-
 import edu.ncu.safe.R;
+import edu.ncu.safe.base.activity.BackAppCompatActivity;
 
-public class ShareActivity extends MyAppCompatActivity {
+public class ShareActivity extends BackAppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_share);
-        initToolBar(getResources().getString(R.string.title_share));
+    protected int initLayout() {
+        return R.layout.activity_share;
+    }
+
+    @Override
+    protected void initViews() {
+
+    }
+
+    @Override
+    protected void initCreate() {
+
+    }
+
+    @Override
+    protected CharSequence initTitle() {
+        return getResources().getString(R.string.title_share);
     }
 }

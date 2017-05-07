@@ -1,5 +1,6 @@
-package edu.ncu.safe.ui;
+package edu.ncu.safe.base.activity;
 
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
@@ -7,14 +8,12 @@ import android.widget.TextView;
 import edu.ncu.safe.R;
 
 /**
- * Created by Mr_Yang on 2016/7/12.
+ * Created by Mr_Yang on 2016/7/12.<br/>
+ * 统一样式，继承BaseAppCompatActivity，统一toolbar
  */
-public class MyAppCompatActivity extends BaseAppCompatActivity {
-    protected Toolbar toolbar;
-
-    protected void initToolBar(CharSequence title) {
-        setToolBarTitle(title);
-        toolbar = (Toolbar) findViewById(R.id.id_toolbar);
+public abstract  class BackAppCompatActivity extends BaseAppCompatActivity {
+    protected void initToolBar() {
+        setToolBarTitle(initTitle());
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);// 隐藏标题
 //        getSupportActionBar().setIcon(R.drawable.user);//设置图标
@@ -28,6 +27,9 @@ public class MyAppCompatActivity extends BaseAppCompatActivity {
             }
         });
     }
+
+    protected abstract  CharSequence initTitle();
+
     protected  void setToolBarTitle(CharSequence title){
         ((TextView)findViewById(R.id.tv_title)).setText(title);
     }

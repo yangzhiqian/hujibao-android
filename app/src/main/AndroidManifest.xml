@@ -51,8 +51,8 @@
         <activity android:name=".ui.FlowsStatisticsActivity" />
         <activity android:name=".ui.CommunicationProtectorActivity" />
         <activity android:name=".ui.CommunicationWhiteBlackSetActivity" />
-        <activity android:name=".ui.CommunicationNumberQuery" />
-        <activity android:name=".ui.CommunicationInterceptionSet" />
+        <activity android:name=".ui.CommunicationNumberPlaceQueryActivity" />
+        <activity android:name=".ui.CommunicationInterceptionSetActivity" />
         <activity android:name=".ui.AppManagerAcitvity" />
         <activity android:name=".ui.SystemQuickenActivity" />
         <activity android:name=".ui.BackUpsActivity" />

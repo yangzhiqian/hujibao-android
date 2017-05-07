@@ -1,7 +1,6 @@
 package edu.ncu.safe.ui;
 
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -13,6 +12,7 @@ import java.util.List;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.adapter.SimpleFragmentPagerAdapter;
+import edu.ncu.safe.base.activity.BackAppCompatActivity;
 import edu.ncu.safe.db.dao.FlowsDatabase;
 import edu.ncu.safe.ui.fragment.FlowsAppLVFragment;
 import edu.ncu.safe.ui.fragment.FlowsDayLVFragment;
@@ -25,7 +25,7 @@ import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
 import lecho.lib.hellocharts.view.LineChartView;
 
-public class FlowsStatisticsActivity extends MyAppCompatActivity  {
+public class FlowsStatisticsActivity extends BackAppCompatActivity {
     private LineChartView chartView;
     private TabLayout tl_flowsstatistics;
     private ViewPager vp_flowsStatistics;
@@ -34,12 +34,28 @@ public class FlowsStatisticsActivity extends MyAppCompatActivity  {
     private TextView tv_gprswifi;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_flowsstatistics);
-        initToolBar(getResources().getString(R.string.title_flows_statistic));
-        initViews();
+    protected CharSequence initTitle() {
+        return getResources().getString(R.string.title_flows_statistic);
+    }
 
+    @Override
+    protected int initLayout() {
+        return R.layout.activity_flowsstatistics;
+    }
+
+    protected void initViews() {
+        chartView = (LineChartView) this.findViewById(R.id.chart);
+        tl_flowsstatistics = (TabLayout) findViewById(R.id.tl_flowsstatistics);
+        vp_flowsStatistics = (ViewPager) this
+                .findViewById(R.id.vp_flowsstatistics);
+        tv_gprs = (TextView) findViewById(R.id.tv_gprs);
+        tv_gprswifi = (TextView) findViewById(R.id.tv_gprswifi);
+
+        vp_flowsStatistics.addOnPageChangeListener(new MyPageChangeListener());
+    }
+
+    @Override
+    protected void initCreate() {
         //初始化vp内容
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(new FlowsDayLVFragment());
@@ -48,24 +64,11 @@ public class FlowsStatisticsActivity extends MyAppCompatActivity  {
                 this,
                 getSupportFragmentManager(),
                 fragments,
-                new String[]{getString(R.string.flows_protector_detail_day_flows),getString(R.string.flows_protector_detail_app_flows)});
+                new String[]{getString(R.string.flows_protector_detail_day_flows), getString(R.string.flows_protector_detail_app_flows)});
         vp_flowsStatistics.setAdapter(adapter);
 
         tl_flowsstatistics.setupWithViewPager(vp_flowsStatistics);
         tl_flowsstatistics.setTabMode(TabLayout.MODE_FIXED);
-
-        vp_flowsStatistics.addOnPageChangeListener(new MyPageChangeListener());
-
-    }
-
-    private void initViews() {
-        chartView = (LineChartView) this.findViewById(R.id.chart);
-        tl_flowsstatistics = (TabLayout) findViewById(R.id.tl_flowsstatistics);
-        vp_flowsStatistics = (ViewPager) this
-                .findViewById(R.id.vp_flowsstatistics);
-        tv_gprs = (TextView) findViewById(R.id.tv_gprs);
-        tv_gprswifi = (TextView) findViewById(R.id.tv_gprswifi);
-
     }
 
     @Override
@@ -127,11 +130,11 @@ public class FlowsStatisticsActivity extends MyAppCompatActivity  {
 
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
-            if(arg1==0 && arg2==0){
-                tv_gprs.setAlpha(arg0==0?1:0);
+            if (arg1 == 0 && arg2 == 0) {
+                tv_gprs.setAlpha(arg0 == 0 ? 1 : 0);
                 tv_gprswifi.setAlpha(arg0);
-            }else{
-                tv_gprs.setAlpha(1-arg1);
+            } else {
+                tv_gprs.setAlpha(1 - arg1);
                 tv_gprswifi.setAlpha(arg1);
             }
         }

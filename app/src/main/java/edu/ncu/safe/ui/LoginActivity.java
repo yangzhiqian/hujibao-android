@@ -9,11 +9,12 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 
 import edu.ncu.safe.R;
+import edu.ncu.safe.base.activity.BackAppCompatActivity;
 import edu.ncu.safe.domain.User;
 import edu.ncu.safe.mvp.presenter.LoginPresenter;
 import edu.ncu.safe.mvp.view.LoginMvpView;
 
-public class LoginActivity extends MyAppCompatActivity implements LoginMvpView, OnClickListener {
+public class LoginActivity extends BackAppCompatActivity implements LoginMvpView, OnClickListener {
     public static final int REQUEST_CODE_REGIST = 1;
     // UI
     private ScrollView scrollView;
@@ -25,17 +26,16 @@ public class LoginActivity extends MyAppCompatActivity implements LoginMvpView, 
     private LoginPresenter presenter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        initToolBar(getResources().getString(R.string.title_log_in));
-        initView();
-
-        presenter = new LoginPresenter(this,getApplicationContext());
-        presenter.init();
+    protected CharSequence initTitle() {
+        return getResources().getString(R.string.title_log_in);
     }
 
-    private void initView(){
+    @Override
+    protected int initLayout() {
+        return R.layout.activity_login;
+    }
+
+    protected void initViews(){
         scrollView = (ScrollView) findViewById(R.id.login_form);
         userName = (EditText) findViewById(R.id.uname);
         pwd = (EditText) findViewById(R.id.password);
@@ -46,6 +46,13 @@ public class LoginActivity extends MyAppCompatActivity implements LoginMvpView, 
         btn_longin.setOnClickListener(this);
         findViewById(R.id.btn_regist).setOnClickListener(this);
     }
+
+    @Override
+    protected void initCreate() {
+        presenter = new LoginPresenter(this,getApplicationContext());
+        presenter.init();
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){

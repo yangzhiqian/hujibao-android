@@ -1,13 +1,10 @@
 package edu.ncu.safe.ui;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -22,9 +19,10 @@ import java.util.Comparator;
 import java.util.List;
 
 import edu.ncu.safe.R;
+import edu.ncu.safe.adapter.SystemQuickenELVAdapter;
+import edu.ncu.safe.base.activity.BackAppCompatActivity;
 import edu.ncu.safe.customerview.ImageTextView;
 import edu.ncu.safe.customerview.MyProgressBar;
-import edu.ncu.safe.adapter.SystemQuickenELVAdapter;
 import edu.ncu.safe.domain.CacheInfo;
 import edu.ncu.safe.domain.ELVParentItemInfo;
 import edu.ncu.safe.domain.RunningApplicationInfo;
@@ -37,7 +35,7 @@ import edu.ncu.safe.util.MyUtil;
 /**
  * Created by Mr_Yang on 2016/5/26.
  */
-public class SystemQuickenActivity extends MyAppCompatActivity implements View.OnClickListener, SystemQuickenELVAdapter.OnItemCheckedListener, AbsListView.OnScrollListener {
+public class SystemQuickenActivity extends BackAppCompatActivity implements View.OnClickListener, SystemQuickenELVAdapter.OnItemCheckedListener, AbsListView.OnScrollListener {
     private MyProgressBar mpb_innerMemory;
     private MyProgressBar mpb_outerMemory;
     private ExpandableListView elv_sweepResult;
@@ -58,11 +56,19 @@ public class SystemQuickenActivity extends MyAppCompatActivity implements View.O
     private BroadcastReceiver cacheManageReceiver;
     private BroadcastReceiver innerMemoryManageReceiver;
 
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_systemquicken);
-        initToolBar(getResources().getString(R.string.title_system_quick));
+    protected CharSequence initTitle() {
+        return getResources().getString(R.string.title_system_quick);
+    }
+
+    @Override
+    protected int initLayout() {
+        return R.layout.activity_systemquicken;
+    }
+
+    @Override
+    protected void initViews() {
         //初始化控件
         mpb_innerMemory = (MyProgressBar) this.findViewById(R.id.mpb_innermemory);
         mpb_sweep = (MyProgressBar) this.findViewById(R.id.mpb_sweep);
@@ -71,24 +77,27 @@ public class SystemQuickenActivity extends MyAppCompatActivity implements View.O
         tv_sweepContent = (TextView) this.findViewById(R.id.tv_sweepContent);
         elv_sweepResult = (ExpandableListView) this.findViewById(R.id.elv_sweepResult);
         itv_clean = (ImageTextView) this.findViewById(R.id.itv_clean);
+        //设置监听器
+        itv_clean.setOnClickListener(this);
+        elv_sweepResult.setOnScrollListener(this);
+    }
 
+    @Override
+    protected void initCreate() {
         animationAppear = AnimationUtils.loadAnimation(this, R.anim.cleanbuttonappear);
-        ;
         animationDisappear = AnimationUtils.loadAnimation(this, R.anim.cleanbuttondisappear);
 
         //设置expandableListView适配器
-        datas = new ArrayList<ELVParentItemInfo>();
+        datas = new ArrayList<>();
         adapter = new SystemQuickenELVAdapter(getApplicationContext(), datas);
         elv_sweepResult.setAdapter(adapter);
-        elv_sweepResult.setEmptyView(ll_sweep);
-        //设置监听器
-        itv_clean.setOnClickListener(this);
         adapter.setOnItemCheckedListener(this);
-        elv_sweepResult.setOnScrollListener(this);
+        elv_sweepResult.setEmptyView(ll_sweep);
         //注册接收器
         registerReceivers();
         //扫描垃圾
-        startService(AppRubbishManageService.class,getString(R.string.Action_Service_AppExternalRubbishScannStart));
+        startService(AppRubbishManageService.class, getString(R.string.Action_Service_AppExternalRubbishScannStart));
+
     }
 
     @Override
@@ -127,8 +136,9 @@ public class SystemQuickenActivity extends MyAppCompatActivity implements View.O
         registerReceiver(innerMemoryManageReceiver, filter);
 
     }
-    private void startService(Class clazz,String action){
-        Intent intent = new Intent(this,clazz);
+
+    private void startService(Class clazz, String action) {
+        Intent intent = new Intent(this, clazz);
         intent.setAction(action);
         startService(intent);
     }
@@ -150,7 +160,7 @@ public class SystemQuickenActivity extends MyAppCompatActivity implements View.O
         switch (v.getId()) {
             case R.id.itv_clean:
                 //点击了清理垃圾按钮，通知服务清理垃圾
-                startService(AppRubbishManageService.class,getString(R.string.Action_Service_AppExternalRubbishCleanStart));
+                startService(AppRubbishManageService.class, getString(R.string.Action_Service_AppExternalRubbishCleanStart));
                 //按钮消失动画
                 itv_clean.setVisibility(View.GONE);
                 itv_clean.startAnimation(animationDisappear);
@@ -199,7 +209,7 @@ public class SystemQuickenActivity extends MyAppCompatActivity implements View.O
         data.setChilds(cacheInfos);
         datas.add(data);
         //开始扫描内存垃圾
-        startService(InnerMemoryManageService.class,getString(R.string.Action_Service_InnerMemoryRubbishScannStart));
+        startService(InnerMemoryManageService.class, getString(R.string.Action_Service_InnerMemoryRubbishScannStart));
     }
 
     //------------------------------app缓存清理回调------------------------------
@@ -211,15 +221,16 @@ public class SystemQuickenActivity extends MyAppCompatActivity implements View.O
     private void onCacheCleanInDoing() {
         makeToast("清除缓存任务已经开始了");
     }
+
     private void onCacheCleanAwait() {
     }
 
     private void onCacheCleanEnd(boolean result) {
         //启动内存清理
         Intent intent = new Intent(getString(R.string.Action_Service_InnerMemoryRubbishCleanStart));
-        intent.setClass(this,InnerMemoryManageService.class);
+        intent.setClass(this, InnerMemoryManageService.class);
         Bundle bundle = new Bundle();
-        bundle.putStringArrayList("CleanProcessNames",adapter.getCheckAppProcessNames());
+        bundle.putStringArrayList("CleanProcessNames", adapter.getCheckAppProcessNames());
         intent.putExtras(bundle);
         startService(intent);
     }
@@ -288,7 +299,7 @@ public class SystemQuickenActivity extends MyAppCompatActivity implements View.O
         adapter.setInfos(datas);
         adapter.notifyDataSetChanged();
         //再次扫描
-        startService(AppRubbishManageService.class,getString(R.string.Action_Service_AppExternalRubbishScannStart));
+        startService(AppRubbishManageService.class, getString(R.string.Action_Service_AppExternalRubbishScannStart));
     }
 
     ;

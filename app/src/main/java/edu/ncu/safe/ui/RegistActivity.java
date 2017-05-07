@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,12 +13,13 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 
 import edu.ncu.safe.R;
+import edu.ncu.safe.base.activity.BackAppCompatActivity;
 import edu.ncu.safe.customerview.CircleImageView;
 import edu.ncu.safe.domain.User;
 import edu.ncu.safe.mvp.presenter.RegistPresenter;
 import edu.ncu.safe.mvp.view.RegistMvpView;
 
-public class RegistActivity extends MyAppCompatActivity implements OnClickListener,RegistMvpView {
+public class RegistActivity extends BackAppCompatActivity implements OnClickListener, RegistMvpView {
     private static final int REQUEST_CODE_GET_ICON = 1;
     // UI
     private ScrollView sv_form;
@@ -35,35 +35,44 @@ public class RegistActivity extends MyAppCompatActivity implements OnClickListen
     private String iconPath;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_regist);
-        initToolBar(getResources().getString(R.string.title_regist));
-        init();
-        presenter = new RegistPresenter(this,getApplicationContext());
-        presenter.init();
+    protected CharSequence initTitle() {
+        return getResources().getString(R.string.title_regist);
     }
 
-    private void init(){
+    @Override
+    protected int initLayout() {
+        return R.layout.activity_regist;
+    }
+
+    @Override
+    protected void initViews() {
         sv_form = (ScrollView) findViewById(R.id.regist_form);
         progressView = findViewById(R.id.progress);
 
         civ_icon = (CircleImageView) findViewById(R.id.civ_icon);
-        et_uName= (EditText) findViewById(R.id.et_uName);
+        et_uName = (EditText) findViewById(R.id.et_uName);
         et_pwd = (EditText) findViewById(R.id.et_pwd);
         et_pwdAgain = (EditText) findViewById(R.id.et_pwdagain);
         et_phone = (EditText) findViewById(R.id.et_phone);
         btn_regist = (Button) findViewById(R.id.btn_regist);
 
+        //设置监听
         civ_icon.setOnClickListener(this);
         btn_regist.setOnClickListener(this);
         findViewById(R.id.btn_login).setOnClickListener(this);
     }
+
+    @Override
+    protected void initCreate() {
+        presenter = new RegistPresenter(this, getApplicationContext());
+        presenter.init();
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_regist:
-                presenter.regist(et_uName,et_pwd,et_pwdAgain,et_phone,iconPath);
+                presenter.regist(et_uName, et_pwd, et_pwdAgain, et_phone, iconPath);
                 break;
             case R.id.btn_login:
                 finish();
@@ -85,7 +94,7 @@ public class RegistActivity extends MyAppCompatActivity implements OnClickListen
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             Uri uri = data.getData();
-            String[] proj = { MediaStore.Images.Media.DATA };
+            String[] proj = {MediaStore.Images.Media.DATA};
             Cursor actualimagecursor = managedQuery(uri, proj, null, null, null);
             int actual_image_column_index = actualimagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             actualimagecursor.moveToFirst();
@@ -116,22 +125,22 @@ public class RegistActivity extends MyAppCompatActivity implements OnClickListen
     public void onRegistSucceed(User user) {
         makeToast("注册成功");
         Intent intent = new Intent();
-        intent.putExtra("uName",user.getName());
-        setResult(RESULT_OK,intent);
+        intent.putExtra("uName", user.getName());
+        setResult(RESULT_OK, intent);
         finish();
         overridePendingTransition(R.anim.activit3dtoright_in, R.anim.activit3dtoright_out);
     }
 
     @Override
-    public void onRegistFail(EditText view,String errorMessage) {
+    public void onRegistFail(EditText view, String errorMessage) {
         btn_regist.setText(getString(R.string.button_regist));
         btn_regist.setClickable(true);
         btn_regist.setEnabled(true);
         progressView.setVisibility(View.GONE);
         sv_form.setEnabled(true);
-        if(view==null){
+        if (view == null) {
             makeToast(errorMessage);
-        }else{
+        } else {
             view.setError(errorMessage);
             view.requestFocus();
         }

@@ -20,7 +20,7 @@ import edu.ncu.safe.engine.ImageLoader;
 import edu.ncu.safe.engine.NetDataOperator;
 import edu.ncu.safe.engine.PhonePhotoOperator;
 import edu.ncu.safe.engine.PhonePhotoCloudOperator;
-import edu.ncu.safe.myadapter.BackupBaseFragment;
+import edu.ncu.safe.base.fragment.BackupBaseFragment;
 import edu.ncu.safe.ui.TouchImageViewActivity;
 import edu.ncu.safe.engine.NetDataOperator.BACKUP_TYPE;
 import edu.ncu.safe.util.BitmapUtil;

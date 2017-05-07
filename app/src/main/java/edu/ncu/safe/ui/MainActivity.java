@@ -2,17 +2,16 @@ package edu.ncu.safe.ui;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 
 import java.io.File;
 
 import edu.ncu.safe.R;
+import edu.ncu.safe.base.activity.BaseAppCompatActivity;
 import edu.ncu.safe.customerview.MyDialog;
 import edu.ncu.safe.mvp.presenter.UpdateAppPresenter;
 import edu.ncu.safe.mvp.view.UpdateMvpView;
@@ -20,12 +19,10 @@ import edu.ncu.safe.service.UpdateAppService;
 import edu.ncu.safe.ui.fragment.MainFragment;
 import edu.ncu.safe.ui.fragment.MainMenuFragment;
 import edu.ncu.safe.util.MyUtil;
-import okhttp3.internal.Util;
 
 public class MainActivity extends BaseAppCompatActivity implements UpdateMvpView {
     private static final String TAG = "MainActivity";
     // 主界面控件
-    private Toolbar toolbar;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private DrawerLayout drawerLayout;
     private ProgressDialog progressDialog;
@@ -35,10 +32,31 @@ public class MainActivity extends BaseAppCompatActivity implements UpdateMvpView
 
     private UpdateAppPresenter presenter;
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        initViews();
+
+    @Override
+    protected int initLayout() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void initToolBar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);// 隐藏标题
+//        getSupportActionBar().setIcon(R.drawable.user);//设置图标
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(false);// 是否显示返回按钮
+    }
+
+    @Override
+    protected void initViews() {
+        drawerLayout = (DrawerLayout) findViewById(R.id.id_drawerlayout);
+    }
+    @Override
+    protected void initCreate() {
+        //将toolbar左边的横条和drawerLayout关联起来
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this,
+                drawerLayout, toolbar, R.string.ok, R.string.cancle);
+        actionBarDrawerToggle.syncState();
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
 
         //设置出fragment
         FragmentManager fm = getSupportFragmentManager();
@@ -52,18 +70,6 @@ public class MainActivity extends BaseAppCompatActivity implements UpdateMvpView
     }
 
 
-    private void initViews() {
-        toolbar = (Toolbar) findViewById(R.id.id_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);// 隐藏标题
-//        getSupportActionBar().setIcon(R.drawable.user);//设置图标
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(false);// 是否显示返回按钮
-        drawerLayout = (DrawerLayout) findViewById(R.id.id_drawerlayout);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this,
-                drawerLayout, toolbar, R.string.ok, R.string.cancle);
-        actionBarDrawerToggle.syncState();
-        drawerLayout.setDrawerListener(actionBarDrawerToggle);
-    }
 
 
     @Override
@@ -149,6 +155,6 @@ public class MainActivity extends BaseAppCompatActivity implements UpdateMvpView
     public void loadSucceed(String path) {
         progressDialog.dismiss();
         makeToast("下载完成");
-        MyUtil.install(this,new File(path));
+        MyUtil.install(this, new File(path));
     }
 }

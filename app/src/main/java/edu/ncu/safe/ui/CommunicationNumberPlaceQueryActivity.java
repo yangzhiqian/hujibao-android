@@ -2,7 +2,6 @@ package edu.ncu.safe.ui;
 
 
 import android.app.ProgressDialog;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -14,6 +13,7 @@ import java.util.List;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.adapter.CommunicationLVNumberPlaceAdapter;
+import edu.ncu.safe.base.activity.BackAppCompatActivity;
 import edu.ncu.safe.db.dao.CommunicationDatabase;
 import edu.ncu.safe.engine.LoadPhoneNumberOwnerPalce;
 import edu.ncu.safe.engine.LoadPhoneNumberOwnerPalce.NumberPlaceInfo;
@@ -22,7 +22,7 @@ import edu.ncu.safe.engine.LoadPhoneNumberOwnerPalce.OnOwnerPlaceObtainedListene
 /**
  * Created by Mr_Yang on 2016/5/16.
  */
-public class CommunicationNumberQuery extends MyAppCompatActivity implements OnOwnerPlaceObtainedListener, View.OnClickListener {
+public class CommunicationNumberPlaceQueryActivity extends BackAppCompatActivity implements OnOwnerPlaceObtainedListener, View.OnClickListener {
 
     private static final int FAIL = 1;
     private static final int SUCCESS = 2;
@@ -54,20 +54,33 @@ public class CommunicationNumberQuery extends MyAppCompatActivity implements OnO
         }
     };
 
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_phonenumberplace);
-        initToolBar(getResources().getString(R.string.title_communication_protector_number_query));
+    protected CharSequence initTitle() {
+        return getResources().getString(R.string.title_communication_protector_number_query);
+    }
+
+    @Override
+    protected int initLayout() {
+        return R.layout.activity_phonenumberplace;
+    }
+
+    @Override
+    protected void initViews() {
         //初始化控件
         et_number = (EditText) findViewById(R.id.et_number);
         ib_to = (ImageButton) findViewById(R.id.ib_to);
         lv_queryRecoder = (ListView) findViewById(R.id.lv_queryrecoder);
+        //设置点击事件
+        ib_to.setOnClickListener(this);
+    }
+
+    @Override
+    protected void initCreate() {
         //初始化查询器
         place = new LoadPhoneNumberOwnerPalce(this);
         place.setOnOwnerPlaceObtainedListener(this);
-        //设置点击事件
-        ib_to.setOnClickListener(this);
         //设置lv数据
         db = new CommunicationDatabase(this);
         infos = db.queryAllNumberPlaceInfosFromDB();
@@ -75,6 +88,7 @@ public class CommunicationNumberQuery extends MyAppCompatActivity implements OnO
         //设置适配器
         lv_queryRecoder.setAdapter(adapter);
     }
+
     @Override
     public void OnOwnerPalceObtained(NumberPlaceInfo info) {
         dialog.dismiss();

@@ -7,10 +7,10 @@ import android.view.ViewGroup;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.domain.WhiteBlackNumberInfo;
-import edu.ncu.safe.myadapter.MyLIstViewFragment;
+import edu.ncu.safe.base.fragment.CommunicationBWListViewFragment;
 import edu.ncu.safe.util.ContactUtil;
 
-public class CommunicationWhiteListFragment extends MyLIstViewFragment {
+public class CommunicationWhiteListFragment extends CommunicationBWListViewFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

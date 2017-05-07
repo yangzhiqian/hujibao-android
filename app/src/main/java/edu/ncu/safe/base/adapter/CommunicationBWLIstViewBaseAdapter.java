@@ -1,4 +1,4 @@
-package edu.ncu.safe.myadapter;
+package edu.ncu.safe.base.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -25,7 +25,7 @@ import edu.ncu.safe.db.dao.CommunicationDatabase;
 import edu.ncu.safe.domain.WhiteBlackNumberInfo;
 import edu.ncu.safe.util.MyUtil;
 
-public abstract class MyLIstViewBaseAdapter extends BaseAdapter {
+public abstract class CommunicationBWLIstViewBaseAdapter extends BaseAdapter {
 	protected static final int TYPE_WHITE = 0;
 	protected static final int TYPE_BLACK = 1;
 	public  static final int BUTTON1 = 1;
@@ -37,7 +37,7 @@ public abstract class MyLIstViewBaseAdapter extends BaseAdapter {
 	protected List<ItemInfo> dialogInfos;//对话框中listview的主体内容
 	private MyDialogListViewAdapter myDialogListViewAdapter;//对话框listview的适配器
 	protected CommunicationDatabase database ;
-	public MyLIstViewBaseAdapter(Context context) {
+	public CommunicationBWLIstViewBaseAdapter(Context context) {
 		this.context = context;
 		dialogInfos = new ArrayList<ItemInfo>();
 		database = new CommunicationDatabase(context);

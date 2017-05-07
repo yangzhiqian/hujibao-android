@@ -1,4 +1,4 @@
-package edu.ncu.safe.myadapter;
+package edu.ncu.safe.base.fragment;
 
 
 import android.graphics.Color;

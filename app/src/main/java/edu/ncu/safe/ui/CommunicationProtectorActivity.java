@@ -1,7 +1,6 @@
 package edu.ncu.safe.ui;
 
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -18,23 +17,35 @@ import java.util.List;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.adapter.SimpleFragmentPagerAdapter;
+import edu.ncu.safe.base.activity.BackAppCompatActivity;
 import edu.ncu.safe.ui.fragment.CommunicationMsgFragment;
 import edu.ncu.safe.ui.fragment.CommunicationPhoneFragment;
 
-public class CommunicationProtectorActivity extends MyAppCompatActivity implements OnClickListener {
+public class CommunicationProtectorActivity extends BackAppCompatActivity implements OnClickListener {
     private ImageView iv_showPopup;
     private PopupWindow popupWindow;
+    private TabLayout tab;
+    private ViewPager vp_protectRecorder;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_communicationprotector);
-        initToolBar(getResources().getString(R.string.title_communication_protector));
+    protected CharSequence initTitle() {
+        return getResources().getString(R.string.title_communication_protector);
+    }
+
+    @Override
+    protected int initLayout() {
+        return R.layout.activity_communicationprotector;
+    }
+
+    @Override
+    protected void initViews() {
         iv_showPopup = (ImageView) findViewById(R.id.iv_showpopup);
-        TabLayout tab = (TabLayout) findViewById(R.id.tab_communication);
-        ViewPager vp_protectRecorder = (ViewPager) this.findViewById(R.id.vp_communication);
+        tab = (TabLayout) findViewById(R.id.tab_communication);
+        vp_protectRecorder = (ViewPager) this.findViewById(R.id.vp_communication);
+    }
 
-
+    @Override
+    protected void initCreate() {
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(new CommunicationMsgFragment());
         fragments.add(new CommunicationPhoneFragment());
@@ -42,8 +53,7 @@ public class CommunicationProtectorActivity extends MyAppCompatActivity implemen
                 this,
                 getSupportFragmentManager(),
                 fragments,
-                new String[]{"短信拦截", "电话拦截"},
-                new int[]{R.drawable.message_comm, R.drawable.phone}));
+                new String[]{"短信拦截", "电话拦截"}));
 
         iv_showPopup.setOnClickListener(this);
         tab.setupWithViewPager(vp_protectRecorder);
@@ -61,11 +71,11 @@ public class CommunicationProtectorActivity extends MyAppCompatActivity implemen
                 popupWindow.dismiss();
                 break;
             case R.id.ll_interceptionsetting:
-                toAntherAvitvity(CommunicationInterceptionSet.class);
+                toAntherAvitvity(CommunicationInterceptionSetActivity.class);
                 popupWindow.dismiss();
                 break;
             case R.id.ll_phonenumberplace:
-                toAntherAvitvity(CommunicationNumberQuery.class);
+                toAntherAvitvity(CommunicationNumberPlaceQueryActivity.class);
                 popupWindow.dismiss();
                 break;
         }

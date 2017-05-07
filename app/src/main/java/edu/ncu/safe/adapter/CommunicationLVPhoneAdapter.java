@@ -16,10 +16,10 @@ import edu.ncu.safe.R;
 import edu.ncu.safe.db.CommunicationDatabaseHelper;
 import edu.ncu.safe.db.dao.CommunicationDatabase;
 import edu.ncu.safe.domain.InterceptionInfo;
-import edu.ncu.safe.myadapter.MyLIstViewBaseAdapter;
+import edu.ncu.safe.base.adapter.CommunicationBWLIstViewBaseAdapter;
 import edu.ncu.safe.util.ContactUtil;
 
-public class CommunicationLVPhoneAdapter extends MyLIstViewBaseAdapter
+public class CommunicationLVPhoneAdapter extends CommunicationBWLIstViewBaseAdapter
         implements OnClickListener {
 
     private List<InterceptionInfo> infos;

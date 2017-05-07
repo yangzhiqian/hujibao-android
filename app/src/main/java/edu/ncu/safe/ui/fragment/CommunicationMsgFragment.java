@@ -15,7 +15,7 @@ import android.widget.Toast;
 import edu.ncu.safe.R;
 import edu.ncu.safe.adapter.CommunicationLVMASGAdapter;
 import edu.ncu.safe.db.dao.CommunicationDatabase;
-import edu.ncu.safe.myadapter.MyLIstViewBaseAdapter.OnDataChangedListener;
+import edu.ncu.safe.base.adapter.CommunicationBWLIstViewBaseAdapter.OnDataChangedListener;
 
 public class CommunicationMsgFragment extends Fragment implements
         OnItemClickListener, OnDataChangedListener {

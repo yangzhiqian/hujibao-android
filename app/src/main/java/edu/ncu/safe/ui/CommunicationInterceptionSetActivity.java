@@ -1,6 +1,5 @@
 package edu.ncu.safe.ui;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -12,15 +11,16 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import edu.ncu.safe.R;
-import edu.ncu.safe.customerview.MyDialog;
 import edu.ncu.safe.adapter.CommunicationLVInterceptionSetAdapter;
+import edu.ncu.safe.base.activity.BackAppCompatActivity;
+import edu.ncu.safe.customerview.MyDialog;
 import edu.ncu.safe.domain.InterceptionSetInfo;
 import edu.ncu.safe.engine.InterceptionSetOperation;
 
 /**
  * Created by Mr_Yang on 2016/5/17.
  */
-public class CommunicationInterceptionSet extends MyAppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class CommunicationInterceptionSetActivity extends BackAppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private ListView lv_interceptionMode;
     private LinearLayout ll_nightMode;
@@ -31,33 +31,44 @@ public class CommunicationInterceptionSet extends MyAppCompatActivity implements
     private InterceptionSetOperation operation;
     private InterceptionSetInfo setInfo;
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_communicationinterceptionset);
-        initToolBar(getResources().getString(R.string.title_communication_protector_set));
-        //初始化
+    protected CharSequence initTitle() {
+        return getResources().getString(R.string.title_communication_protector_set);
+    }
+
+    @Override
+    protected int initLayout() {
+        return R.layout.activity_communicationinterceptionset;
+    }
+
+    @Override
+    protected void initViews() {
         lv_interceptionMode = (ListView) this.findViewById(R.id.lv_interceptionmode);
         ll_nightMode = (LinearLayout) this.findViewById(R.id.ll_nightmode);
         tv_nightMode = (TextView) this.findViewById(R.id.tv_nightmode);
         cb_nightMode = (CheckBox) this.findViewById(R.id.cb_nightmode);
-
-        operation = new InterceptionSetOperation(this);
-        setInfo = operation.getInterceptionSetInfo();//获取配置信息
-        adapter = new CommunicationLVInterceptionSetAdapter(setInfo.getMode(), this);
-        lv_interceptionMode.setAdapter(adapter);
-
         //设置点击事件
         ll_nightMode.setOnClickListener(this);
         lv_interceptionMode.setOnItemClickListener(this);
     }
 
     @Override
+    protected void initCreate() {
+        //初始化
+        operation = new InterceptionSetOperation(this);
+        setInfo = operation.getInterceptionSetInfo();//获取配置信息
+        adapter = new CommunicationLVInterceptionSetAdapter(setInfo.getMode(), this);
+        lv_interceptionMode.setAdapter(adapter);
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
-       init();
+        init();
     }
-    private void init(){
+
+    private void init() {
         tv_nightMode.setText(setInfo.getNote());
         cb_nightMode.setChecked(setInfo.isNightMode());
     }
@@ -100,9 +111,9 @@ public class CommunicationInterceptionSet extends MyAppCompatActivity implements
                 (RadioButton) contentView.findViewById(R.id.rb_4),
                 (RadioButton) contentView.findViewById(R.id.rb_5),};
 
-        et_beginH.setText(setInfo.getBeginHour()+"");
-        et_beginM.setText(setInfo.getBeginMinute()+"");
-        et_endH.setText(setInfo.getEndHour()+"");
+        et_beginH.setText(setInfo.getBeginHour() + "");
+        et_beginM.setText(setInfo.getBeginMinute() + "");
+        et_endH.setText(setInfo.getEndHour() + "");
         et_endM.setText(setInfo.getEndMinute() + "");
 
         cb_1.setChecked(setInfo.getWeekEnable()[1]);
@@ -141,12 +152,12 @@ public class CommunicationInterceptionSet extends MyAppCompatActivity implements
                         cb_5.isChecked(),
                         cb_6.isChecked()};
                 int nightMode = 3;
-                for(int i=0;i<rbs.length;i++){
-                    if(rbs[i].isChecked()){
+                for (int i = 0; i < rbs.length; i++) {
+                    if (rbs[i].isChecked()) {
                         nightMode = i;
                     }
                 }
-                InterceptionSetInfo info = new InterceptionSetInfo(setInfo.getMode(),true,bh,bm,eh,em,weekEnable,nightMode);
+                InterceptionSetInfo info = new InterceptionSetInfo(setInfo.getMode(), true, bh, bm, eh, em, weekEnable, nightMode);
                 operation.commitInterceptionSetInfo(info);
                 setInfo = info;
                 makeToast(getResources().getString(R.string.toast_opened_night_mode));

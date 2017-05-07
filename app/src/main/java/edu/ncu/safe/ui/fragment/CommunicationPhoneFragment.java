@@ -14,7 +14,7 @@ import android.widget.TextView;
 import edu.ncu.safe.R;
 import edu.ncu.safe.adapter.CommunicationLVPhoneAdapter;
 import edu.ncu.safe.db.dao.CommunicationDatabase;
-import edu.ncu.safe.myadapter.MyLIstViewBaseAdapter.OnDataChangedListener;
+import edu.ncu.safe.base.adapter.CommunicationBWLIstViewBaseAdapter.OnDataChangedListener;
 
 public class CommunicationPhoneFragment extends Fragment implements
 		OnDataChangedListener, OnItemClickListener {

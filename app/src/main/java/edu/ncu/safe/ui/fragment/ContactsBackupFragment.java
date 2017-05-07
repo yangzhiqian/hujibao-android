@@ -1,22 +1,19 @@
 package edu.ncu.safe.ui.fragment;
 
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.ncu.safe.adapter.BackupLVAdapter;
 import edu.ncu.safe.domain.ContactsInfo;
-import edu.ncu.safe.domain.SmsInfo;
 import edu.ncu.safe.domainadapter.ContactsAdapter;
 import edu.ncu.safe.domainadapter.ITarget;
 import edu.ncu.safe.engine.BackUpDataOperator;
 import edu.ncu.safe.engine.PhoneContactsOperator;
 import edu.ncu.safe.engine.PhoneContactCloudOperator;
-import edu.ncu.safe.myadapter.BackupBaseFragment;
+import edu.ncu.safe.base.fragment.BackupBaseFragment;
 import edu.ncu.safe.engine.NetDataOperator.BACKUP_TYPE;
 import edu.ncu.safe.util.ContactUtil;
 

@@ -61,7 +61,7 @@
     <string name="title_communication_protector_number_query">号码归属地查询</string>
     <string name="toast_error_can_not_find_number_place">抱歉，无法查询到该号码信息</string>
     <string name="title_flows_calibration">流量校准</string>
-    <string name="title_flows_protector">流量监控、</string>
+    <string name="title_flows_protector">流量监控</string>
     <string name="title_flows_statistic">流量分析</string>
     <string name="title_app_manager">软件管理</string>
     <string name="title_system_quick">系统加速</string>

@@ -2,7 +2,6 @@ package edu.ncu.safe.ui;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,11 +18,12 @@ import java.util.List;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.adapter.PhoneLostProtectorRecyclerViewAdapter;
+import edu.ncu.safe.base.activity.BackAppCompatActivity;
 import edu.ncu.safe.domain.PhoneLostProtectorSetsItem;
 import edu.ncu.safe.mvp.presenter.PhoneLostProtectorPresenter;
 import edu.ncu.safe.mvp.view.PhoneLostProtectorMvpView;
 
-public class PhoneLostProtectActivity extends MyAppCompatActivity implements
+public class PhoneLostProtectActivity extends BackAppCompatActivity implements
         OnClickListener, PhoneLostProtectorRecyclerViewAdapter.OnItemCheckBoxClickedListener, PhoneLostProtectorMvpView {
     public static final String[] ORDERS = {"#*delete*#", "#*lock*#", "#*ring*#", "#*pwd*#", "#*location*#"};
 
@@ -46,30 +46,18 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
     private PhoneLostProtectorRecyclerViewAdapter adapter;
     private PhoneLostProtectorPresenter presenter;
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_phonelostprotector);
-        initToolBar(getResources().getString(R.string.title_phone_lost_protector));
-        initViews();
-
-        //设置recyclerview
-        adapter = new PhoneLostProtectorRecyclerViewAdapter(this);
-        rv_sets.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        rv_sets.setAdapter(adapter);
-        adapter.setOnItemClickedListener(this);
-
-        swapLineAnimation = (RotateAnimation) AnimationUtils.loadAnimation(
-                this, R.anim.rotate);
-        clockwiseRotate = (RotateAnimation) AnimationUtils.loadAnimation(this,
-                R.anim.clockwiserotate);
-        iv_handle.startAnimation(clockwiseRotate);//开启handler的动画
-
-        presenter = new PhoneLostProtectorPresenter(this,this);
-        presenter.init();
+    protected CharSequence initTitle() {
+        return getResources().getString(R.string.title_phone_lost_protector);
     }
 
-    private void initViews() {
+    @Override
+    protected int initLayout() {
+        return R.layout.activity_phonelostprotector;
+    }
+
+    protected void initViews() {
         swapLine = this.findViewById(R.id.swapline);
         iv_protect = (ImageView) this.findViewById(R.id.iv_protect);
         tv_protectState = (TextView) this.findViewById(R.id.tv_protectstate);
@@ -92,10 +80,28 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
     }
 
     @Override
+    protected void initCreate() {
+        //设置recyclerview
+        adapter = new PhoneLostProtectorRecyclerViewAdapter(this);
+        rv_sets.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        rv_sets.setAdapter(adapter);
+        adapter.setOnItemClickedListener(this);
+
+        swapLineAnimation = (RotateAnimation) AnimationUtils.loadAnimation(
+                this, R.anim.rotate);
+        clockwiseRotate = (RotateAnimation) AnimationUtils.loadAnimation(this,
+                R.anim.clockwiserotate);
+        iv_handle.startAnimation(clockwiseRotate);//开启handler的动画
+
+        presenter = new PhoneLostProtectorPresenter(this, this);
+        presenter.init();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.i(getClass().getSimpleName(),resultCode+"");
-        if(presenter.isDeviceAdmin()){
+        Log.i(getClass().getSimpleName(), resultCode + "");
+        if (presenter.isDeviceAdmin()) {
             makeToast(getString(R.string.Toast_activity_device_admin_succeed));
         }
     }
@@ -164,6 +170,6 @@ public class PhoneLostProtectActivity extends MyAppCompatActivity implements
 
     @Override
     public void onCheckedChanged(PhoneLostProtectorSetsItem data, int position, CheckBox cb, boolean isChecked) {
-        presenter.setChanged(data,position,cb,isChecked);
+        presenter.setChanged(data, position, cb, isChecked);
     }
 }
