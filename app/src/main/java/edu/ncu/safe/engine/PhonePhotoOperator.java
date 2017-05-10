@@ -16,10 +16,12 @@ import edu.ncu.safe.domain.ImageInfo;
  */
 public class PhonePhotoOperator {
     private Context context;
-    public PhonePhotoOperator(Context context){
-        this.context= context;
+
+    public PhonePhotoOperator(Context context) {
+        this.context = context;
     }
-    public List<ImageInfo> getLocalImageInfos(){
+
+    public List<ImageInfo> getLocalImageInfos() {
         List<ImageInfo> infos = new ArrayList<ImageInfo>();
         ContentResolver resolver = context.getContentResolver();
         Cursor cursor = resolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null, null);
@@ -28,14 +30,15 @@ public class PhonePhotoOperator {
         String name;
         long time;
         long size;
-        while (cursor.moveToNext()) {
+        cursor.moveToLast();
+        do {
             path = cursor.getString(cursor.getColumnIndex("_data"));
             file = new File(path);
             name = file.getName();
             time = file.lastModified();
             size = file.length();
             infos.add(new ImageInfo(path, name, time, size));
-        }
+        } while (cursor.moveToPrevious());
         return infos;
     }
 }
