@@ -90,6 +90,7 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
                 switch (showType) {
                     case SHOW_TYPE_LOCAL:
                         makeToast("已经没有数据了");
+                        ptr.loadmoreFinish(PullToRefreshLayout.SUCCEED);
                         break;
                     default:
                         if (isAllCloudDataLoaded) {
@@ -200,6 +201,7 @@ public abstract class BackupBaseFragment extends Fragment implements AdapterView
         this.localInfos = infos;
         if (showType == SHOW_TYPE.SHOW_TYPE_LOCAL) {
             ptr.refreshFinish(PullToRefreshLayout.SUCCEED);
+            makeToast("刷新了" + infos.size() + "条本地数据");
             showLoader(false);
             updateView();
         }
