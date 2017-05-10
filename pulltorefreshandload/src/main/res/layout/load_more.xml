@@ -3,7 +3,7 @@
     android:id="@+id/loadmore_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray" >
+    android:background="@color/load_more_backgroud" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/pullup_to_load"
-                android:textColor="@color/black"
+                android:textColor="@color/load_more_text_color"
                 android:textSize="16sp" />
 
             <ImageView

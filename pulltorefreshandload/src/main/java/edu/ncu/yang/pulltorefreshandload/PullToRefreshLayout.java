@@ -545,10 +545,18 @@ public class PullToRefreshLayout extends RelativeLayout {
         pullableView.layout(0, (int) (pullDownY + pullUpY),
                 pullableView.getMeasuredWidth(), (int) (pullDownY + pullUpY)
                         + pullableView.getMeasuredHeight());
+        /**
+         * 对加载更多布局不能使用下面注释掉的代码，否则当pullableView的高度为0时，会出现直接显示加载更多的画面，应当使用注释后面的代码
+         */
+//        loadmoreView.layout(0,
+//                (int) (pullDownY + pullUpY) + pullableView.getMeasuredHeight(),
+//                loadmoreView.getMeasuredWidth(),
+//                (int) (pullDownY + pullUpY) + pullableView.getMeasuredHeight()
+//                        + loadmoreView.getMeasuredHeight());
         loadmoreView.layout(0,
-                (int) (pullDownY + pullUpY) + pullableView.getMeasuredHeight(),
+                (int) (pullDownY + pullUpY) + this.getMeasuredHeight(),
                 loadmoreView.getMeasuredWidth(),
-                (int) (pullDownY + pullUpY) + pullableView.getMeasuredHeight()
+                (int) (pullDownY + pullUpY) + this.getMeasuredHeight()
                         + loadmoreView.getMeasuredHeight());
     }
 
