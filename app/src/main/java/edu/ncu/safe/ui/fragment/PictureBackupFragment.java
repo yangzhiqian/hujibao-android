@@ -3,6 +3,7 @@ package edu.ncu.safe.ui.fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -76,7 +77,10 @@ public class PictureBackupFragment extends BackupBaseFragment {
     protected boolean isSameInfo(ITarget target1, ITarget target2) {
         ImageInfo ii1 = (ImageInfo) target1;
         ImageInfo ii2 = (ImageInfo) target2;
-        if(ii1.getPath().equals(ii2.getPath())){
+        /**
+         * 大小和名字都相同则表示相同
+         */
+        if(ii1.getName().equals(ii2.getName())||ii1.getSize()==ii2.getSize()){
             return true;
         }
         return false;
