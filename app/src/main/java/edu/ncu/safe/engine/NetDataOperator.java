@@ -307,7 +307,7 @@ public class NetDataOperator {
         RequestBody requestBodyPost = new FormBody.Builder()
                 .add("token", user.getToken())
                 .add("filename", filename)
-                .add("type", (type.ordinal() + 1) + "")
+                .add("type", type.ordinal() + "")
                 .build();
         final Request request = new Request.Builder()
                 .url(UrlHelper.getLoadImgUrl(context))
@@ -348,6 +348,10 @@ public class NetDataOperator {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
+                if(bmp==null){
+                    onFailure(call,new IOException("返回bmp为null"));
+                    return;
+                }
                 Message msg = Message.obtain();
                 msg.what = TYPE_IMG_LOADING_SUCCEED;
                 Object[] os = new Object[2];
