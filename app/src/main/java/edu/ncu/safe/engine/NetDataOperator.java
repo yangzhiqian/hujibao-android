@@ -380,7 +380,7 @@ public class NetDataOperator {
             }
             return;
         }
-        FormBody body = new FormBody.Builder().add("token", user.getToken()).add("type", (type.ordinal() + 1) + "").add("id", id + "").build();
+        FormBody body = new FormBody.Builder().add("token", user.getToken()).add("type", type.ordinal() + "").add("id", id + "").build();
         Request request = new Request.Builder().url(UrlHelper.getDeleteBackUpUrl(context)).post(body).build();
         client.newCall(request).enqueue(new Callback() {
             @Override
