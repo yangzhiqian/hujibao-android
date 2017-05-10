@@ -2,6 +2,7 @@ package edu.ncu.safe.ui.fragment;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ncu.safe.adapter.BackupLVAdapter;
 import edu.ncu.safe.constant.Constant;
 import edu.ncu.safe.domain.ImageInfo;
 import edu.ncu.safe.domainadapter.ITarget;
@@ -46,13 +48,13 @@ public class PictureBackupFragment extends BackupBaseFragment {
     }
 
     @Override
-    protected void loadLocalInfos() {
+    protected List<ITarget> loadLocalInfos() {
         List<ImageInfo> localImageInfos = phonePhotoOperator.getLocalImageInfos();
         List<ITarget> infos = new ArrayList<>();
         for (ImageInfo localImageInfo : localImageInfos) {
             infos.add(new ImageAdapter(localImageInfo));
         }
-        onLocalInfosLoaded(infos);
+        return infos;
     }
 
     @Override
@@ -65,7 +67,7 @@ public class PictureBackupFragment extends BackupBaseFragment {
 
             @Override
             public void onDatasGet(List datas, int requestSize) {
-                onCloudInfosLoaded(datas,requestSize>endIndex-beginIndex);
+                onCloudInfosLoaded(datas,requestSize>datas.size());
             }
         });
     }
@@ -186,6 +188,13 @@ public class PictureBackupFragment extends BackupBaseFragment {
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        //listview中的item被点击，如果是多选状态下，则选中该，否则预览图片
+        if (adapter.isShowMultiChoice()) {
+            BackupLVAdapter.ViewHolder holder = (BackupLVAdapter.ViewHolder) view.getTag();
+            holder.cb_check.setChecked(!holder.cb_check.isChecked());
+            return;
+        }
+        //跳转activity预览图片
         ImageInfo info = (ImageInfo) adapter.getInfos().get(position);
         Intent intent = new Intent();
         intent.setClass(getActivity(), TouchImageViewActivity.class);

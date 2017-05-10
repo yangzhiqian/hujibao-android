@@ -38,18 +38,18 @@ public class ContactsBackupFragment extends BackupBaseFragment {
     }
 
     @Override
-    protected void loadLocalInfos() {
+    protected List<ITarget> loadLocalInfos() {
         List<ContactsInfo> contactsInfos = phoneContactsOperator.getContactsInfos();
         List<ITarget> contactsAdapters = new ArrayList<>();
         for (ContactsInfo contactsInfo : contactsInfos) {
             contactsAdapters.add(new ContactsAdapter(contactsInfo));
         }
-        onLocalInfosLoaded(contactsAdapters);
+        return contactsAdapters;
     }
 
     @Override
     protected void loadCloudInfos(final int beginIndex, final int endIndex) {
-        phoneContactCloudOperator.loadCloudDatas(beginIndex, endIndex - beginIndex, new BackUpDataOperator.OnLoadDatasResponseListener() {
+        phoneContactCloudOperator.loadCloudDatas(beginIndex, endIndex - beginIndex, new BackUpDataOperator.OnLoadDatasResponseListener<ContactsAdapter>() {
             @Override
             public void onFailure(String message) {
                 makeToast(message);
@@ -57,7 +57,7 @@ public class ContactsBackupFragment extends BackupBaseFragment {
 
             @Override
             public void onDatasGet(List datas, int requestSize) {
-                onCloudInfosLoaded(datas, requestSize > endIndex - beginIndex);
+                onCloudInfosLoaded(datas, requestSize > datas.size());
             }
         });
     }

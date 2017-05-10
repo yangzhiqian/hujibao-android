@@ -7,6 +7,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ncu.safe.base.fragment.BackupBaseFragment;
 import edu.ncu.safe.domain.SmsInfo;
 import edu.ncu.safe.domainadapter.ITarget;
 import edu.ncu.safe.domainadapter.MessageAdapter;
@@ -14,7 +15,6 @@ import edu.ncu.safe.engine.BackUpDataOperator;
 import edu.ncu.safe.engine.NetDataOperator.BACKUP_TYPE;
 import edu.ncu.safe.engine.PhoneSmsCloudOperator;
 import edu.ncu.safe.engine.PhoneSmsOperator;
-import edu.ncu.safe.base.fragment.BackupBaseFragment;
 import edu.ncu.safe.util.ContactUtil;
 
 /**
@@ -35,13 +35,13 @@ public class MessageBackupFragment extends BackupBaseFragment {
         phoneSmsCloudOperator = new PhoneSmsCloudOperator(getActivity());
     }
     @Override
-    protected void loadLocalInfos() {
+    protected List<ITarget> loadLocalInfos() {
         List<ITarget> infos = new ArrayList<ITarget>();
         List<SmsInfo> smsInfos = phoneSmsOperator.getSms();
         for(SmsInfo info:smsInfos){
            infos.add(new MessageAdapter(info));
         }
-        onLocalInfosLoaded(infos);
+        return infos;
     }
 
     @Override

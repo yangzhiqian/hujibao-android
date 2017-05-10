@@ -66,9 +66,10 @@
     <string name="title_app_manager">软件管理</string>
     <string name="title_system_quick">系统加速</string>
     <string name="title_data_backup">数据备份</string>
-    <string name="menu_photo">照片</string>
-    <string name="menu_sms">短信</string>
-    <string name="menu_contacts">联系人</string>
+    <string name="menu_local">本地</string>
+    <string name="menu_cloud">云端</string>
+    <string name="menu_recovery">未还原</string>
+    <string name="menu_mulitchoice">多选/取消多选</string>
     <string name="title_protocol">App说明</string>
     <string name="button_enter_app">进入程序</string>
     <string name="main_fragment_note_phone_lost_in_protecting">手机保护中</string>

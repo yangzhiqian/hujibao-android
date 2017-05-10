@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-        buildToolsVersion "23.0.3"
+    buildToolsVersion "23.0.3"
 
-        defaultConfig {
-            applicationId "edu.ncu.yang.androidsafe"
-            minSdkVersion 16
-            targetSdkVersion 23
-            versionCode 1
-            versionName "1.0"
+    defaultConfig {
+        applicationId "edu.ncu.yang.androidsafe"
+        minSdkVersion 16
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
     }
     buildTypes {
         release {
@@ -34,4 +34,6 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.3.1'
     compile 'in.srain.cube:ultra-ptr:1.0.11'
     compile 'com.github.chenupt.android:springindicator:1.0.2@aar'
+    compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
+    compile project(':pulltorefreshandload')
 }

@@ -13,10 +13,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
-import java.util.Set;
 
-import edu.ncu.safe.constant.Constant;
 import edu.ncu.safe.constant.UrlHelper;
 import edu.ncu.safe.domain.User;
 import edu.ncu.safe.external.ACache;
@@ -446,6 +443,18 @@ public class NetDataOperator {
     }
 
     public enum BACKUP_TYPE {
-        TYPE_PICURE, TYPE_SMS, TYPE_CONTACT
+        TYPE_PICURE("照片"), TYPE_SMS("短信"), TYPE_CONTACT("联系人");
+        private String title;
+        private  BACKUP_TYPE(String title){
+            this.title = title;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
     }
 }

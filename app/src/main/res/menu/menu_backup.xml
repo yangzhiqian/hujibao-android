@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/menu_photo"
-        android:title="@string/menu_photo"
+    <item android:id="@+id/menu_local"
+        android:title="@string/menu_local"
         app:showAsAction="never"/>
-    <item android:id="@+id/menu_sms"
-        android:title="@string/menu_sms"
+    <item android:id="@+id/menu_cloud"
+        android:title="@string/menu_cloud"
         app:showAsAction="never"/>
-    <item android:id="@+id/menu_contact"
-        android:title="@string/menu_contacts"
+    <item android:id="@+id/menu_recovery"
+        android:title="@string/menu_recovery"
+        app:showAsAction="never"/>
+    <item android:id="@+id/menu_mulitchoice"
+        android:title="@string/menu_mulitchoice"
         app:showAsAction="never"/>
 </menu>
