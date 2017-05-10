@@ -69,7 +69,13 @@ public class PhoneContactsOperator {
         cursor.close();
         return null;
     }
-    public void recoveryOneContact(ContactsInfo info){
+
+    /**
+     * 将一条联系人信息恢复到联系人数据库
+     * @param info     联系人数据
+     * @throws SecurityException   如果app没有被授予写入联系人权限，将会抛出该异常
+     */
+    public void recoveryOneContact(ContactsInfo info) throws SecurityException{
         ContentValues values = new ContentValues();
         //首先向RawContacts.CONTENT_URI执行一个空值插入，目的是获取系统返回的rawContactId
         Uri rawContactUri = context.getContentResolver().insert(ContactsContract.RawContacts.CONTENT_URI, values);
