@@ -53,6 +53,7 @@ public class ContactsBackupFragment extends BackupBaseFragment {
             @Override
             public void onFailure(String message) {
                 makeToast(message);
+                onCloudInfosLoaded(new ArrayList<ITarget>(),false);
             }
 
             @Override
@@ -66,6 +67,7 @@ public class ContactsBackupFragment extends BackupBaseFragment {
     protected boolean isSameInfo(ITarget target1, ITarget target2) {
         ContactsInfo c1 = (ContactsInfo) target1;
         ContactsInfo c2 = (ContactsInfo) target2;
+        //姓名和地址都相同才认为是同一条
         if (c1.getName().equals(c2.getName()) && c1.getPhoneNumber().equals(c2.getPhoneNumber())) {
             return true;
         }
@@ -73,7 +75,7 @@ public class ContactsBackupFragment extends BackupBaseFragment {
     }
 
     @Override
-    protected View createShowLocalPopupWindowContentView(View parent, final int position,final ITarget info) {
+    protected View createShowLocalPopupWindowContentView(View parent, final int position, final ITarget info) {
         LinearLayout layout = getPopupWindowLayout();
         TextView tv_1 = getPopupWindowTextView("备份");
         layout.addView(tv_1);
@@ -136,9 +138,9 @@ public class ContactsBackupFragment extends BackupBaseFragment {
     }
 
     @Override
-    protected View createShowCloudPopupWindowContentView(View parent,final int position, final ITarget info) {
+    protected View createShowCloudPopupWindowContentView(View parent, final int position, final ITarget info) {
         LinearLayout layout = getPopupWindowLayout();
-        TextView tv_1 = getPopupWindowTextView("恢复到短信");
+        TextView tv_1 = getPopupWindowTextView("恢复到联系人");
         layout.addView(tv_1);
         layout.addView(getPopupWindowDivider());
 
@@ -149,7 +151,12 @@ public class ContactsBackupFragment extends BackupBaseFragment {
             @Override
             public void onClick(View view) {
                 dissmissPopupWindow();
-                phoneContactsOperator.recoveryOneContact((ContactsInfo) info);
+                try {
+                    phoneContactsOperator.recoveryOneContact((ContactsInfo) info);
+                    makeToast("恢复成功");
+                } catch (SecurityException e) {
+                    makeToast("没有写入联系人的权限，恢复失败");
+                }
             }
         });
         tv_2.setOnClickListener(new View.OnClickListener() {
@@ -173,7 +180,7 @@ public class ContactsBackupFragment extends BackupBaseFragment {
     }
 
     @Override
-    protected View createShowRecoveryPopupWindowContentView(View parent,final int position, ITarget info) {
-        return createShowCloudPopupWindowContentView(parent,position,info);
+    protected View createShowRecoveryPopupWindowContentView(View parent, final int position, ITarget info) {
+        return createShowCloudPopupWindowContentView(parent, position, info);
     }
 }

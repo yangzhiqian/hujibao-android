@@ -24,22 +24,24 @@ public class MessageBackupFragment extends BackupBaseFragment {
     protected PhoneSmsOperator phoneSmsOperator;
     protected PhoneSmsCloudOperator phoneSmsCloudOperator;
 
-   public static MessageBackupFragment newInstance(BACKUP_TYPE type) {
+    public static MessageBackupFragment newInstance(BACKUP_TYPE type) {
         MessageBackupFragment f = new MessageBackupFragment();
         f.type = type;
         return f;
     }
+
     @Override
     public void init() {
         phoneSmsOperator = new PhoneSmsOperator(getActivity());
         phoneSmsCloudOperator = new PhoneSmsCloudOperator(getActivity());
     }
+
     @Override
     protected List<ITarget> loadLocalInfos() {
-        List<ITarget> infos = new ArrayList<ITarget>();
+        List<ITarget> infos = new ArrayList<>();
         List<SmsInfo> smsInfos = phoneSmsOperator.getSms();
-        for(SmsInfo info:smsInfos){
-           infos.add(new MessageAdapter(info));
+        for (SmsInfo info : smsInfos) {
+            infos.add(new MessageAdapter(info));
         }
         return infos;
     }
@@ -50,11 +52,12 @@ public class MessageBackupFragment extends BackupBaseFragment {
             @Override
             public void onFailure(String message) {
                 makeToast(message);
+                onCloudInfosLoaded(new ArrayList<ITarget>(), false);
             }
 
             @Override
             public void onDatasGet(List datas, int requestSize) {
-                onCloudInfosLoaded(datas,requestSize>datas.size());
+                onCloudInfosLoaded(datas, requestSize > datas.size());
             }
         });
     }
@@ -63,14 +66,15 @@ public class MessageBackupFragment extends BackupBaseFragment {
     protected boolean isSameInfo(ITarget target1, ITarget target2) {
         SmsInfo t1 = (SmsInfo) target1;
         SmsInfo t2 = (SmsInfo) target2;
-        if(t1.getAddress().equals(t2.getAddress()) && t1.getDate()==t2.getDate()){
+        //当短信通信地址和通信日期相同时表示同一个数据
+        if (t1.getAddress().equals(t2.getAddress()) && t1.getDate() == t2.getDate()) {
             return true;
         }
         return false;
     }
 
     @Override
-    protected View createShowLocalPopupWindowContentView(View parent, final int position,final ITarget info) {
+    protected View createShowLocalPopupWindowContentView(View parent, final int position, final ITarget info) {
         LinearLayout layout = getPopupWindowLayout();
         TextView tv_1 = getPopupWindowTextView("备份");
         layout.addView(tv_1);
@@ -114,21 +118,21 @@ public class MessageBackupFragment extends BackupBaseFragment {
             @Override
             public void onClick(View view) {
                 dissmissPopupWindow();
-                ContactUtil.sendMessageTo(getActivity(),((SmsInfo)info).getAddress());
+                ContactUtil.sendMessageTo(getActivity(), ((SmsInfo) info).getAddress());
             }
         });
         tv_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dissmissPopupWindow();
-                ContactUtil.callTo(getActivity(),((SmsInfo)info).getAddress());
+                ContactUtil.callTo(getActivity(), ((SmsInfo) info).getAddress());
             }
         });
         return layout;
     }
 
     @Override
-    protected View createShowCloudPopupWindowContentView(View parent,final int position, final ITarget info) {
+    protected View createShowCloudPopupWindowContentView(View parent, final int position, final ITarget info) {
         LinearLayout layout = getPopupWindowLayout();
         TextView tv_1 = getPopupWindowTextView("恢复到短信");
         layout.addView(tv_1);
@@ -166,15 +170,15 @@ public class MessageBackupFragment extends BackupBaseFragment {
     }
 
     @Override
-    protected View createShowRecoveryPopupWindowContentView(View parent, final int position,ITarget info) {
-        return createShowCloudPopupWindowContentView(parent,position,info);
+    protected View createShowRecoveryPopupWindowContentView(View parent, final int position, ITarget info) {
+        return createShowCloudPopupWindowContentView(parent, position, info);
     }
 
 
     public void backToPhone(ITarget info) {
-        if(phoneSmsOperator.recoveryOneSms((MessageAdapter) info)){
+        if (phoneSmsOperator.recoveryOneSms((MessageAdapter) info)) {
             makeToast("短信已经恢复到短信列表");
-        }else{
+        } else {
             makeToast("恢复失败，可能信息已经存在！");
         }
     }

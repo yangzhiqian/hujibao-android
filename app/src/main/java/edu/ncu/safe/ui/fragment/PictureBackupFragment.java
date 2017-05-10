@@ -2,8 +2,6 @@ package edu.ncu.safe.ui.fragment;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -14,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ncu.safe.adapter.BackupLVAdapter;
+import edu.ncu.safe.base.fragment.BackupBaseFragment;
 import edu.ncu.safe.constant.Constant;
 import edu.ncu.safe.domain.ImageInfo;
 import edu.ncu.safe.domainadapter.ITarget;
@@ -21,11 +20,10 @@ import edu.ncu.safe.domainadapter.ImageAdapter;
 import edu.ncu.safe.engine.BackUpDataOperator;
 import edu.ncu.safe.engine.ImageLoader;
 import edu.ncu.safe.engine.NetDataOperator;
-import edu.ncu.safe.engine.PhonePhotoOperator;
-import edu.ncu.safe.engine.PhonePhotoCloudOperator;
-import edu.ncu.safe.base.fragment.BackupBaseFragment;
-import edu.ncu.safe.ui.TouchImageViewActivity;
 import edu.ncu.safe.engine.NetDataOperator.BACKUP_TYPE;
+import edu.ncu.safe.engine.PhonePhotoCloudOperator;
+import edu.ncu.safe.engine.PhonePhotoOperator;
+import edu.ncu.safe.ui.TouchImageViewActivity;
 import edu.ncu.safe.util.BitmapUtil;
 
 /**
@@ -64,6 +62,7 @@ public class PictureBackupFragment extends BackupBaseFragment {
             @Override
             public void onFailure(String message) {
                 makeToast(message);
+                onCloudInfosLoaded(new ArrayList<ITarget>(),false);
             }
 
             @Override
@@ -157,6 +156,7 @@ public class PictureBackupFragment extends BackupBaseFragment {
                         }
                         bmp.recycle();
                         onProgressStateChanged(position,false);
+                        makeToast("恢复成功:"+Constant.getImageFolerPath()+info.getTitle());
                     }
 
                     @Override
@@ -187,6 +187,7 @@ public class PictureBackupFragment extends BackupBaseFragment {
 
     @Override
     protected View createShowRecoveryPopupWindowContentView(View parent,int position, ITarget info) {
+        //数据为未还原和云端显示的popup内容相同
         return createShowCloudPopupWindowContentView(parent,position,info);
     }
 
