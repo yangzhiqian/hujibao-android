@@ -1,12 +1,10 @@
 package edu.ncu.safe.service;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.IPackageDataObserver;
 import android.content.pm.IPackageStatsObserver;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageStats;
 import android.graphics.drawable.Drawable;
@@ -19,12 +17,10 @@ import android.os.StatFs;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 
 import edu.ncu.safe.R;
@@ -117,6 +113,8 @@ public class AppRubbishManageService extends Service {
         private PackageManager packageManager;
         private long cacheSize = 0;
 
+        private int downTask = 0;
+
         @Override
         protected List<CacheInfo> doInBackground(Void... params) {
             cacheInfos = new ArrayList<CacheInfo>();
@@ -126,25 +124,26 @@ public class AppRubbishManageService extends Service {
             countDownLatch = new CountDownLatch(packages.size());
             publishProgress(TASKBEGIN, packages.size());//通知任务数量
             try {
-                int task = 0;
+                downTask = 0;
                 for (ApplicationInfo applicationInfo : packages) {
                     if (cancled) {
                         publishProgress(TASKCANCEL, cacheSize);
                         return cacheInfos;
                     }
-                    publishProgress(TASKPROGRESS, ++task, applicationInfo.uid, applicationInfo.loadLabel(packageManager));//推送当前任务
                     //用反射获取垃圾信息
                     getPackageSizeInfoMethod.invoke(packageManager, applicationInfo.packageName,
                             new IPackageStatsObserver.Stub() {
                                 @Override
                                 public void onGetStatsCompleted(PackageStats packageStats, boolean succeeded)
                                         throws RemoteException {
-
-                                    if (succeeded && packageStats.cacheSize > 0) {
-                                        try {
+                                    ++downTask;
+                                    String packageName = packageStats.packageName;
+                                    ApplicationInfo info = null;
+                                    try {
+                                        info = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
+                                        publishProgress(TASKPROGRESS, downTask, info.uid, info.loadLabel(packageManager));//推送当前任务
+                                        if (succeeded && packageStats.cacheSize > 0) {
                                             //获取成功，拿到信息
-                                            String packageName = packageStats.packageName;
-                                            ApplicationInfo info = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
                                             String appName = info.loadLabel(packageManager).toString();
                                             Drawable icon = info.loadIcon(packageManager);
                                             long cacheSize = packageStats.cacheSize;
@@ -152,9 +151,9 @@ public class AppRubbishManageService extends Service {
                                             publishProgress(TASKPROGRESSEND, cacheInfo);
                                             cacheInfos.add(cacheInfo);
                                             RubbishScan.this.cacheSize += packageStats.cacheSize;
-                                        } catch (PackageManager.NameNotFoundException e) {
-                                            e.printStackTrace();
                                         }
+                                    } catch (PackageManager.NameNotFoundException e) {
+                                        e.printStackTrace();
                                     }
                                     synchronized (countDownLatch) {
                                         countDownLatch.countDown();

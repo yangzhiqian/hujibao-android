@@ -166,11 +166,9 @@
     <string name="toast_succeed_to_uninstall">%s已成功被移除！</string>
     <string name="toast_error_no_root">护机宝没有取得root权限，无法使用防火墙功能！</string>
     <string name="dialog_title_setting_network">正在设置防火墙</string>
-    <string name="system_quick_inner_rubbish_scanning">正在扫描内存垃圾</string>
     <string name="system_quick_item_inner_memory_rubbish">内存垃圾</string>
     <string name="system_quick_inner_memory_cleaning">正在清理内存垃圾</string>
     <string name="system_quick_cache_cleaning">正在清理缓存垃圾</string>
-    <string name="system_quick_cache_scanning">正在扫描缓存垃圾</string>
     <string name="system_quick_item_cache">应用缓存垃圾</string>
     <string name="system_quick_clean_over">清理完成</string>
     <string name="app_manager_app_manager">软件管理</string>

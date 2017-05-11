@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -36,6 +37,8 @@ import edu.ncu.safe.util.MyUtil;
  * Created by Mr_Yang on 2016/5/26.
  */
 public class SystemQuickenActivity extends BackAppCompatActivity implements View.OnClickListener, SystemQuickenELVAdapter.OnItemCheckedListener, AbsListView.OnScrollListener {
+    private static final String TITLE_CACHE =  "缓存(%d/%d)";
+    private static final String TITLE_MEMORY = "内存(%d/%d)";
     private MyProgressBar mpb_innerMemory;
     private MyProgressBar mpb_outerMemory;
     private ExpandableListView elv_sweepResult;
@@ -180,9 +183,8 @@ public class SystemQuickenActivity extends BackAppCompatActivity implements View
     //缓存垃圾开始扫描
     private void onCacheScanStart(int sumTask) {
         itemTask = sumTask;
-        mpb_sweep.setTitle(getResources().getString(R.string.system_quick_cache_scanning));
+        mpb_sweep.setTitle(String.format(TITLE_CACHE,0,itemTask));
         mpb_sweep.setPercentimmediately(0);
-        tv_sweepContent.setText("0/" + itemTask);
         cacheInfos.clear();
     }
 
@@ -192,7 +194,8 @@ public class SystemQuickenActivity extends BackAppCompatActivity implements View
     }
 
     private void onCacheScanProgressUpdated(int index, int appUid, String taskName) {
-        tv_sweepContent.setText(taskName + "(" + index + "/" + itemTask + ")");
+        mpb_sweep.setTitle(String.format(TITLE_CACHE,index,itemTask));
+        tv_sweepContent.setText(taskName);
         mpb_sweep.setPercentSlow(index * 100f / itemTask);
     }
 
@@ -202,12 +205,20 @@ public class SystemQuickenActivity extends BackAppCompatActivity implements View
     }
 
     private void onCacheScannEnd(long cacheSize) {
-        Collections.sort(cacheInfos, new MyCompator());
-        ELVParentItemInfo data = new ELVParentItemInfo();
-        data.setItemName(getString(R.string.system_quick_item_cache));
-        data.setIsChecked(true);
-        data.setChilds(cacheInfos);
-        datas.add(data);
+        //异步排序
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                Collections.sort(cacheInfos, new MyCompator());
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                adapter.notifyDataSetChanged();
+            }
+        }.execute();
         //开始扫描内存垃圾
         startService(InnerMemoryManageService.class, getString(R.string.Action_Service_InnerMemoryRubbishScannStart));
     }
@@ -239,10 +250,9 @@ public class SystemQuickenActivity extends BackAppCompatActivity implements View
 
     //-------------------------------app内存垃圾扫描-----------------------------
     private void onInnerMemoryScanBegin(int sumTask) {
-        mpb_sweep.setPercentimmediately(0);
-        mpb_sweep.setTitle(getResources().getString(R.string.system_quick_inner_rubbish_scanning));
-        tv_sweepContent.setText("0/" + itemTask);
         itemTask = sumTask;
+        mpb_sweep.setTitle(String.format(TITLE_MEMORY,0,itemTask));
+        mpb_sweep.setPercentimmediately(0);
         runningApplicationInfos.clear();
     }
 
@@ -252,7 +262,8 @@ public class SystemQuickenActivity extends BackAppCompatActivity implements View
     }
 
     private void onInnerMemoryScanProgressUpdated(int index, int appUid, String appName) {
-        tv_sweepContent.setText(appName + "(" + index + "/" + itemTask + ")");
+        mpb_sweep.setTitle(String.format(TITLE_MEMORY,index,itemTask));
+        tv_sweepContent.setText(appName);
         mpb_sweep.setPercentSlow(index * 100f / itemTask);
     }
 
@@ -261,16 +272,33 @@ public class SystemQuickenActivity extends BackAppCompatActivity implements View
     }
 
     private void onInnerMemoryScanEnd(long size) {
-        Collections.sort(runningApplicationInfos, new MyCompator());
-        ELVParentItemInfo data = new ELVParentItemInfo();
-        data.setItemName(getString(R.string.system_quick_item_inner_memory_rubbish));
-        data.setIsChecked(true);
-        data.setChilds(runningApplicationInfos);
-        datas.add(data);
-        adapter.setInfos(datas);
-        adapter.notifyDataSetChanged();//显示数据
-        itv_clean.setVisibility(View.VISIBLE);
-        itv_clean.startAnimation(animationAppear);
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                Collections.sort(runningApplicationInfos, new MyCompator());
+                //添加缓存数据
+                ELVParentItemInfo data = new ELVParentItemInfo();
+                data.setItemName(getString(R.string.system_quick_item_cache));
+                data.setIsChecked(true);
+                data.setChilds(cacheInfos);
+                datas.add(data);
+                //添加内存垃圾
+                data = new ELVParentItemInfo();
+                data.setItemName(getString(R.string.system_quick_item_inner_memory_rubbish));
+                data.setIsChecked(true);
+                data.setChilds(runningApplicationInfos);
+                datas.add(data);
+                return null;
+            }
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                adapter.setInfos(datas);
+                adapter.notifyDataSetChanged();//显示数据
+                itv_clean.setVisibility(View.VISIBLE);
+                itv_clean.startAnimation(animationAppear);
+            }
+        }.execute();
     }
 
     //------------------------------app内存垃圾清理----------------------------------

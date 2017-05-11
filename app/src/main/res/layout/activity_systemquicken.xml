@@ -67,11 +67,11 @@
             android:childDivider="@drawable/divider"
             android:divider="#00000000"
             android:dividerHeight="1dp"
-            android:groupIndicator="@null"></ExpandableListView>
+            android:groupIndicator="@null"/>
 
         <LinearLayout
             android:id="@+id/ll_sweep"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
@@ -79,7 +79,7 @@
 
             <edu.ncu.safe.customerview.MyProgressBar
                 android:id="@+id/mpb_sweep"
-                android:layout_width="match_parent"
+                android:layout_width="80dip"
                 android:layout_height="80dip"
                 my:arcWidth="8dip"
                 my:hasPercent="true"
@@ -90,7 +90,7 @@
                 my:progressStyle="loop"
                 my:title="正在扫描"
                 my:titleColor="#00ff00"
-                my:titleSize="16dip"
+                my:titleSize="12dip"
                 my:usedBeginColor="#ff0000"
                 my:usedEndColor="#ffffff" />
 
