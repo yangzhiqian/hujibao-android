@@ -18,6 +18,7 @@ import edu.ncu.safe.customerview.CircleImageView;
 import edu.ncu.safe.domain.User;
 import edu.ncu.safe.mvp.presenter.RegistPresenter;
 import edu.ncu.safe.mvp.view.RegistMvpView;
+import edu.ncu.safe.util.UriUtil;
 
 public class RegistActivity extends BackAppCompatActivity implements OnClickListener, RegistMvpView {
     private static final int REQUEST_CODE_GET_ICON = 1;
@@ -94,14 +95,13 @@ public class RegistActivity extends BackAppCompatActivity implements OnClickList
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             Uri uri = data.getData();
-            String[] proj = {MediaStore.Images.Media.DATA};
-            Cursor actualimagecursor = managedQuery(uri, proj, null, null, null);
-            int actual_image_column_index = actualimagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            actualimagecursor.moveToFirst();
-            iconPath = actualimagecursor.getString(actual_image_column_index);
-
-            Bitmap bitmap = BitmapFactory.decodeFile(iconPath);
-            civ_icon.setImageBitmap(bitmap);
+            iconPath = UriUtil.uri2Path(getApplicationContext(), uri);
+            if(iconPath!=null) {
+                Bitmap bitmap = BitmapFactory.decodeFile(iconPath);
+                civ_icon.setImageBitmap(bitmap);
+            }else{
+                makeToast("图片选择失败");
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
