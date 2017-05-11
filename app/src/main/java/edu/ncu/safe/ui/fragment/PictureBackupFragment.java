@@ -77,9 +77,10 @@ public class PictureBackupFragment extends BackupBaseFragment {
         ImageInfo ii1 = (ImageInfo) target1;
         ImageInfo ii2 = (ImageInfo) target2;
         /**
-         * 大小和名字都相同则表示相同
+         * 名字相同则表示相同<br/>
+         * 该处不宜再比较大小，因为后面的还原操作实际写入文件的是bitmap，大小会比原来大，但实际上是一个数据
          */
-        if(ii1.getName().equals(ii2.getName())||ii1.getSize()==ii2.getSize()){
+        if(ii1.getName().equals(ii2.getName())){
             return true;
         }
         return false;
