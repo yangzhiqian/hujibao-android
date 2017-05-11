@@ -10,15 +10,13 @@ import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Debug;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.ncu.safe.domain.UserAppBaseInfo;
 import edu.ncu.safe.domain.UserAppInfo;
-import edu.ncu.safe.domain.UserAppSimpleInfo;
+import edu.ncu.safe.base.bean.UserAppSimpleInfo;
 import edu.ncu.safe.external.runningappinfo.ProcessManager;
 
 /**

@@ -2,10 +2,12 @@ package edu.ncu.safe.domain;
 
 import android.graphics.drawable.Drawable;
 
+import edu.ncu.safe.base.bean.UserAppSimpleInfo;
+
 /**
  * Created by Mr_Yang on 2016/5/25.
  */
-public class UserAppNetInfo extends UserAppSimpleInfo{
+public class UserAppNetInfo extends UserAppSimpleInfo {
     private long flows;
     private boolean isGPRS;
     private boolean isWIFI;

@@ -2,7 +2,7 @@ package edu.ncu.safe.domain;
 
 import java.util.List;
 
-import edu.ncu.safe.myinterface.ChildItemData;
+import edu.ncu.safe.base.bean.SystemQuickerItemInfo;
 
 /**
  * Created by Mr_Yang on 2016/5/28.
@@ -11,7 +11,7 @@ public class ELVParentItemInfo {
     private String itemName="";
     private long size=0;
     private boolean isChecked = true;
-    private List<? extends ChildItemData> childs ;
+    private List<? extends SystemQuickerItemInfo> childs ;
 
     public String getItemName() {
         return itemName;
@@ -23,7 +23,7 @@ public class ELVParentItemInfo {
 
     public void setSize(){
         size = 0;
-        for(ChildItemData item:childs){
+        for(SystemQuickerItemInfo item:childs){
             if(item.isChecked())
                 size+=item.getCacheSize();
         }
@@ -39,11 +39,11 @@ public class ELVParentItemInfo {
         this.isChecked = isChecked;
     }
 
-    public List<? extends ChildItemData> getChilds() {
+    public List<? extends SystemQuickerItemInfo> getChilds() {
         return childs;
     }
 
-    public void setChilds(List<? extends ChildItemData> childs) {
+    public void setChilds(List<? extends SystemQuickerItemInfo> childs) {
         this.childs = childs;
         setSize();
     }

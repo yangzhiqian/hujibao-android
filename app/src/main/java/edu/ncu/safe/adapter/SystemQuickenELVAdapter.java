@@ -16,7 +16,7 @@ import edu.ncu.safe.R;
 import edu.ncu.safe.domain.CacheInfo;
 import edu.ncu.safe.domain.ELVParentItemInfo;
 import edu.ncu.safe.domain.RunningApplicationInfo;
-import edu.ncu.safe.myinterface.ChildItemData;
+import edu.ncu.safe.base.bean.SystemQuickerItemInfo;
 import edu.ncu.safe.util.FlowsFormartUtil;
 
 /**
@@ -165,8 +165,8 @@ public class SystemQuickenELVAdapter extends BaseExpandableListAdapter implement
         int child = (Integer) buttonView.getTag(R.id.tag_child);
         if(child==-1){
             //点击的是父checkbox
-            List<? extends ChildItemData> childs = infos.get(group).getChilds();
-            for(ChildItemData data:childs){
+            List<? extends SystemQuickerItemInfo> childs = infos.get(group).getChilds();
+            for(SystemQuickerItemInfo data:childs){
                 data.setChecked(isChecked);
             }
             infos.get(group).setIsChecked(isChecked);
@@ -176,9 +176,9 @@ public class SystemQuickenELVAdapter extends BaseExpandableListAdapter implement
             infos.get(group).getChilds().get(child).setChecked(isChecked);
             infos.get(group).setSize();
 
-            List<? extends ChildItemData> childs = infos.get(group).getChilds();
+            List<? extends SystemQuickerItemInfo> childs = infos.get(group).getChilds();
             boolean hasItemChecked = false;
-            for(ChildItemData data:childs){
+            for(SystemQuickerItemInfo data:childs){
                 if(data.isChecked()){
                     hasItemChecked = true;
                 }
@@ -197,9 +197,9 @@ public class SystemQuickenELVAdapter extends BaseExpandableListAdapter implement
     public ArrayList<String> getCheckAppProcessNames(){
         ArrayList<String> res = new ArrayList<String>();
 
-        for(ChildItemData childItemData:infos.get(1).getChilds()){
-            if(childItemData.isChecked()){
-                res.add(((RunningApplicationInfo)childItemData).getProcessName());
+        for(SystemQuickerItemInfo systemQuickerItemInfo :infos.get(1).getChilds()){
+            if(systemQuickerItemInfo.isChecked()){
+                res.add(((RunningApplicationInfo) systemQuickerItemInfo).getProcessName());
             }
         }
         return res;
@@ -208,9 +208,9 @@ public class SystemQuickenELVAdapter extends BaseExpandableListAdapter implement
     public List<String> getCheckRubbishNames(){
         List<String> res = new ArrayList<String>();
 
-        for(ChildItemData childItemData:infos.get(0).getChilds()){
-            if(childItemData.isChecked()){
-                res.add(((CacheInfo)childItemData).getPackageName());
+        for(SystemQuickerItemInfo systemQuickerItemInfo :infos.get(0).getChilds()){
+            if(systemQuickerItemInfo.isChecked()){
+                res.add(((CacheInfo) systemQuickerItemInfo).getPackageName());
             }
         }
         return res;

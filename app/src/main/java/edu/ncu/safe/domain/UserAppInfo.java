@@ -4,7 +4,9 @@ import android.graphics.drawable.Drawable;
 
 import java.util.List;
 
-public class UserAppInfo extends UserAppSimpleInfo{
+import edu.ncu.safe.base.bean.UserAppSimpleInfo;
+
+public class UserAppInfo extends UserAppSimpleInfo {
 	private List<PermissionInfo> permissionInfos ;
 	public UserAppInfo(int uid, Drawable icon, String packName, String appName, List<PermissionInfo> permissionInfos) {
 		super(uid, icon, packName, appName);

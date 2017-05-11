@@ -29,9 +29,9 @@ import edu.ncu.safe.engine.NetDataOperator;
 public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
     private Context context;
     private List<ITarget> infos;
-    private Map<View,Integer> map ;
+    private Map<View, Integer> map;
     private boolean isShowMultiChoice = false;
-    private ImageLoader imageLoader ;
+    private ImageLoader imageLoader;
 
     public BackupLVAdapter(Context context) {
         this(new ArrayList<ITarget>(), context);
@@ -41,7 +41,7 @@ public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnChe
         this.infos = infos;
         this.context = context;
         this.imageLoader = new ImageLoader(context);
-        this.map = new HashMap<View,Integer>();
+        this.map = new HashMap<View, Integer>();
     }
 
     public void setInfos(List<ITarget> infos) {
@@ -62,7 +62,7 @@ public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnChe
 
     @Override
     public int getCount() {
-        return infos==null?0:infos.size();
+        return infos == null ? 0 : infos.size();
     }
 
     @Override
@@ -102,12 +102,14 @@ public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnChe
                 @Override
                 public void onFailure(String error) {
                 }
+
                 @Override
                 public void onResponse(Bitmap bmp) {
-                    if(position==(int) holder.iv_icon.getTag()){
+                    if (position == (int) holder.iv_icon.getTag()) {
                         holder.iv_icon.setImageBitmap(bmp);
                     }
                 }
+
                 @Override
                 public void onLoadingProgressChanged(int percent) {
                 }
@@ -117,10 +119,10 @@ public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnChe
         }
         holder.tv_title.setText(infos.get(position).getTitle());
         holder.tv_note.setText(infos.get(position).getNote());
-        if(infos.get(position).getDateOrSize()!=null){
+        if (infos.get(position).getDateOrSize() != null) {
             holder.tv_size.setVisibility(View.VISIBLE);
             holder.tv_size.setText(infos.get(position).getDateOrSize());
-        }else{
+        } else {
             holder.tv_size.setVisibility(View.GONE);
         }
         holder.iv_showPopup.setImageResource(R.drawable.close);
@@ -150,11 +152,11 @@ public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnChe
             holder.mpb_downloadProgress.setVisibility(View.GONE);
         }
 
-        if(map.containsKey(view)){
+        if (map.containsKey(view)) {
             map.remove(view);
-            map.put(view,position);
-        }else{
-            map.put(view,position);
+            map.put(view, position);
+        } else {
+            map.put(view, position);
 
         }
         return view;
@@ -187,32 +189,34 @@ public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnChe
         notifyDataSetChanged();
     }
 
-    public void onProgressStateChanged(int position,boolean isShow){
+    public void onProgressStateChanged(int position, boolean isShow) {
         infos.get(position).setPercent(0);
         infos.get(position).setIsInDownload(isShow);
         View view = getView(position);
-        if(view!=null) {
+        if (view != null) {
             ViewHolder holder = (ViewHolder) view.getTag();
             holder.mpb_downloadProgress.setPercentimmediately(0);
             holder.mpb_downloadProgress.setVisibility(isShow ? View.VISIBLE : View.GONE);
 
         }
     }
-    public void onProgressChanged(int position,int percent){
+
+    public void onProgressChanged(int position, int percent) {
         infos.get(position).setPercent(percent);
         infos.get(position).setIsInDownload(true);
         View view = getView(position);
-        if(view!=null) {
+        if (view != null) {
             ViewHolder holder = (ViewHolder) view.getTag();
             holder.mpb_downloadProgress.setVisibility(View.VISIBLE);
             holder.mpb_downloadProgress.setPercentSlow(percent);
         }
     }
-    private View getView(int position){
+
+    private View getView(int position) {
         Set<View> views = map.keySet();
         for (View view : views) {
             Integer integer = map.get(view);
-            if(integer.equals(position)){
+            if (integer.equals(position)) {
                 return view;
             }
         }
@@ -231,10 +235,11 @@ public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnChe
         public MyProgressBar mpb_downloadProgress;
     }
 
-    public void setItemInDownloading(View view,int position,boolean b){
+    public void setItemInDownloading(View view, int position, boolean b) {
         infos.get(position).setIsInDownload(b);
-        ((ViewHolder)view.getTag()).mpb_downloadProgress.setVisibility(b?View.VISIBLE:View.GONE);
+        ((ViewHolder) view.getTag()).mpb_downloadProgress.setVisibility(b ? View.VISIBLE : View.GONE);
     }
+
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         int position = (int) buttonView.getTag(R.id.tag_position);
@@ -268,13 +273,10 @@ public class BackupLVAdapter extends BaseAdapter implements CompoundButton.OnChe
     }
 
     public interface OnAdapterEventListener {
-//        public void onRecoveryClick(View parent,int position,BackupInfo info);
-//        public void onDeleteClick(View parent,int position,BackupInfo info);
+        void onShowPopupClicked(View parent, View view, int position, ITarget info);
 
-        public void onShowPopupClicked(View parent, View view, int position, ITarget info);
+        void onDownloadProgressBarClicked(View parent, int position, ITarget info);
 
-        public void onDownloadProgressBarClicked(View parent, int position, ITarget info);
-
-        public void onCheckBoxCheckedChanged(View parent, int position, ITarget data, boolean isChecked);
+        void onCheckBoxCheckedChanged(View parent, int position, ITarget data, boolean isChecked);
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 import edu.ncu.safe.domain.FlowsStatisticsAppItemInfo;
 import edu.ncu.safe.domain.FlowsStatisticsDayItemInfo;
 import edu.ncu.safe.domain.TotalFlowsData;
-import edu.ncu.safe.domain.UserAppSimpleInfo;
+import edu.ncu.safe.base.bean.UserAppSimpleInfo;
 import edu.ncu.safe.util.FormatDate;
 import edu.ncu.safe.util.NetTypeUtil;
 

@@ -4,13 +4,13 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import edu.ncu.safe.myinterface.ChildItemData;
+import edu.ncu.safe.base.bean.SystemQuickerItemInfo;
 import edu.ncu.safe.util.BitmapUtil;
 
 /**
  * Created by Mr_Yang on 2016/5/27.
  */
-public class RunningApplicationInfo extends ChildItemData implements Parcelable{
+public class RunningApplicationInfo extends SystemQuickerItemInfo implements Parcelable{
     public static final int PROCESS_TYPE_PROCESS = 0;
     public static final int PROCESS_TYPE_SERVICE = 1;
     private int pid;

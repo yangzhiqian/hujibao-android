@@ -27,7 +27,7 @@ import edu.ncu.safe.customerview.MyProgressBar;
 import edu.ncu.safe.domain.CacheInfo;
 import edu.ncu.safe.domain.ELVParentItemInfo;
 import edu.ncu.safe.domain.RunningApplicationInfo;
-import edu.ncu.safe.myinterface.ChildItemData;
+import edu.ncu.safe.base.bean.SystemQuickerItemInfo;
 import edu.ncu.safe.service.AppRubbishManageService;
 import edu.ncu.safe.service.InnerMemoryManageService;
 import edu.ncu.safe.util.FlowsFormartUtil;
@@ -378,9 +378,9 @@ public class SystemQuickenActivity extends BackAppCompatActivity implements View
 
     }
 
-    class MyCompator implements Comparator<ChildItemData> {
+    class MyCompator implements Comparator<SystemQuickerItemInfo> {
         @Override
-        public int compare(ChildItemData a, ChildItemData b) {
+        public int compare(SystemQuickerItemInfo a, SystemQuickerItemInfo b) {
             if (a.getCacheSize() < b.getCacheSize()) {
                 return 1;
             }

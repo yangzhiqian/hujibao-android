@@ -2,10 +2,12 @@ package edu.ncu.safe.domain;
 
 import android.graphics.drawable.Drawable;
 
+import edu.ncu.safe.base.bean.UserAppSimpleInfo;
+
 /**
  * Created by Mr_Yang on 2016/5/21.
  */
-public class UserAppBaseInfo extends UserAppSimpleInfo{
+public class UserAppBaseInfo extends UserAppSimpleInfo {
     private boolean isPrivacy = false;
     private boolean isCost = false;
     private boolean isLocation = false;

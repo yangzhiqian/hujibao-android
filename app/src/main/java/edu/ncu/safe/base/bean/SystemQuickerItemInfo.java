@@ -1,24 +1,21 @@
-package edu.ncu.safe.myinterface;
+package edu.ncu.safe.base.bean;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import edu.ncu.safe.util.BitmapUtil;
-
 /**
- * Created by Mr_Yang on 2016/5/28.
+ * Created by Mr_Yang on 2016/5/28.<br/>
+ * 手机加速中expandablelistview的二级控件bean抽象
  */
-public class ChildItemData  implements Parcelable{
+public class SystemQuickerItemInfo implements Parcelable{
     protected Bitmap icon;
     protected String title;
     protected String note;
     protected long cacheSize;
     protected boolean isChecked = true;
 
-    public ChildItemData(Bitmap icon, String title, String note, long cacheSize, boolean isChecked) {
+    public SystemQuickerItemInfo(Bitmap icon, String title, String note, long cacheSize, boolean isChecked) {
         this.icon = icon;
         this.title = title;
         this.note = note;
@@ -26,7 +23,7 @@ public class ChildItemData  implements Parcelable{
         this.isChecked = isChecked;
     }
 
-    protected ChildItemData(Parcel in) {
+    protected SystemQuickerItemInfo(Parcel in) {
         icon = in.readParcelable(Bitmap.class.getClassLoader());
         title = in.readString();
         note = in.readString();
@@ -34,15 +31,15 @@ public class ChildItemData  implements Parcelable{
         isChecked = in.readByte() != 0;
     }
 
-    public static final Creator<ChildItemData> CREATOR = new Creator<ChildItemData>() {
+    public static final Creator<SystemQuickerItemInfo> CREATOR = new Creator<SystemQuickerItemInfo>() {
         @Override
-        public ChildItemData createFromParcel(Parcel in) {
-            return new ChildItemData(in);
+        public SystemQuickerItemInfo createFromParcel(Parcel in) {
+            return new SystemQuickerItemInfo(in);
         }
 
         @Override
-        public ChildItemData[] newArray(int size) {
-            return new ChildItemData[size];
+        public SystemQuickerItemInfo[] newArray(int size) {
+            return new SystemQuickerItemInfo[size];
         }
     };
 

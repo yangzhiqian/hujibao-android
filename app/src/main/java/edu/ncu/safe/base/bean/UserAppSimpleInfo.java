@@ -1,9 +1,9 @@
-package edu.ncu.safe.domain;
+package edu.ncu.safe.base.bean;
 
 import android.graphics.drawable.Drawable;
 
 /**
- * 简单版的用户app信息</br>
+ * 简单版的用户app信息，一般可以用来作为展示</br>
  * <p>实体信息如下：
  * <ol>
  *     <li>uid:用户软件user id</li>

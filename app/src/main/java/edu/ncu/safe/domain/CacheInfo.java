@@ -4,10 +4,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import edu.ncu.safe.myinterface.ChildItemData;
+import edu.ncu.safe.base.bean.SystemQuickerItemInfo;
 import edu.ncu.safe.util.BitmapUtil;
 
-public class CacheInfo extends ChildItemData implements Parcelable{
+public class CacheInfo extends SystemQuickerItemInfo implements Parcelable{
     private String packageName;
     public CacheInfo(Parcel in) {
         super(in);
