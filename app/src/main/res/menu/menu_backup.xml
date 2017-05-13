@@ -12,5 +12,6 @@
         app:showAsAction="never"/>
     <item android:id="@+id/menu_mulitchoice"
         android:title="@string/menu_mulitchoice"
+        android:visible="false"
         app:showAsAction="never"/>
 </menu>
