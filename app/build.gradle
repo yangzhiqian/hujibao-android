@@ -25,14 +25,12 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
     compile files('libs/hellocharts-library-1.5.8.jar')
-    compile files('libs/slidingmenu.jar')
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     compile files('libs/gson-2.2.4.jar')
     compile files('libs/gson-2.2.4-javadoc.jar')
     compile files('libs/gson-2.2.4-sources.jar')
     compile files('libs/volley.jar')
     compile 'com.squareup.okhttp3:okhttp:3.3.1'
-    compile 'in.srain.cube:ultra-ptr:1.0.11'
     compile 'com.github.chenupt.android:springindicator:1.0.2@aar'
     compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
     compile project(':pulltorefreshandload')
