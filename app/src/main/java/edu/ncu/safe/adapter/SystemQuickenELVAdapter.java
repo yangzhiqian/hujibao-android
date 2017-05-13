@@ -1,6 +1,7 @@
 package edu.ncu.safe.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -13,10 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ncu.safe.R;
+import edu.ncu.safe.base.bean.SystemQuickerItemInfo;
 import edu.ncu.safe.domain.CacheInfo;
 import edu.ncu.safe.domain.ELVParentItemInfo;
 import edu.ncu.safe.domain.RunningApplicationInfo;
-import edu.ncu.safe.base.bean.SystemQuickerItemInfo;
 import edu.ncu.safe.util.FlowsFormartUtil;
 
 /**
@@ -129,7 +130,12 @@ public class SystemQuickenELVAdapter extends BaseExpandableListAdapter implement
 
 
         holder.cb_childCheck.setOnCheckedChangeListener(null);
-        holder.iv_icon.setImageBitmap(infos.get(groupPosition).getChilds().get(childPosition).getIcon());
+        Bitmap icon = infos.get(groupPosition).getChilds().get(childPosition).getIcon();
+        if(icon==null){
+            holder.iv_icon.setImageResource(R.drawable.ic_launcher);
+        }else {
+            holder.iv_icon.setImageBitmap(icon);
+        }
         holder.tv_childName.setText(infos.get(groupPosition).getChilds().get(childPosition).getTitle());
         holder.tv_childNote.setText(infos.get(groupPosition).getChilds().get(childPosition).getNote());
         holder.tv_childSize.setText(FlowsFormartUtil.toFlowsFormart(infos.get(groupPosition).getChilds().get(childPosition).getCacheSize()));

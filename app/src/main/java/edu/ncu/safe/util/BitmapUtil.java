@@ -139,6 +139,9 @@ public class BitmapUtil {
      * @return
      */
     public static Bitmap drawableToBitmap(Drawable drawable) {
+        if(drawable==null){
+            return null;
+        }
         // 取 drawable 的长宽
         int w = drawable.getIntrinsicWidth();
         int h = drawable.getIntrinsicHeight();
