@@ -2,16 +2,15 @@ package edu.ncu.safe.service;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.SystemClock;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import edu.ncu.safe.R;
 import edu.ncu.safe.domain.TotalFlowsData;
@@ -30,9 +29,7 @@ public class FLoatDesktopWindow extends Service {
 
     private String packname;
     private boolean appPreState;
-
-    private PendingIntent intentUpdate;
-    private AlarmManager amUpdate;
+    private Timer timer;
 
     Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -46,21 +43,44 @@ public class FLoatDesktopWindow extends Service {
                 manager.setData(type, update, download);
                 preTotalFlowsData = currentInfo;
             } catch (Exception e) {
-                start();
+                e.printStackTrace();
             }
         }
 
         ;
     };
 
+    public static void startService(Context context) {
+        Intent floatWindowIntent = new Intent();
+        floatWindowIntent.setClass(context, FLoatDesktopWindow.class);
+        floatWindowIntent.setAction(context.getResources().getString(R.string.action_float_window_show));
+        context.startService(floatWindowIntent);
+    }
+
+    public static void stopService(Context context) {
+        Intent floatWindowIntent = new Intent();
+        floatWindowIntent.setClass(context, FLoatDesktopWindow.class);
+        floatWindowIntent.setAction(context.getResources().getString(R.string.action_float_window_dismiss));
+        context.startService(floatWindowIntent);
+    }
+
+    public static void update(Context context) {
+        Intent floatWindowIntent = new Intent();
+        floatWindowIntent.setClass(context, FLoatDesktopWindow.class);
+        floatWindowIntent.setAction(context.getResources().getString(R.string.action_float_window_update));
+        context.startService(floatWindowIntent);
+    }
+
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent == null) {
+            MyLog.i(TAG, "intent==null");
             start();
             return Service.START_STICKY;// 自动重启
         }
         String action = intent.getAction();
-        MyLog.i(TAG, "action:::::::"+action);
+        MyLog.i(TAG, "action:::::::" + action);
         // 执行更新操作
         if (getResources().getString(R.string.action_float_window_update).equals(action)) {
             boolean appNowState = isRunning(this, packname);
@@ -85,37 +105,43 @@ public class FLoatDesktopWindow extends Service {
 
     private void init() {
         MyLog.i(TAG, "init");
-        trafficStats = new LoadFlowsDataFromTrafficStats(this);
+        if (trafficStats == null) {
+            trafficStats = new LoadFlowsDataFromTrafficStats(this);
+        }
         preTotalFlowsData = trafficStats.getTotalFlowsData();
-        manager = new MyWindowManager(this);
+        if (manager == null) {
+            manager = new MyWindowManager(this);
+        }
         packname = this.getApplication().getApplicationInfo().packageName;
         appPreState = isRunning(this, packname);
-
-        // 开启定时更新
-        Intent intent = new Intent(this,FLoatDesktopWindow.class);
-       // intent.setAction(getResources().getString(R.string.action_float_window_update));
-        intentUpdate = PendingIntent.getService(this, 0, intent, 0);
-        amUpdate = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        if (timer != null) {
+            timer.cancel();
+        }
+        timer = new Timer();
     }
 
     private void start() {
         MyLog.i(TAG, "start");
         // 开启浮动窗口
         init();
-        amUpdate.cancel(intentUpdate);
         manager.showView();
-        long firstime = SystemClock.elapsedRealtime();
-        // 1秒一个周期，不停的发送广播
-        amUpdate.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstime,
-                1000, intentUpdate);
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                update(getApplicationContext());
+            }
+        }, 1000, 1000);
     }
 
     private void stop() {
         MyLog.i(TAG, "stop");
-        if (manager.isShow()) {
+        if (manager != null && manager.isShow()) {
             manager.dismiss();
         }
-        amUpdate.cancel(intentUpdate);
+        if (timer != null) {
+            timer.cancel();
+        }
+        timer = null;
     }
 
     @Override

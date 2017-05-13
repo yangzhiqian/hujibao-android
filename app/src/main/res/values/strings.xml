@@ -248,7 +248,9 @@
     <!-- action-->
     <string name="action_update">edu.ncu.yang.myservice.update</string>
     <string name="action_download_new_apk">edu.ncu.yang.myservice.update.load</string>
-    <string name="action_flows_recorder">edu.ncu.yang.myservice.flows.recorder</string>
+    <string name="action_flows_recorder_start">edu.ncu.yang.myservice.flows.recorder.start</string>
+    <string name="action_flows_recorder_stop">edu.ncu.yang.myservice.flows.recorder.stop</string>
+    <string name="action_flows_recorder_update">edu.ncu.yang.myservice.flows.recorder.update</string>
     <string name="action_float_window_show">edu.ncu.yang.myservice.float.window.show</string>
     <string name="action_float_window_update">edu.ncu.yang.myservice.float.window.update</string>
     <string name="action_float_window_dismiss">edu.ncu.yang.myservice.float.window.dismiss</string>

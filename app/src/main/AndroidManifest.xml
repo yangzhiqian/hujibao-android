@@ -69,13 +69,15 @@
             </intent-filter>
         </service>
         <service
-            android:name=".service.FlowsRecordService">
+            android:name=".service.FlowsRecordService"
+            android:process=":FlowsRecordService">
             <intent-filter>
                 <action android:name="edu.ncu.yang.myservice.flows.recorder" />
             </intent-filter>
         </service>
         <service
-            android:name=".service.FLoatDesktopWindow">
+            android:name=".service.FLoatDesktopWindow"
+            android:process=":androidsafe_speed">
             <intent-filter android:priority="1000">
                 <action android:name="edu.ncu.yang.myservice.float.window.show" />
                 <action android:name="edu.ncu.yang.myservice.float.window.update" />

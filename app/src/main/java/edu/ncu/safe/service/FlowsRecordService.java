@@ -1,15 +1,14 @@
 package edu.ncu.safe.service;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
-import android.os.SystemClock;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import edu.ncu.safe.MyApplication;
 import edu.ncu.safe.R;
@@ -26,42 +25,75 @@ import edu.ncu.safe.util.MyUtil;
 public class FlowsRecordService extends Service {
     private static final String TAG="FlowsRecordService";
 
-    private static  int UPDATETIME = 2*60*1000;
+    private static  int UPDATETIME = 5*60*1000;//五分钟更新一次
     private LoadFlowsDataFromTrafficStats trafficStats;// 用于加载trafficstats里面数据的对象
     private FlowsDatabase database;// 用于操作数据库的对象
 
     private List<FlowsStatisticsAppItemInfo> preAppTrafficFlowsInfos;// 用于记录每次更新后当时traffic里的数据
     private FlowsStatisticsDayItemInfo trafficDayClock0FlowsInfo;// 当天结算后的traffic值
 
-    private AlarmManager manager;
-    private PendingIntent pendingIntent;
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        startForeground(0, null);
-        init();
+    private Timer timer;
+
+    public static void startService(Context context){
+        Intent flowsRecorderIntent = new Intent();
+        flowsRecorderIntent.setClass(context, FlowsRecordService.class);
+		flowsRecorderIntent.setAction(context.getResources().getString(R.string.action_flows_recorder_start));
+        context.startService(flowsRecorderIntent);
     }
+
+    public static void stopService(Context context){
+        Intent flowsRecorderIntent = new Intent();
+        flowsRecorderIntent.setClass(context, FlowsRecordService.class);
+        flowsRecorderIntent.setAction(context.getResources().getString(R.string.action_flows_recorder_stop));
+        context.startService(flowsRecorderIntent);
+    }
+    public static void update(Context context){
+        Intent flowsRecorderIntent = new Intent();
+        flowsRecorderIntent.setClass(context, FlowsRecordService.class);
+        flowsRecorderIntent.setAction(context.getResources().getString(R.string.action_flows_recorder_update));
+        context.startService(flowsRecorderIntent);
+    }
+
     private void init(){
-        database = new FlowsDatabase(getApplicationContext());
-        trafficStats = new LoadFlowsDataFromTrafficStats(
-                getApplicationContext());
-        //获取AlarmManager系统服务
-        manager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
-        //包装需要执行Service的Intent
-        Intent intent = new Intent(this, FlowsRecordService.class);
-        intent.setAction(getResources().getString(R.string.action_flows_recorder));
-        pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        startAlarm();
+        MyLog.d(TAG,"init");
+        if(database==null) {
+            database = new FlowsDatabase(getApplicationContext());
+        }
+        if(trafficStats==null) {
+            trafficStats = new LoadFlowsDataFromTrafficStats(
+                    getApplicationContext());
+        }
+        if(timer!=null){
+            timer.cancel();
+            timer = null;
+        }
+        timer = new Timer();
     }
 
-    private void startAlarm(){
-        //触发服务的起始时间
-        long triggerAtTime = SystemClock.elapsedRealtime()+UPDATETIME;
-        //使用AlarmManger的setRepeating方法设置定期执行的时间间隔（seconds秒）和需要执行的Service
-       // manager.setRepeating(AlarmManager.ELAPSED_REALTIME, triggerAtTime, 1000, pendingIntent);
-        manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,triggerAtTime,pendingIntent);
-
+    private void start(){
+        MyLog.d(TAG,"start");
+        init();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                update();
+            }
+        },0,UPDATETIME);
+    }
+    private void stop(){
+        MyLog.i(TAG, "stop");
+        if (timer != null) {
+            timer.cancel();
+        }
+        timer = null;
+    }
+    private void update(){
+        MyLog.i(TAG, "update");
         try {
+            //更新数据库
+            updateAppFlowsDBInfo();
+            updateDayTotalFlowsDBInfo();
+            //判断是否超过流量
             SharedPreferences sp = MyApplication.getSharedPreferences();
             long total = sp.getLong(MyApplication.SP_LONG_TOTAL_FLOWS, 0);
             if(total<=0){
@@ -70,6 +102,9 @@ public class FlowsRecordService extends Service {
             long offset = sp.getLong(MyApplication.SP_LONG_DB_OFFSET, 0);
             long warningFlows = sp.getLong(MyApplication.SP_LONG_WARNING_FLOWS, getResources().getInteger(R.integer.warnming_flows));
             int warningType = sp.getInt(MyApplication.SP_INT_FLOWS_WARNINGTYPE, 0);
+            if(database==null) {
+                database = new FlowsDatabase(getApplicationContext());
+            }
             long used  = database.queryCurrentMonthTotalFlows();
             if(total-(used+offset)<=warningFlows && warningType==0){
                 MyUtil.showNotification(this,
@@ -100,48 +135,47 @@ public class FlowsRecordService extends Service {
         }
     }
 
-    private void stopAlarm(){
-        //取消正在执行的服务
-        manager.cancel(pendingIntent);
-    }
-
-    class FrashData extends Thread{
-        @Override
-        public void run() {
-            MyLog.i(TAG,"flows flash");
-            try {
-                updateAppFlowsDBInfo();
-                updateDayTotalFlowsDBInfo();
-                startAlarm();
-            }catch (Exception e){
-                e.printStackTrace();
-                startAlarm();
-                init();
-            }
-        }
-    }
-
-
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId) {
-        new FrashData().start();
+        String action = intent.getAction();
+        if(getResources().getString(R.string.action_flows_recorder_start).equals(action)){
+            //start
+            start();
+        }
+        if(getResources().getString(R.string.action_flows_recorder_stop).equals(action)){
+            //stop
+            stop();
+        }
+        if(getResources().getString(R.string.action_flows_recorder_update).equals(action)){
+            //update
+            update();
+        }
+
         return Service.START_STICKY;// 被关闭后自动重启
     }
 
     @Override
     public void onDestroy() {
-        stopAlarm();
+        stop();
         super.onDestroy();
     }
 
     private void updateAppFlowsDBInfo() {
         // 当前系统记录的流量数据
+        if(trafficStats==null) {
+            trafficStats = new LoadFlowsDataFromTrafficStats(
+                    getApplicationContext());
+        }
         List<FlowsStatisticsAppItemInfo> trafficInfos = trafficStats
                 .getAppFlowsData();
         // 当前数据库里的数据
+        if(database==null) {
+            database = new FlowsDatabase(getApplicationContext());
+        }
         List<FlowsStatisticsAppItemInfo> dbInfos = database
                 .queryFromAppFlowsDB();
         if (preAppTrafficFlowsInfos == null) {
+            //首次进入，直接记录当前值即可
             preAppTrafficFlowsInfos = trafficInfos;
             return;
         }
@@ -198,7 +232,14 @@ public class FlowsRecordService extends Service {
 
     // 更新值为 trafficinfo - trafficDayClock0FlowsInfo + preDayFlowsInfo
     private void updateDayTotalFlowsDBInfo() {
+        if(trafficStats==null) {
+            trafficStats = new LoadFlowsDataFromTrafficStats(
+                    getApplicationContext());
+        }
         FlowsStatisticsDayItemInfo trafficinfo = trafficStats.getMobileTotalFlowsData();
+        if(database==null) {
+            database = new FlowsDatabase(getApplicationContext());
+        }
         FlowsStatisticsDayItemInfo dbInfo = database
                 .queryCurrentDayFromTotalFlowsDB();
         if (dbInfo == null) {
